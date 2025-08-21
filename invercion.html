@@ -1,0 +1,2888 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lunaria Inversión Pro - Sistema Crypto Avanzado</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js"></script>
+    <link rel="manifest" href="data:application/json;base64,eyJuYW1lIjoiTHVuYXJpYSBJbnZlcnNpw7NuIiwic2hvcnRfbmFtZSI6Ikx1bmFyaWEiLCJkZXNjcmlwdGlvbiI6IlNlZ3VpbWllbnRvIGF2YW56YWRvIGRlIGludmVyc2lvbmVzIGVuIGNyaXB0b21vbmVkYXMiLCJzdGFydF91cmwiOiIuLyIsImRpc3BsYXkiOiJzdGFuZGFsb25lIiwiYmFja2dyb3VuZF9jb2xvciI6IiMwMDFGM0YiLCJ0aGVtZV9jb2xvciI6IiMwMDdCRkYiLCJpY29ucyI6W3sic3JjIjoiaHR0cHM6Ly9pLnBvc3RpbWcuY2MvR3BQc1NtbVgvNDQ5MTQ3MC5wbmciLCJzaXplcyI6IjE5MngxOTIiLCJ0eXBlIjoiaW1hZ2UvcG5nIn1dfQ==">
+    <style>
+        :root {
+            --primary-bg: #001F3F;
+            --secondary-bg: #007BFF;
+            --accent-color: #007BFF;
+            --text-color: #FFFFFF;
+            --secondary-text: #6C757D;
+            --success-color: #10b981;
+            --warning-color: #f59e0b;
+            --error-color: #ef4444;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', 'Roboto', sans-serif;
+            background: var(--primary-bg);
+            color: var(--text-color);
+            line-height: 1.6;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        .gradient-bg {
+            background: linear-gradient(135deg, var(--primary-bg) 0%, var(--secondary-bg) 100%);
+        }
+
+        .stats-card {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 1.5rem;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+            break-inside: avoid;
+        }
+
+        .stats-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 123, 255, 0.15);
+        }
+
+        .category-filter {
+            display: flex;
+            flex-wrap: wrap;
+            padding: 1rem;
+            gap: 0.5rem;
+            justify-content: center;
+        }
+
+        .category-btn {
+            flex-shrink: 0;
+            padding: 8px 16px;
+            background: var(--secondary-text);
+            color: white;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+        }
+
+        .category-btn:hover {
+            background: #0056b3;
+            transform: scale(1.05);
+        }
+
+        .category-btn.active {
+            background: var(--accent-color);
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            backdrop-filter: blur(5px);
+        }
+
+        .modal.show {
+            display: flex;
+        }
+
+        .modal-content {
+            background: linear-gradient(135deg, #001F3F 0%, #007BFF 100%);
+            padding: 2rem;
+            border-radius: 15px;
+            width: 90%;
+            max-width: 700px;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+            animation: modalSlideIn 0.3s ease;
+        }
+
+        @keyframes modalSlideIn {
+            from {
+                opacity: 0;
+                transform: scale(0.8) translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+            }
+        }
+
+        .investment-card {
+            background: linear-gradient(135deg, #001F3F 0%, #007BFF 100%);
+            border-radius: 15px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+            border: 2px solid transparent;
+            break-inside: avoid;
+        }
+
+        .investment-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+            transform: translateX(-100%);
+            transition: transform 0.6s;
+        }
+
+        .investment-card:hover::before {
+            transform: translateX(100%);
+        }
+
+        .investment-card:hover {
+            transform: translateY(-5px) scale(1.02);
+            box-shadow: 0 15px 35px rgba(0, 123, 255, 0.2);
+        }
+
+        .investment-card.favorite {
+            border-color: #ffd700;
+            box-shadow: 0 0 20px rgba(255, 215, 0, 0.3);
+        }
+
+        .floating-btn {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            width: 60px;
+            height: 60px;
+            background: var(--accent-color);
+            border: none;
+            border-radius: 50%;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+            box-shadow: 0 8px 25px rgba(0, 123, 255, 0.4);
+            transition: all 0.3s ease;
+            z-index: 100;
+        }
+
+        .floating-btn:hover {
+            transform: scale(1.1) rotate(90deg);
+            box-shadow: 0 12px 35px rgba(0, 123, 255, 0.6);
+        }
+
+        .settings-btn {
+            position: fixed;
+            bottom: 2rem;
+            right: 8rem;
+            width: 60px;
+            height: 60px;
+            background: #8b5cf6;
+            border: none;
+            border-radius: 50%;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+            box-shadow: 0 8px 25px rgba(139, 92, 246, 0.4);
+            transition: all 0.3s ease;
+            z-index: 100;
+        }
+
+        .settings-btn:hover {
+            transform: scale(1.1) rotate(180deg);
+            box-shadow: 0 12px 35px rgba(139, 92, 246, 0.6);
+        }
+
+        .faucetpay-btn {
+            position: fixed;
+            bottom: 2rem;
+            left: 2rem;
+            width: 60px;
+            height: 60px;
+            background: #ff6b35;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            box-shadow: 0 8px 25px rgba(255, 107, 53, 0.4);
+            transition: all 0.3s ease;
+            z-index: 100;
+            overflow: hidden;
+            padding: 4px;
+        }
+
+        .faucetpay-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 12px 35px rgba(255, 107, 53, 0.6);
+        }
+
+        .faucetpay-btn img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 4px;
+        }
+
+        .browser-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(0, 0, 0, 0.95);
+            z-index: 2000;
+            backdrop-filter: blur(10px);
+        }
+
+        .browser-modal.show {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .browser-header {
+            background: linear-gradient(135deg, #001F3F 0%, #007BFF 100%);
+            padding: 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: white;
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .browser-title {
+            font-size: 1.2rem;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+        }
+
+        .browser-controls {
+            display: flex;
+            gap: 0.5rem;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .browser-btn {
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            padding: 0.75rem;
+            border-radius: 10px;
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .browser-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: scale(1.05);
+        }
+
+        .browser-btn.primary {
+            background: #10b981;
+        }
+
+        .browser-btn.primary:hover {
+            background: #059669;
+        }
+
+        .browser-btn.danger {
+            background: #ef4444;
+        }
+
+        .browser-btn.danger:hover {
+            background: #dc2626;
+        }
+
+        .url-display {
+            background: rgba(255, 255, 255, 0.15);
+            padding: 0.75rem;
+            border-radius: 10px;
+            font-family: monospace;
+            font-size: 0.9rem;
+            max-width: 400px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .browser-content {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+            text-align: center;
+        }
+
+        .browser-message {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 2rem;
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            max-width: 600px;
+        }
+
+        .browser-message h3 {
+            color: #10b981;
+            margin-bottom: 1rem;
+            font-size: 1.5rem;
+        }
+
+        .browser-message p {
+            margin-bottom: 1rem;
+            color: #e2e8f0;
+        }
+
+        .status-indicator {
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            margin-right: 0.5rem;
+            animation: pulse 2s infinite;
+        }
+
+        .status-opening {
+            background: #f59e0b;
+        }
+
+        .status-success {
+            background: #10b981;
+        }
+
+        .status-error {
+            background: #ef4444;
+        }
+
+        .action-btn {
+            width: 36px;
+            height: 36px;
+            background: var(--accent-color);
+            border: none;
+            border-radius: 50%;
+            color: white;
+            cursor: pointer;
+            margin: 0 0.25rem;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .action-btn:hover {
+            background: #0056b3;
+            transform: scale(1.1);
+        }
+
+        .action-btn.favorite {
+            background: #ffd700;
+        }
+
+        .action-btn.favorite:hover {
+            background: #ffed4a;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        .form-triple {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 1rem;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: #e2e8f0;
+        }
+
+        .form-input, .form-select {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #374151;
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .form-input:focus, .form-select:focus {
+            outline: none;
+            border-color: var(--accent-color);
+            box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.1);
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        .color-picker {
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            gap: 0.5rem;
+            margin-top: 0.5rem;
+        }
+
+        .color-option {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+            border: 3px solid transparent;
+            transition: all 0.3s ease;
+        }
+
+        .color-option:hover {
+            transform: scale(1.1);
+        }
+
+        .color-option.selected {
+            border-color: white;
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+        }
+
+        .btn-primary {
+            background: var(--accent-color);
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary:hover {
+            background: #0056b3;
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background: var(--secondary-text);
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            margin-left: 0.5rem;
+        }
+
+        .btn-secondary:hover {
+            background: #5a6268;
+        }
+
+        .header-btn {
+            background: var(--accent-color);
+            color: white;
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            margin-left: 0.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .header-btn:hover {
+            background: #0056b3;
+            transform: translateY(-1px);
+        }
+
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: var(--success-color);
+            color: white;
+            padding: 1rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            z-index: 2000;
+            animation: slideInRight 0.3s ease;
+        }
+
+        @keyframes slideInRight {
+            from {
+                opacity: 0;
+                transform: translateX(100%);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .calculations {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 1rem;
+            border-radius: 10px;
+            margin-top: 1rem;
+            backdrop-filter: blur(5px);
+        }
+
+        .history-item {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 0.75rem;
+            border-radius: 8px;
+            margin-bottom: 0.5rem;
+        }
+
+        .qr-container {
+            text-align: center;
+            padding: 1rem;
+            background: white;
+            border-radius: 10px;
+            margin: 1rem 0;
+        }
+
+        .chart-container {
+            height: 300px;
+            margin: 1rem 0;
+        }
+
+        .fade-in {
+            animation: fadeIn 0.5s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .pulse {
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .price-indicator {
+            display: inline-flex;
+            align-items: center;
+            font-size: 0.875rem;
+            font-weight: 600;
+            padding: 0.25rem 0.5rem;
+            border-radius: 6px;
+            margin-left: 0.5rem;
+        }
+
+        .price-up {
+            background: rgba(16, 185, 129, 0.2);
+            color: #10b981;
+        }
+
+        .price-down {
+            background: rgba(239, 68, 68, 0.2);
+            color: #ef4444;
+        }
+
+        .price-neutral {
+            background: rgba(107, 114, 128, 0.2);
+            color: #6b7280;
+        }
+
+        .crypto-icon {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            margin-right: 0.5rem;
+            background: linear-gradient(135deg, #007BFF, #00c6ff);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 0.75rem;
+            font-weight: bold;
+        }
+
+        .bookmark-list {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+            margin-top: 1rem;
+        }
+
+        .bookmark-item {
+            background: rgba(16, 185, 129, 0.2);
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(16, 185, 129, 0.3);
+        }
+
+        .bookmark-item:hover {
+            background: rgba(16, 185, 129, 0.3);
+            transform: scale(1.05);
+        }
+
+        .crypto-management {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .crypto-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0.75rem;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+            margin-bottom: 0.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .crypto-item:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .crypto-info {
+            display: flex;
+            align-items: center;
+            flex: 1;
+        }
+
+        .crypto-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .toggle-btn {
+            padding: 0.25rem 0.75rem;
+            border: none;
+            border-radius: 15px;
+            cursor: pointer;
+            font-size: 0.875rem;
+            transition: all 0.3s ease;
+        }
+
+        .toggle-btn.active {
+            background: var(--success-color);
+            color: white;
+        }
+
+        .toggle-btn.inactive {
+            background: var(--secondary-text);
+            color: white;
+        }
+
+        .add-crypto-form {
+            display: grid;
+            grid-template-columns: 1fr 1fr auto;
+            gap: 1rem;
+            align-items: end;
+            margin-top: 1rem;
+            padding: 1rem;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+        }
+
+        .currency-toggle {
+            display: flex;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 25px;
+            padding: 0.25rem;
+            margin-bottom: 1rem;
+        }
+
+        .currency-option {
+            flex: 1;
+            padding: 0.5rem 1rem;
+            border: none;
+            background: transparent;
+            color: white;
+            cursor: pointer;
+            border-radius: 20px;
+            transition: all 0.3s ease;
+            font-weight: 600;
+        }
+
+        .currency-option.active {
+            background: var(--accent-color);
+            box-shadow: 0 2px 8px rgba(0, 123, 255, 0.3);
+        }
+
+        @media (max-width: 768px) {
+            .modal-content {
+                width: 95%;
+                padding: 1rem;
+            }
+            
+            .floating-btn {
+                width: 50px;
+                height: 50px;
+                bottom: 1rem;
+                right: 1rem;
+            }
+
+            .settings-btn {
+                width: 50px;
+                height: 50px;
+                bottom: 1rem;
+                right: 6rem;
+            }
+
+            .faucetpay-btn {
+                width: 50px;
+                height: 50px;
+                bottom: 1rem;
+                left: 1rem;
+            }
+
+            .form-row, .form-triple {
+                grid-template-columns: 1fr;
+            }
+
+            .color-picker {
+                grid-template-columns: repeat(4, 1fr);
+            }
+
+            .url-display {
+                max-width: 200px;
+            }
+
+            .browser-controls {
+                flex-wrap: wrap;
+                gap: 0.25rem;
+            }
+
+            .browser-btn {
+                padding: 0.5rem;
+                font-size: 0.9rem;
+            }
+
+            #investmentGrid {
+                grid-template-columns: 1fr;
+            }
+
+            .add-crypto-form {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media print {
+            .floating-btn,
+            .settings-btn,
+            .faucetpay-btn,
+            .browser-modal,
+            .modal {
+                display: none !important;
+            }
+            
+            .investment-card:hover,
+            .stats-card:hover {
+                transform: none;
+                box-shadow: none;
+            }
+
+            body {
+                background: white;
+                color: black;
+            }
+
+            .stats-card,
+            .investment-card {
+                background: white;
+                border: 1px solid #ccc;
+                color: black;
+            }
+
+            #investmentGrid {
+                column-count: 2;
+                column-gap: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="gradient-bg shadow-lg p-4 sticky top-0 z-50">
+        <div class="flex items-center justify-between max-w-7xl mx-auto">
+            <div class="flex items-center space-x-4">
+                <img src="https://i.postimg.cc/GpPsSmmX/4491470.png" alt="Lunaria Logo" class="h-12 w-12">
+                <h1 class="text-2xl font-bold text-white">Lunaria Inversión Pro</h1>
+                <span class="text-sm bg-purple-600 px-3 py-1 rounded-full">Sistema Crypto Avanzado</span>
+            </div>
+            <div class="flex items-center space-x-2">
+                <button id="statsBtn" class="header-btn">
+                    <i class="fas fa-chart-bar"></i> Estadísticas
+                </button>
+                <button id="exportBtn" class="header-btn">
+                    <i class="fas fa-download"></i> Exportar
+                </button>
+                <button id="importBtn" class="header-btn">
+                    <i class="fas fa-upload"></i> Importar
+                </button>
+                <input type="file" id="importFile" accept=".json" style="display: none;">
+            </div>
+        </div>
+    </header>
+
+    <!-- Statistics Dashboard -->
+    <div id="statsSection" class="container mx-auto px-4 py-6 grid grid-cols-1 md:grid-cols-4 gap-4">
+        <div class="stats-card text-center">
+            <i class="fas fa-coins text-3xl text-yellow-400 mb-2"></i>
+            <h3 class="text-2xl font-bold" id="totalInvestments">0</h3>
+            <p class="text-gray-300">Total Inversiones</p>
+        </div>
+        <div class="stats-card text-center">
+            <i class="fas fa-dollar-sign text-3xl text-green-400 mb-2"></i>
+            <h3 class="text-2xl font-bold" id="totalAmount">$0</h3>
+            <p class="text-gray-300">Valor Total (USDT)</p>
+        </div>
+        <div class="stats-card text-center">
+            <i class="fas fa-star text-3xl text-yellow-400 mb-2"></i>
+            <h3 class="text-2xl font-bold" id="totalFavorites">0</h3>
+            <p class="text-gray-300">Favoritos</p>
+        </div>
+        <div class="stats-card text-center">
+            <i class="fas fa-trending-up text-3xl text-blue-400 mb-2"></i>
+            <h3 class="text-2xl font-bold" id="totalProfitPercent">0%</h3>
+            <p class="text-gray-300">Ganancia Total</p>
+        </div>
+    </div>
+
+    <!-- Category Filter -->
+    <div class="category-filter" id="categoryFilter">
+        <button class="category-btn active" data-category="all">Todas</button>
+        <button class="category-btn" data-category="favorites">⭐ Favoritos</button>
+        <button class="category-btn" data-category="most-clicked">🔥 Más Clickeados</button>
+        <button class="category-btn" data-category="recent">🕒 Recientes</button>
+    </div>
+
+    <!-- Main Content -->
+    <main class="container mx-auto px-4 py-6 min-h-screen">
+        <div id="investmentGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <!-- Investment cards will be inserted here -->
+        </div>
+        
+        <div id="emptyState" class="text-center py-12">
+            <i class="fas fa-rocket text-6xl text-gray-400 mb-4 pulse"></i>
+            <h2 class="text-2xl font-semibold mb-2">¡Comienza tu journey cripto!</h2>
+            <p class="text-gray-400 mb-6">Agrega tu primera inversión y sigue el rastro de tus ganancias en tiempo real</p>
+        </div>
+    </main>
+
+    <!-- FaucetPay Floating Button -->
+    <button id="faucetpayBtn" class="faucetpay-btn" title="Abrir FaucetPay">
+        <img src="https://i.postimg.cc/xd3HS5CW/Picsart-25-07-12-19-07-45-544.png" alt="FaucetPay">
+    </button>
+
+    <!-- Settings Floating Button -->
+    <button id="settingsBtn" class="settings-btn" title="Configurar Criptomonedas">
+        <i class="fas fa-cog"></i>
+    </button>
+
+    <!-- Floating Add Button -->
+    <button id="addBtn" class="floating-btn" title="Agregar Inversión">
+        <i class="fas fa-plus"></i>
+    </button>
+
+    <!-- Enhanced Browser Modal -->
+    <div id="browserModal" class="browser-modal">
+        <div class="browser-header">
+            <div class="browser-title">
+                <i class="fas fa-globe mr-2"></i>
+                <span id="browserTitle">Navegador Avanzado</span>
+            </div>
+            <div class="browser-controls">
+                <button id="refreshBrowserBtn" class="browser-btn" title="Recargar">
+                    <i class="fas fa-sync-alt"></i>
+                </button>
+                <button id="homeBrowserBtn" class="browser-btn" title="Inicio">
+                    <i class="fas fa-home"></i>
+                </button>
+                <button id="bookmarkBtn" class="browser-btn" title="Agregar marcador">
+                    <i class="fas fa-bookmark"></i>
+                </button>
+                <div class="url-display" id="urlDisplay">Listo para navegar</div>
+                <button id="copyUrlBrowserBtn" class="browser-btn" title="Copiar URL">
+                    <i class="fas fa-copy"></i>
+                </button>
+                <button id="openExternalBtn" class="browser-btn primary" title="Abrir en ventana nueva">
+                    <i class="fas fa-external-link-alt"></i>
+                    Abrir
+                </button>
+                <button id="closeBrowserBtn" class="browser-btn danger">
+                    <i class="fas fa-times mr-1"></i> Cerrar
+                </button>
+            </div>
+        </div>
+        
+        <div class="browser-content">
+            <div class="browser-message" id="browserMessage">
+                <h3><i class="fas fa-rocket mr-2"></i>Navegador Web Mejorado</h3>
+                <p>Este navegador utiliza tecnología avanzada para abrir cualquier sitio web sin restricciones.</p>
+                <p><strong>Características principales:</strong></p>
+                <ul style="text-align: left; margin: 1rem 0; padding-left: 1.5rem;">
+                    <li>✅ Compatible con todos los sitios web</li>
+                    <li>✅ Sin restricciones de CORS</li>
+                    <li>✅ Soporte completo para FaucetPay</li>
+                    <li>✅ Gestión avanzada de pestañas</li>
+                    <li>✅ Sistema de marcadores integrado</li>
+                    <li>✅ Navegación segura y rápida</li>
+                </ul>
+                
+                <div class="bookmark-list" id="bookmarkList">
+                    <div class="bookmark-item" onclick="openAdvancedBrowser('https://faucetpay.io/')">
+                        <i class="fas fa-wallet mr-1"></i> FaucetPay
+                    </div>
+                    <div class="bookmark-item" onclick="openAdvancedBrowser('https://coinbase.com/')">
+                        <i class="fas fa-coins mr-1"></i> Coinbase
+                    </div>
+                    <div class="bookmark-item" onclick="openAdvancedBrowser('https://binance.com/')">
+                        <i class="fas fa-chart-line mr-1"></i> Binance
+                    </div>
+                    <div class="bookmark-item" onclick="openAdvancedBrowser('https://coingecko.com/')">
+                        <i class="fas fa-search mr-1"></i> CoinGecko
+                    </div>
+                </div>
+
+                <p style="margin-top: 1rem;"><span class="status-indicator status-success"></span>Sistema listo - Haz clic en "Abrir" para navegar</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Crypto Settings Modal -->
+    <div id="cryptoSettingsModal" class="modal">
+        <div class="modal-content">
+            <h2 class="text-2xl font-bold mb-6">
+                <i class="fas fa-cog mr-2"></i>
+                Gestión de Criptomonedas
+            </h2>
+            
+            <div class="crypto-management">
+                <h3 class="text-lg font-semibold mb-4">Criptomonedas Disponibles</h3>
+                <div id="cryptoList">
+                    <!-- Crypto items will be populated here -->
+                </div>
+                
+                <div class="add-crypto-form">
+                    <div>
+                        <label class="form-label">Símbolo (ej: TRX)</label>
+                        <input type="text" id="newCryptoSymbol" class="form-input" placeholder="TRX" maxlength="10">
+                    </div>
+                    <div>
+                        <label class="form-label">Nombre Completo</label>
+                        <input type="text" id="newCryptoName" class="form-input" placeholder="TRON">
+                    </div>
+                    <div>
+                        <button id="addCryptoBtn" class="btn-primary">
+                            <i class="fas fa-plus mr-1"></i> Agregar
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="flex justify-end mt-6">
+                <button id="closeCryptoSettingsBtn" class="btn-secondary">Cerrar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add/Edit Investment Modal -->
+    <div id="investmentModal" class="modal">
+        <div class="modal-content">
+            <h2 id="modalTitleForm" class="text-2xl font-bold mb-6">Nueva Inversión Crypto</h2>
+            <form id="investmentForm">
+                <div class="form-group">
+                    <label class="form-label">Nombre de la Plataforma *</label>
+                    <input type="text" id="platformName" class="form-input" maxlength="100" required>
+                    <div id="platformNameError" class="error text-red-400 text-sm mt-1"></div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Link de la Plataforma</label>
+                    <input type="url" id="platformLink" class="form-input">
+                    <div id="platformLinkError" class="error text-red-400 text-sm mt-1"></div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Criptomoneda Principal *</label>
+                    <select id="primaryCrypto" class="form-select" required>
+                        <option value="">Seleccionar criptomoneda</option>
+                    </select>
+                    <div id="primaryCryptoError" class="error text-red-400 text-sm mt-1"></div>
+                </div>
+
+                <div class="currency-toggle" id="currencyToggle">
+                    <button type="button" class="currency-option active" data-currency="crypto">
+                        <span id="cryptoCurrencyLabel">Crypto</span>
+                    </button>
+                    <button type="button" class="currency-option" data-currency="usdt">
+                        USDT
+                    </button>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label" id="investmentAmountLabel">Inversión *</label>
+                        <input type="number" id="investmentAmount" class="form-input" step="0.00000001" min="0" required>
+                        <div id="investmentAmountError" class="error text-red-400 text-sm mt-1"></div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" id="dailyProfitLabel">Ganancia Diaria</label>
+                        <input type="number" id="dailyProfit" class="form-input" step="0.00000001" min="0">
+                        <div id="dailyProfitError" class="error text-red-400 text-sm mt-1"></div>
+                    </div>
+                </div>
+
+                <div class="form-triple">
+                    <div class="form-group">
+                        <label class="form-label">Fecha</label>
+                        <input type="date" id="investmentDate" class="form-input">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Estado</label>
+                        <select id="status" class="form-select">
+                            <option value="active">🟢 Activo</option>
+                            <option value="attention">🟡 Requiere Atención</option>
+                            <option value="inactive">⚪ Inactivo</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Categoría *</label>
+                        <select id="category" class="form-select" required>
+                            <option value="">Seleccionar categoría</option>
+                        </select>
+                        <div id="categoryError" class="error text-red-400 text-sm mt-1"></div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Color de la Tarjeta</label>
+                    <div class="color-picker" id="colorPicker">
+                        <div class="color-option selected" data-color="#007BFF" style="background: #007BFF;"></div>
+                        <div class="color-option" data-color="#10b981" style="background: #10b981;"></div>
+                        <div class="color-option" data-color="#f59e0b" style="background: #f59e0b;"></div>
+                        <div class="color-option" data-color="#ef4444" style="background: #ef4444;"></div>
+                        <div class="color-option" data-color="#8b5cf6" style="background: #8b5cf6;"></div>
+                        <div class="color-option" data-color="#f97316" style="background: #f97316;"></div>
+                        <div class="color-option" data-color="#06b6d4" style="background: #06b6d4;"></div>
+                        <div class="color-option" data-color="#84cc16" style="background: #84cc16;"></div>
+                        <div class="color-option" data-color="#ec4899" style="background: #ec4899;"></div>
+                        <div class="color-option" data-color="#6366f1" style="background: #6366f1;"></div>
+                        <div class="color-option" data-color="#14b8a6" style="background: #14b8a6;"></div>
+                        <div class="color-option" data-color="#fbbf24" style="background: #fbbf24;"></div>
+                    </div>
+                </div>
+
+                <div class="flex justify-end mt-6">
+                    <button type="button" id="cancelBtn" class="btn-secondary">Cancelar</button>
+                    <button type="submit" id="saveBtn" class="btn-primary">
+                        <span id="saveText">Guardar</span>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Details Modal -->
+    <div id="detailsModal" class="modal">
+        <div class="modal-content">
+            <h2 class="text-2xl font-bold mb-6">Detalles de Inversión</h2>
+            <div id="detailsContent"></div>
+            <div class="flex justify-end mt-6">
+                <button id="closeDetailsBtn" class="btn-secondary">Cerrar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- QR Code Modal -->
+    <div id="qrModal" class="modal">
+        <div class="modal-content">
+            <h2 class="text-2xl font-bold mb-6">Código QR</h2>
+            <div id="qrContainer" class="qr-container">
+                <canvas id="qrCanvas"></canvas>
+            </div>
+            <div class="flex justify-end mt-6">
+                <button id="closeQrBtn" class="btn-secondary">Cerrar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Statistics Modal -->
+    <div id="statisticsModal" class="modal">
+        <div class="modal-content">
+            <h2 class="text-2xl font-bold mb-6">Estadísticas Detalladas</h2>
+            <div class="chart-container">
+                <canvas id="investmentChart" style="height: 300px;"></canvas>
+            </div>
+            <div class="chart-container">
+                <canvas id="categoryChart" style="height: 300px;"></canvas>
+            </div>
+            <div class="flex justify-end mt-6">
+                <button id="closeStatsBtn" class="btn-secondary">Cerrar</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Enhanced Browser System
+        class AdvancedBrowser {
+            constructor() {
+                this.openWindows = new Map();
+                this.currentUrl = '';
+                this.bookmarks = JSON.parse(localStorage.getItem('lunaria_bookmarks') || '[]');
+            }
+
+            openWindow(url, title = 'Navegador Web') {
+                try {
+                    const windowFeatures = [
+                        'width=1200',
+                        'height=800',
+                        'left=100',
+                        'top=100',
+                        'scrollbars=yes',
+                        'resizable=yes',
+                        'toolbar=yes',
+                        'menubar=yes',
+                        'location=yes',
+                        'status=yes'
+                    ].join(',');
+
+                    const newWindow = window.open(url, '_blank', windowFeatures);
+                    
+                    if (newWindow) {
+                        this.currentUrl = url;
+                        this.openWindows.set(url, newWindow);
+                        this.updateBrowserDisplay(url, title);
+                        this.addToHistory(url, title);
+                        newWindow.focus();
+                        showNotification(`✅ Sitio web abierto: ${title}`, 'success');
+                        return newWindow;
+                    } else {
+                        throw new Error('Popup bloqueado');
+                    }
+                } catch (error) {
+                    console.error('Error opening window:', error);
+                    this.showCompatibilityMode(url, title);
+                    return null;
+                }
+            }
+
+            showCompatibilityMode(url, title) {
+                const modal = document.getElementById('browserModal');
+                const message = document.getElementById('browserMessage');
+                
+                message.innerHTML = `
+                    <h3><i class="fas fa-exclamation-triangle mr-2 text-yellow-400"></i>Modo de Compatibilidad</h3>
+                    <p>Tu navegador ha bloqueado la ventana emergente. Usa una de estas opciones:</p>
+                    
+                    <div style="margin: 1.5rem 0;">
+                        <button onclick="advancedBrowser.directOpen('${url}')" class="browser-btn primary" style="margin: 0.5rem; padding: 1rem 2rem;">
+                            <i class="fas fa-external-link-alt mr-2"></i>Abrir Directamente
+                        </button>
+                        <button onclick="advancedBrowser.copyAndNotify('${url}')" class="browser-btn" style="margin: 0.5rem; padding: 1rem 2rem;">
+                            <i class="fas fa-copy mr-2"></i>Copiar URL
+                        </button>
+                    </div>
+                    
+                    <div style="background: rgba(255,255,255,0.1); padding: 1rem; border-radius: 10px; margin: 1rem 0;">
+                        <strong>URL:</strong><br>
+                        <code style="word-break: break-all; color: #10b981;">${url}</code>
+                    </div>
+                    
+                    <p><small><i class="fas fa-info-circle mr-1"></i>Para mejor experiencia, permite las ventanas emergentes en tu navegador</small></p>
+                `;
+                
+                modal.classList.add('show');
+            }
+
+            directOpen(url) {
+                window.open(url, '_blank');
+                showNotification('✅ Redirigiendo al sitio web...', 'success');
+                this.closeBrowser();
+            }
+
+            async copyAndNotify(url) {
+                try {
+                    await navigator.clipboard.writeText(url);
+                    showNotification('📋 URL copiada al portapapeles', 'success');
+                } catch (err) {
+                    console.error('Error copying URL:', err);
+                    showNotification('❌ Error al copiar URL', 'error');
+                }
+            }
+
+            updateBrowserDisplay(url, title) {
+                document.getElementById('urlDisplay').textContent = url;
+                document.getElementById('browserTitle').textContent = title;
+            }
+
+            addToHistory(url, title) {
+                const history = JSON.parse(localStorage.getItem('lunaria_browser_history') || '[]');
+                history.unshift({ url, title, timestamp: new Date().toISOString() });
+                
+                if (history.length > 50) {
+                    history.splice(50);
+                }
+                
+                localStorage.setItem('lunaria_browser_history', JSON.stringify(history));
+            }
+
+            addBookmark(url, title) {
+                const bookmark = { url, title, timestamp: new Date().toISOString() };
+                this.bookmarks.unshift(bookmark);
+                localStorage.setItem('lunaria_bookmarks', JSON.stringify(this.bookmarks));
+                this.renderBookmarks();
+                showNotification('⭐ Marcador agregado', 'success');
+            }
+
+            renderBookmarks() {
+                const container = document.getElementById('bookmarkList');
+                const customBookmarks = this.bookmarks.map(bookmark => 
+                    `<div class="bookmark-item" onclick="openAdvancedBrowser('${bookmark.url}')">
+                        <i class="fas fa-bookmark mr-1"></i> ${bookmark.title}
+                    </div>`
+                ).join('');
+                
+                const defaultBookmarks = container.innerHTML;
+                container.innerHTML = defaultBookmarks + customBookmarks;
+            }
+
+            closeBrowser() {
+                document.getElementById('browserModal').classList.remove('show');
+                this.currentUrl = '';
+            }
+
+            refreshCurrent() {
+                if (this.currentUrl) {
+                    const currentWindow = this.openWindows.get(this.currentUrl);
+                    if (currentWindow && !currentWindow.closed) {
+                        currentWindow.location.reload();
+                        showNotification('🔄 Página recargada', 'success');
+                    } else {
+                        this.openWindow(this.currentUrl);
+                    }
+                }
+            }
+        }
+
+        // Crypto Price Service
+        class CryptoPriceService {
+            constructor() {
+                this.cache = new Map();
+                this.cacheTimeout = 5 * 60 * 1000; // 5 minutes
+                this.isUpdating = false;
+            }
+
+            async getCryptoPrice(symbol) {
+                const cacheKey = symbol.toLowerCase();
+                const cached = this.cache.get(cacheKey);
+                
+                if (cached && Date.now() - cached.timestamp < this.cacheTimeout) {
+                    return cached.data;
+                }
+
+                try {
+                    const response = await fetch(`https://api.coingecko.com/api/v3/simple/price?ids=${this.getCoinId(symbol)}&vs_currencies=usd&include_24hr_change=true`);
+                    const data = await response.json();
+                    
+                    const coinId = this.getCoinId(symbol);
+                    if (data[coinId]) {
+                        const priceData = {
+                            price: data[coinId].usd,
+                            change24h: data[coinId].usd_24h_change || 0
+                        };
+                        
+                        this.cache.set(cacheKey, {
+                            data: priceData,
+                            timestamp: Date.now()
+                        });
+                        
+                        return priceData;
+                    }
+                } catch (error) {
+                    console.error(`Error fetching price for ${symbol}:`, error);
+                }
+                
+                return { price: 0, change24h: 0 };
+            }
+
+            getCoinId(symbol) {
+                const coinMap = {
+                    'BTC': 'bitcoin',
+                    'ETH': 'ethereum',
+                    'USDT': 'tether',
+                    'BNB': 'binancecoin',
+                    'ADA': 'cardano',
+                    'SOL': 'solana',
+                    'XRP': 'ripple',
+                    'DOT': 'polkadot',
+                    'DOGE': 'dogecoin',
+                    'LTC': 'litecoin',
+                    'MATIC': 'polygon',
+                    'AVAX': 'avalanche-2',
+                    'LINK': 'chainlink',
+                    'UNI': 'uniswap',
+                    'ATOM': 'cosmos',
+                    'TRX': 'tron',
+                    'FTM': 'fantom',
+                    'ALGO': 'algorand',
+                    'VET': 'vechain',
+                    'ICP': 'internet-computer'
+                };
+                
+                return coinMap[symbol.toUpperCase()] || symbol.toLowerCase();
+            }
+
+            async updateAllPrices(cryptoList) {
+                if (this.isUpdating) return;
+                
+                this.isUpdating = true;
+                const promises = cryptoList.map(crypto => this.getCryptoPrice(crypto.symbol));
+                
+                try {
+                    await Promise.all(promises);
+                } catch (error) {
+                    console.error('Error updating prices:', error);
+                } finally {
+                    this.isUpdating = false;
+                }
+            }
+        }
+
+        // Crypto Management System
+        class CryptoManager {
+            constructor() {
+                this.defaultCryptos = [
+                    { symbol: 'BTC', name: 'Bitcoin', active: true },
+                    { symbol: 'ETH', name: 'Ethereum', active: true },
+                    { symbol: 'USDT', name: 'Tether', active: true },
+                    { symbol: 'BNB', name: 'Binance Coin', active: true },
+                    { symbol: 'ADA', name: 'Cardano', active: true },
+                    { symbol: 'SOL', name: 'Solana', active: true },
+                    { symbol: 'XRP', name: 'Ripple', active: true },
+                    { symbol: 'DOT', name: 'Polkadot', active: true },
+                    { symbol: 'DOGE', name: 'Dogecoin', active: true },
+                    { symbol: 'LTC', name: 'Litecoin', active: true },
+                    { symbol: 'MATIC', name: 'Polygon', active: true },
+                    { symbol: 'AVAX', name: 'Avalanche', active: true },
+                    { symbol: 'LINK', name: 'Chainlink', active: true },
+                    { symbol: 'UNI', name: 'Uniswap', active: true },
+                    { symbol: 'ATOM', name: 'Cosmos', active: true },
+                    { symbol: 'TRX', name: 'TRON', active: false }
+                ];
+                this.cryptos = this.loadCryptos();
+            }
+
+            loadCryptos() {
+                const saved = localStorage.getItem('lunaria_cryptos');
+                if (saved) {
+                    return JSON.parse(saved);
+                }
+                return [...this.defaultCryptos];
+            }
+
+            saveCryptos() {
+                localStorage.setItem('lunaria_cryptos', JSON.stringify(this.cryptos));
+                this.updateCryptoSelects();
+            }
+
+            getActiveCryptos() {
+                return this.cryptos.filter(crypto => crypto.active);
+            }
+
+            addCrypto(symbol, name) {
+                symbol = symbol.toUpperCase().trim();
+                name = name.trim();
+
+                if (!symbol || !name) {
+                    throw new Error('Símbolo y nombre son requeridos');
+                }
+
+                if (this.cryptos.find(c => c.symbol === symbol)) {
+                    throw new Error('Esta criptomoneda ya existe');
+                }
+
+                this.cryptos.push({
+                    symbol,
+                    name,
+                    active: true
+                });
+
+                this.saveCryptos();
+            }
+
+            toggleCrypto(symbol, active) {
+                const crypto = this.cryptos.find(c => c.symbol === symbol);
+                if (crypto) {
+                    crypto.active = active;
+                    this.saveCryptos();
+                }
+            }
+
+            removeCrypto(symbol) {
+                const index = this.cryptos.findIndex(c => c.symbol === symbol);
+                if (index > -1) {
+                    this.cryptos.splice(index, 1);
+                    this.saveCryptos();
+                }
+            }
+
+            updateCryptoSelects() {
+                const select = document.getElementById('primaryCrypto');
+                const activeCryptos = this.getActiveCryptos();
+                
+                const currentValue = select.value;
+                select.innerHTML = '<option value="">Seleccionar criptomoneda</option>';
+                
+                activeCryptos.forEach(crypto => {
+                    const option = document.createElement('option');
+                    option.value = crypto.symbol;
+                    option.textContent = `${crypto.name} (${crypto.symbol})`;
+                    select.appendChild(option);
+                });
+
+                if (currentValue && activeCryptos.find(c => c.symbol === currentValue)) {
+                    select.value = currentValue;
+                }
+            }
+
+            renderCryptoList() {
+                const container = document.getElementById('cryptoList');
+                container.innerHTML = '';
+
+                this.cryptos.forEach(crypto => {
+                    const item = document.createElement('div');
+                    item.className = 'crypto-item';
+                    item.innerHTML = `
+                        <div class="crypto-info">
+                            <div class="crypto-icon">${crypto.symbol.charAt(0)}</div>
+                            <div>
+                                <div class="font-semibold">${crypto.name}</div>
+                                <div class="text-sm text-gray-400">${crypto.symbol}</div>
+                            </div>
+                        </div>
+                        <div class="crypto-actions">
+                            <button class="toggle-btn ${crypto.active ? 'active' : 'inactive'}" 
+                                    onclick="cryptoManager.toggleCrypto('${crypto.symbol}', ${!crypto.active})">
+                                ${crypto.active ? 'Activo' : 'Inactivo'}
+                            </button>
+                            ${!this.isDefaultCrypto(crypto.symbol) ? `
+                                <button class="action-btn" onclick="cryptoManager.removeCrypto('${crypto.symbol}')" 
+                                        title="Eliminar">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            ` : ''}
+                        </div>
+                    `;
+                    container.appendChild(item);
+                });
+            }
+
+            isDefaultCrypto(symbol) {
+                return this.defaultCryptos.some(crypto => crypto.symbol === symbol);
+            }
+        }
+
+        // Initialize services
+        const advancedBrowser = new AdvancedBrowser();
+        const priceService = new CryptoPriceService();
+        const cryptoManager = new CryptoManager();
+
+        // Categories
+        const categories = [
+            'Minería', 'Staking', 'Trading', 'Hodling', 'Yield Farming', 'Lending',
+            'Masternodes', 'Airdrops', 'DeFi', 'NFTs', 'Arbitraje', 'Inversión en ICO/IDO',
+            'Liquidity Pools', 'Crypto Savings', 'Play-to-Earn', 'Governance Tokens',
+            'Stablecoin Farming', 'Cross-Chain Bridging', 'Estafas', 'Ponzi',
+            'Rug Pulls', 'Phishing', 'Pump and Dump', 'Fake Tokens', 'Scam Exchanges',
+            'Pyramid Schemes', 'Fake Wallets', 'Malware Mining', 'Impersonation Scams', 'Exit Scams'
+        ];
+
+        // Global variables
+        let investments = [];
+        let currentFilter = 'all';
+        let editingId = null;
+        let selectedColor = '#007BFF';
+        let currentCurrency = 'crypto';
+        let selectedCrypto = '';
+
+        // Database operations
+        class InvestmentDB {
+            constructor() {
+                this.dbName = 'LunariaInvestmentsPro';
+                this.version = 3;
+                this.db = null;
+            }
+
+            async init() {
+                return new Promise((resolve, reject) => {
+                    const request = indexedDB.open(this.dbName, this.version);
+                    
+                    request.onerror = () => reject(request.error);
+                    request.onsuccess = () => {
+                        this.db = request.result;
+                        resolve();
+                    };
+                    
+                    request.onupgradeneeded = (event) => {
+                        const db = event.target.result;
+                        if (!db.objectStoreNames.contains('investments')) {
+                            const store = db.createObjectStore('investments', { keyPath: 'id' });
+                            store.createIndex('category', 'category', { unique: false });
+                            store.createIndex('date', 'date', { unique: false });
+                            store.createIndex('favorite', 'favorite', { unique: false });
+                            store.createIndex('crypto', 'primaryCrypto', { unique: false });
+                        }
+                    };
+                });
+            }
+
+            async getAll() {
+                return new Promise((resolve, reject) => {
+                    const transaction = this.db.transaction(['investments'], 'readonly');
+                    const store = transaction.objectStore('investments');
+                    const request = store.getAll();
+                    
+                    request.onsuccess = () => resolve(request.result);
+                    request.onerror = () => reject(request.error);
+                });
+            }
+
+            async save(investment) {
+                return new Promise((resolve, reject) => {
+                    const transaction = this.db.transaction(['investments'], 'readwrite');
+                    const store = transaction.objectStore('investments');
+                    const request = store.put(investment);
+                    
+                    request.onsuccess = () => resolve();
+                    request.onerror = () => reject(request.error);
+                });
+            }
+
+            async delete(id) {
+                return new Promise((resolve, reject) => {
+                    const transaction = this.db.transaction(['investments'], 'readwrite');
+                    const store = transaction.objectStore('investments');
+                    const request = store.delete(id);
+                    
+                    request.onsuccess = () => resolve();
+                    request.onerror = () => reject(request.error);
+                });
+            }
+        }
+
+        const db = new InvestmentDB();
+
+        // Utility functions
+        function generateId() {
+            return Date.now().toString(36) + Math.random().toString(36).substr(2);
+        }
+
+        function formatCurrency(amount, currency = 'USD', decimals = 2) {
+            if (currency === 'USD' || currency === 'USDT') {
+                return new Intl.NumberFormat('es-US', {
+                    style: 'currency',
+                    currency: 'USD',
+                    minimumFractionDigits: decimals,
+                    maximumFractionDigits: decimals
+                }).format(amount);
+            } else {
+                return `${parseFloat(amount).toFixed(8)} ${currency}`;
+            }
+        }
+
+        function formatDate(dateString) {
+            const date = new Date(dateString);
+            return date.toLocaleDateString('es-ES');
+        }
+
+        function calculateRecovery(investment, dailyProfit) {
+            if (!dailyProfit || dailyProfit <= 0) return 'Indefinido';
+            return Math.round(investment / dailyProfit);
+        }
+
+        function validateUrl(url) {
+            try {
+                new URL(url);
+                return true;
+            } catch {
+                return false;
+            }
+        }
+
+        function sanitizeHtml(str) {
+            const div = document.createElement('div');
+            div.textContent = str;
+            return div.innerHTML;
+        }
+
+        function showNotification(message, type = 'success') {
+            const notification = document.createElement('div');
+            notification.className = 'notification';
+            if (type === 'error') {
+                notification.style.background = 'var(--error-color)';
+            }
+            notification.innerHTML = `
+                <div class="flex items-center">
+                    <i class="fas fa-${type === 'success' ? 'check' : 'exclamation-triangle'} mr-2"></i>
+                    ${message}
+                </div>
+            `;
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.remove();
+            }, 3000);
+        }
+
+        async function copyToClipboard(text) {
+            try {
+                await navigator.clipboard.writeText(text);
+                showNotification('URL copiada al portapapeles');
+            } catch (err) {
+                console.error('Error copying to clipboard:', err);
+                showNotification('Error al copiar URL', 'error');
+            }
+        }
+
+        function getPriceChangeIndicator(change24h) {
+            if (change24h > 0) {
+                return `<span class="price-indicator price-up">
+                    <i class="fas fa-arrow-up mr-1"></i>+${change24h.toFixed(2)}%
+                </span>`;
+            } else if (change24h < 0) {
+                return `<span class="price-indicator price-down">
+                    <i class="fas fa-arrow-down mr-1"></i>${change24h.toFixed(2)}%
+                </span>`;
+            } else {
+                return `<span class="price-indicator price-neutral">
+                    <i class="fas fa-minus mr-1"></i>0.00%
+                </span>`;
+            }
+        }
+
+        // Enhanced browser functions
+        function openAdvancedBrowser(url, title = 'Navegador Web') {
+            if (!url) {
+                showNotification('❌ URL no válida', 'error');
+                return;
+            }
+            
+            if (!url.startsWith('http://') && !url.startsWith('https://')) {
+                url = 'https://' + url;
+            }
+            
+            const modal = document.getElementById('browserModal');
+            modal.classList.add('show');
+            
+            advancedBrowser.updateBrowserDisplay(url, title);
+            
+            setTimeout(() => {
+                advancedBrowser.openWindow(url, title);
+            }, 500);
+        }
+
+        function closeBrowser() {
+            advancedBrowser.closeBrowser();
+        }
+
+        // Initialize app
+        async function initApp() {
+            try {
+                await db.init();
+                investments = await db.getAll();
+                
+                // Migrate existing data to add new fields
+                let needsUpdate = false;
+                investments = investments.map(inv => {
+                    if (!inv.hasOwnProperty('favorite')) {
+                        inv.favorite = false;
+                        inv.clickCount = 0;
+                        inv.lastOpened = null;
+                        inv.color = '#007BFF';
+                        inv.status = 'active';
+                        needsUpdate = true;
+                    }
+                    
+                    if (!inv.hasOwnProperty('primaryCrypto')) {
+                        inv.primaryCrypto = 'BTC';
+                        inv.currencyMode = 'usdt';
+                        inv.priceData = { price: 0, change24h: 0 };
+                        needsUpdate = true;
+                    }
+                    return inv;
+                });
+
+                if (needsUpdate) {
+                    for (const investment of investments) {
+                        await db.save(investment);
+                    }
+                }
+                
+                document.getElementById('investmentDate').value = new Date().toISOString().split('T')[0];
+                
+                initCategories();
+                cryptoManager.updateCryptoSelects();
+                updateStatistics();
+                renderInvestments();
+                setupEventListeners();
+                advancedBrowser.renderBookmarks();
+                
+                // Update prices periodically
+                updateAllPrices();
+                setInterval(updateAllPrices, 5 * 60 * 1000); // Every 5 minutes
+                
+                if (investments.length === 0) {
+                    setTimeout(() => {
+                        showNotification('¡Bienvenido a Lunaria Inversión Pro! 🚀 Agrega tu primera inversión crypto para comenzar.');
+                    }, 1000);
+                }
+                
+                console.log('App initialized successfully');
+            } catch (error) {
+                console.error('Error initializing app:', error);
+                investments = JSON.parse(localStorage.getItem('lunaria_investments_pro') || '[]');
+                updateStatistics();
+                renderInvestments();
+                setupEventListeners();
+            }
+        }
+
+        async function updateAllPrices() {
+            const activeCryptos = cryptoManager.getActiveCryptos();
+            await priceService.updateAllPrices(activeCryptos);
+            
+            // Update investment price data
+            for (const investment of investments) {
+                if (investment.primaryCrypto) {
+                    investment.priceData = await priceService.getCryptoPrice(investment.primaryCrypto);
+                }
+            }
+            
+            renderInvestments();
+            updateStatistics();
+        }
+
+        function initCategories() {
+            const categorySelect = document.getElementById('category');
+            categories.forEach(category => {
+                const option = document.createElement('option');
+                option.value = category;
+                option.textContent = category;
+                categorySelect.appendChild(option);
+            });
+        }
+
+        function setupEventListeners() {
+            // FaucetPay button
+            document.getElementById('faucetpayBtn').addEventListener('click', () => {
+                openAdvancedBrowser('https://faucetpay.io/', 'FaucetPay - Monedero de Criptomonedas');
+            });
+
+            // Settings button
+            document.getElementById('settingsBtn').addEventListener('click', () => {
+                cryptoManager.renderCryptoList();
+                document.getElementById('cryptoSettingsModal').classList.add('show');
+            });
+
+            // Enhanced browser controls
+            document.getElementById('closeBrowserBtn').addEventListener('click', closeBrowser);
+            document.getElementById('refreshBrowserBtn').addEventListener('click', () => {
+                advancedBrowser.refreshCurrent();
+            });
+            document.getElementById('homeBrowserBtn').addEventListener('click', () => {
+                openAdvancedBrowser('https://faucetpay.io/', 'FaucetPay - Inicio');
+            });
+            document.getElementById('copyUrlBrowserBtn').addEventListener('click', () => {
+                const url = document.getElementById('urlDisplay').textContent;
+                if (url && url !== 'Listo para navegar') {
+                    copyToClipboard(url);
+                } else {
+                    showNotification('❌ No hay URL para copiar', 'error');
+                }
+            });
+            document.getElementById('openExternalBtn').addEventListener('click', () => {
+                const url = advancedBrowser.currentUrl || 'https://faucetpay.io/';
+                advancedBrowser.openWindow(url);
+            });
+            document.getElementById('bookmarkBtn').addEventListener('click', () => {
+                if (advancedBrowser.currentUrl) {
+                    const title = document.getElementById('browserTitle').textContent;
+                    advancedBrowser.addBookmark(advancedBrowser.currentUrl, title);
+                } else {
+                    showNotification('❌ No hay página para agregar a marcadores', 'error');
+                }
+            });
+
+            // Modal controls
+            document.getElementById('addBtn').addEventListener('click', () => openModal());
+            document.getElementById('cancelBtn').addEventListener('click', () => closeModal());
+            document.getElementById('closeDetailsBtn').addEventListener('click', () => closeDetailsModal());
+            document.getElementById('closeQrBtn').addEventListener('click', () => closeQrModal());
+            document.getElementById('closeStatsBtn').addEventListener('click', () => closeStatsModal());
+            document.getElementById('closeCryptoSettingsBtn').addEventListener('click', () => closeCryptoSettingsModal());
+            
+            // Form submission
+            document.getElementById('investmentForm').addEventListener('submit', handleFormSubmit);
+            
+            // Category filtering
+            document.getElementById('categoryFilter').addEventListener('click', handleCategoryFilter);
+            
+            // Statistics
+            document.getElementById('statsBtn').addEventListener('click', () => openStatsModal());
+            
+            // Export/Import
+            document.getElementById('exportBtn').addEventListener('click', exportData);
+            document.getElementById('importBtn').addEventListener('click', () => document.getElementById('importFile').click());
+            document.getElementById('importFile').addEventListener('change', importData);
+            
+            // Color picker
+            document.getElementById('colorPicker').addEventListener('click', handleColorSelection);
+            
+            // Currency toggle
+            document.getElementById('currencyToggle').addEventListener('click', handleCurrencyToggle);
+            
+            // Primary crypto selection
+            document.getElementById('primaryCrypto').addEventListener('change', handlePrimaryCryptoChange);
+            
+            // Crypto management
+            document.getElementById('addCryptoBtn').addEventListener('click', addNewCrypto);
+            
+            // Close modal on backdrop click
+            document.getElementById('investmentModal').addEventListener('click', (e) => {
+                if (e.target.id === 'investmentModal') closeModal();
+            });
+            
+            document.getElementById('detailsModal').addEventListener('click', (e) => {
+                if (e.target.id === 'detailsModal') closeDetailsModal();
+            });
+
+            document.getElementById('qrModal').addEventListener('click', (e) => {
+                if (e.target.id === 'qrModal') closeQrModal();
+            });
+
+            document.getElementById('statisticsModal').addEventListener('click', (e) => {
+                if (e.target.id === 'statisticsModal') closeStatsModal();
+            });
+
+            document.getElementById('cryptoSettingsModal').addEventListener('click', (e) => {
+                if (e.target.id === 'cryptoSettingsModal') closeCryptoSettingsModal();
+            });
+
+            // Close browser modal on escape key
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape') {
+                    const browserModal = document.getElementById('browserModal');
+                    if (browserModal.classList.contains('show')) {
+                        closeBrowser();
+                    }
+                }
+            });
+        }
+
+        function handleCurrencyToggle(e) {
+            if (!e.target.classList.contains('currency-option')) return;
+            
+            const newCurrency = e.target.dataset.currency;
+            currentCurrency = newCurrency;
+            
+            document.querySelectorAll('.currency-option').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            e.target.classList.add('active');
+            
+            updateFormLabels();
+        }
+
+        function handlePrimaryCryptoChange(e) {
+            selectedCrypto = e.target.value;
+            updateFormLabels();
+        }
+
+        function updateFormLabels() {
+            const cryptoName = selectedCrypto || 'Crypto';
+            const currencyLabel = currentCurrency === 'crypto' ? cryptoName : 'USDT';
+            
+            document.getElementById('cryptoCurrencyLabel').textContent = cryptoName;
+            document.getElementById('investmentAmountLabel').textContent = `Inversión (${currencyLabel}) *`;
+            document.getElementById('dailyProfitLabel').textContent = `Ganancia Diaria (${currencyLabel})`;
+        }
+
+        function addNewCrypto() {
+            const symbol = document.getElementById('newCryptoSymbol').value;
+            const name = document.getElementById('newCryptoName').value;
+            
+            try {
+                cryptoManager.addCrypto(symbol, name);
+                document.getElementById('newCryptoSymbol').value = '';
+                document.getElementById('newCryptoName').value = '';
+                cryptoManager.renderCryptoList();
+                showNotification(`✅ Criptomoneda ${symbol} agregada correctamente`);
+            } catch (error) {
+                showNotification(`❌ ${error.message}`, 'error');
+            }
+        }
+
+        function handleColorSelection(e) {
+            if (!e.target.classList.contains('color-option')) return;
+            
+            document.querySelectorAll('.color-option').forEach(option => {
+                option.classList.remove('selected');
+            });
+            
+            e.target.classList.add('selected');
+            selectedColor = e.target.dataset.color;
+        }
+
+        function openModal(investment = null) {
+            const modal = document.getElementById('investmentModal');
+            const form = document.getElementById('investmentForm');
+            const title = document.getElementById('modalTitleForm');
+            
+            if (investment) {
+                title.textContent = 'Editar Inversión Crypto';
+                editingId = investment.id;
+                populateForm(investment);
+            } else {
+                title.textContent = 'Nueva Inversión Crypto';
+                editingId = null;
+                form.reset();
+                document.getElementById('investmentDate').value = new Date().toISOString().split('T')[0];
+                selectedColor = '#007BFF';
+                currentCurrency = 'crypto';
+                selectedCrypto = '';
+                updateColorSelection();
+                updateCurrencyToggle();
+                updateFormLabels();
+            }
+            
+            modal.classList.add('show');
+            clearErrors();
+        }
+
+        function updateColorSelection() {
+            document.querySelectorAll('.color-option').forEach(option => {
+                option.classList.remove('selected');
+                if (option.dataset.color === selectedColor) {
+                    option.classList.add('selected');
+                }
+            });
+        }
+
+        function updateCurrencyToggle() {
+            document.querySelectorAll('.currency-option').forEach(btn => {
+                btn.classList.remove('active');
+                if (btn.dataset.currency === currentCurrency) {
+                    btn.classList.add('active');
+                }
+            });
+        }
+
+        function closeModal() {
+            document.getElementById('investmentModal').classList.remove('show');
+            editingId = null;
+            clearErrors();
+        }
+
+        function closeDetailsModal() {
+            document.getElementById('detailsModal').classList.remove('show');
+        }
+
+        function closeQrModal() {
+            document.getElementById('qrModal').classList.remove('show');
+        }
+
+        function closeStatsModal() {
+            document.getElementById('statisticsModal').classList.remove('show');
+        }
+
+        function closeCryptoSettingsModal() {
+            document.getElementById('cryptoSettingsModal').classList.remove('show');
+        }
+
+        function populateForm(investment) {
+            document.getElementById('platformName').value = investment.platformName;
+            document.getElementById('platformLink').value = investment.platformLink || '';
+            document.getElementById('investmentAmount').value = investment.investmentAmount;
+            document.getElementById('dailyProfit').value = investment.dailyProfit || '';
+            document.getElementById('investmentDate').value = investment.date;
+            document.getElementById('category').value = investment.category;
+            document.getElementById('status').value = investment.status || 'active';
+            document.getElementById('primaryCrypto').value = investment.primaryCrypto || '';
+            
+            selectedColor = investment.color || '#007BFF';
+            currentCurrency = investment.currencyMode || 'crypto';
+            selectedCrypto = investment.primaryCrypto || '';
+            
+            updateColorSelection();
+            updateCurrencyToggle();
+            updateFormLabels();
+        }
+
+        function clearErrors() {
+            document.querySelectorAll('.error').forEach(el => el.textContent = '');
+        }
+
+        function showError(fieldId, message) {
+            document.getElementById(fieldId + 'Error').textContent = message;
+        }
+
+        function validateForm() {
+            clearErrors();
+            let isValid = true;
+            
+            const platformName = document.getElementById('platformName').value.trim();
+            const platformLink = document.getElementById('platformLink').value.trim();
+            const investmentAmount = parseFloat(document.getElementById('investmentAmount').value);
+            const dailyProfit = document.getElementById('dailyProfit').value.trim();
+            const category = document.getElementById('category').value;
+            const primaryCrypto = document.getElementById('primaryCrypto').value;
+            
+            if (!platformName) {
+                showError('platformName', 'El nombre de la plataforma es obligatorio');
+                isValid = false;
+            }
+            
+            if (platformLink && !validateUrl(platformLink)) {
+                showError('platformLink', 'El enlace debe ser una URL válida');
+                isValid = false;
+            }
+            
+            if (!investmentAmount || investmentAmount <= 0) {
+                showError('investmentAmount', 'La inversión debe ser mayor a 0');
+                isValid = false;
+            }
+            
+            if (dailyProfit && parseFloat(dailyProfit) < 0) {
+                showError('dailyProfit', 'La ganancia diaria no puede ser negativa');
+                isValid = false;
+            }
+            
+            if (!category) {
+                showError('category', 'Selecciona una categoría');
+                isValid = false;
+            }
+            
+            if (!primaryCrypto) {
+                showError('primaryCrypto', 'Selecciona una criptomoneda');
+                isValid = false;
+            }
+            
+            return isValid;
+        }
+
+        async function handleFormSubmit(e) {
+            e.preventDefault();
+            
+            if (!validateForm()) return;
+            
+            const saveBtn = document.getElementById('saveBtn');
+            const saveText = document.getElementById('saveText');
+            
+            saveText.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Guardando...';
+            saveBtn.disabled = true;
+            
+            try {
+                const primaryCrypto = document.getElementById('primaryCrypto').value;
+                const priceData = await priceService.getCryptoPrice(primaryCrypto);
+                
+                const investment = {
+                    id: editingId || generateId(),
+                    platformName: document.getElementById('platformName').value.trim(),
+                    platformLink: document.getElementById('platformLink').value.trim(),
+                    investmentAmount: parseFloat(document.getElementById('investmentAmount').value),
+                    dailyProfit: parseFloat(document.getElementById('dailyProfit').value) || 0,
+                    date: document.getElementById('investmentDate').value,
+                    primaryCrypto: primaryCrypto,
+                    currencyMode: currentCurrency,
+                    category: document.getElementById('category').value,
+                    status: document.getElementById('status').value,
+                    color: selectedColor,
+                    priceData: priceData,
+                    favorite: false,
+                    clickCount: 0,
+                    lastOpened: null,
+                    history: []
+                };
+                
+                if (editingId) {
+                    const existingInvestment = investments.find(inv => inv.id === editingId);
+                    if (existingInvestment) {
+                        investment.history = existingInvestment.history || [];
+                        investment.history.push({
+                            investmentAmount: existingInvestment.investmentAmount,
+                            dailyProfit: existingInvestment.dailyProfit,
+                            dateModified: new Date().toISOString().split('T')[0]
+                        });
+                        investment.favorite = existingInvestment.favorite;
+                        investment.clickCount = existingInvestment.clickCount;
+                        investment.lastOpened = existingInvestment.lastOpened;
+                    }
+                    
+                    const index = investments.findIndex(inv => inv.id === editingId);
+                    investments[index] = investment;
+                } else {
+                    investments.push(investment);
+                }
+                
+                await db.save(investment);
+                localStorage.setItem('lunaria_investments_pro', JSON.stringify(investments));
+                
+                updateStatistics();
+                renderInvestments();
+                closeModal();
+                
+                showNotification(editingId ? 'Inversión actualizada correctamente' : 'Nueva inversión agregada correctamente');
+                
+            } catch (error) {
+                console.error('Error saving investment:', error);
+                showNotification('Error al guardar la inversión', 'error');
+            } finally {
+                saveText.textContent = 'Guardar';
+                saveBtn.disabled = false;
+            }
+        }
+
+        function handleCategoryFilter(e) {
+            if (!e.target.classList.contains('category-btn')) return;
+            
+            document.querySelectorAll('.category-btn').forEach(btn => btn.classList.remove('active'));
+            e.target.classList.add('active');
+            
+            currentFilter = e.target.dataset.category;
+            renderInvestments();
+        }
+
+        async function updateStatistics() {
+            const totalInvestments = investments.length;
+            let totalAmountUSDT = 0;
+            let totalCurrentValueUSDT = 0;
+            const totalFavorites = investments.filter(inv => inv.favorite).length;
+            
+            for (const investment of investments) {
+                if (investment.currencyMode === 'usdt') {
+                    totalAmountUSDT += investment.investmentAmount;
+                } else if (investment.primaryCrypto && investment.priceData) {
+                    totalAmountUSDT += investment.investmentAmount * investment.priceData.price;
+                }
+                
+                const currentValue = investment.currencyMode === 'usdt' ? 
+                    investment.investmentAmount + (investment.dailyProfit * getDaysSinceInvestment(investment.date)) :
+                    (investment.investmentAmount + (investment.dailyProfit * getDaysSinceInvestment(investment.date))) * (investment.priceData?.price || 0);
+                
+                totalCurrentValueUSDT += currentValue;
+            }
+            
+            const totalProfitPercent = totalAmountUSDT > 0 ? ((totalCurrentValueUSDT - totalAmountUSDT) / totalAmountUSDT * 100) : 0;
+            
+            document.getElementById('totalInvestments').textContent = totalInvestments;
+            document.getElementById('totalAmount').textContent = formatCurrency(totalAmountUSDT, 'USD');
+            document.getElementById('totalFavorites').textContent = totalFavorites;
+            document.getElementById('totalProfitPercent').textContent = totalProfitPercent.toFixed(2) + '%';
+        }
+
+        function getDaysSinceInvestment(dateString) {
+            const investmentDate = new Date(dateString);
+            const currentDate = new Date();
+            const timeDiff = currentDate.getTime() - investmentDate.getTime();
+            return Math.floor(timeDiff / (1000 * 3600 * 24));
+        }
+
+        function renderInvestments() {
+            const grid = document.getElementById('investmentGrid');
+            const emptyState = document.getElementById('emptyState');
+            
+            let filteredInvestments = [...investments];
+            
+            switch (currentFilter) {
+                case 'favorites':
+                    filteredInvestments = investments.filter(inv => inv.favorite);
+                    break;
+                case 'most-clicked':
+                    filteredInvestments = investments
+                        .filter(inv => (inv.clickCount || 0) > 0)
+                        .sort((a, b) => (b.clickCount || 0) - (a.clickCount || 0));
+                    break;
+                case 'recent':
+                    filteredInvestments = investments
+                        .sort((a, b) => new Date(b.date) - new Date(a.date))
+                        .slice(0, 10);
+                    break;
+                default:
+                    if (currentFilter !== 'all') {
+                        const filterCategory = categories.find(cat => 
+                            cat.toLowerCase().replace(/\s+/g, '-') === currentFilter
+                        );
+                        if (filterCategory) {
+                            filteredInvestments = investments.filter(inv => inv.category === filterCategory);
+                        }
+                    }
+            }
+            
+            if (filteredInvestments.length === 0) {
+                grid.innerHTML = '';
+                emptyState.style.display = 'block';
+                return;
+            }
+            
+            emptyState.style.display = 'none';
+            
+            if (currentFilter !== 'most-clicked' && currentFilter !== 'recent') {
+                filteredInvestments.sort((a, b) => new Date(b.date) - new Date(a.date));
+            }
+            
+            grid.innerHTML = filteredInvestments.map(investment => createInvestmentCard(investment)).join('');
+        }
+
+        function createInvestmentCard(investment) {
+            const primaryCrypto = investment.primaryCrypto || 'BTC';
+            const priceData = investment.priceData || { price: 0, change24h: 0 };
+            const currencyMode = investment.currencyMode || 'usdt';
+            
+            const investmentDisplay = currencyMode === 'crypto' ? 
+                formatCurrency(investment.investmentAmount, primaryCrypto, 8) :
+                formatCurrency(investment.investmentAmount, 'USDT');
+            
+            const dailyProfitDisplay = investment.dailyProfit > 0 ? 
+                (currencyMode === 'crypto' ? 
+                    formatCurrency(investment.dailyProfit, primaryCrypto, 8) :
+                    formatCurrency(investment.dailyProfit, 'USDT')) :
+                'No especificada';
+            
+            // Calculate USDT equivalent if in crypto mode
+            let usdtEquivalent = '';
+            if (currencyMode === 'crypto' && priceData.price > 0) {
+                const usdtValue = investment.investmentAmount * priceData.price;
+                const dailyProfitUSDT = investment.dailyProfit * priceData.price;
+                usdtEquivalent = `
+                    <p><strong>💵 Equivalente USDT:</strong> ${formatCurrency(usdtValue, 'USDT')} ${getPriceChangeIndicator(priceData.change24h)}</p>
+                    ${investment.dailyProfit > 0 ? `<p><strong>📈 Ganancia Diaria USDT:</strong> ${formatCurrency(dailyProfitUSDT, 'USDT')}</p>` : ''}
+                `;
+            }
+            
+            const recoveryTime = calculateRecovery(investment.investmentAmount, investment.dailyProfit);
+            const calculations = {
+                recovery: recoveryTime,
+                threeDays: investment.dailyProfit * 3,
+                weekly: investment.dailyProfit * 7,
+                monthly: investment.dailyProfit * 30
+            };
+            
+            const hasHistory = investment.history && investment.history.length > 0;
+            const historyNote = hasHistory ? 
+                `<small class="text-gray-300 text-xs block mt-1">📝 Actualizado desde ${formatCurrency(investment.history[investment.history.length - 1].investmentAmount)} el ${formatDate(investment.history[investment.history.length - 1].dateModified)}</small>` : '';
+            
+            const favoriteClass = investment.favorite ? 'favorite' : '';
+            const cardColor = investment.color || '#007BFF';
+            
+            const statusIcons = {
+                active: '🟢',
+                attention: '🟡',
+                inactive: '⚪'
+            };
+            
+            const lastOpenedText = investment.lastOpened ? 
+                `Última apertura: ${formatDate(investment.lastOpened)}` : 
+                'Nunca abierto';
+            
+            return `
+                <div class="investment-card fade-in ${favoriteClass}" style="border-color: ${cardColor};">
+                    <div class="flex justify-between items-start mb-4">
+                        <div class="flex-1">
+                            <div class="flex items-center mb-2">
+                                ${statusIcons[investment.status || 'active']}
+                                <div class="crypto-icon">${primaryCrypto.charAt(0)}</div>
+                                <h3 class="text-xl font-bold ml-2">${sanitizeHtml(investment.platformName)}</h3>
+                                ${investment.favorite ? '<i class="fas fa-star text-yellow-400 ml-2"></i>' : ''}
+                            </div>
+                            <div class="flex items-center space-x-4 text-xs text-gray-300">
+                                <span><i class="fas fa-coins mr-1"></i>${primaryCrypto}</span>
+                                <span><i class="fas fa-mouse-pointer mr-1"></i>${investment.clickCount || 0} clicks</span>
+                                <span><i class="fas fa-clock mr-1"></i>${lastOpenedText}</span>
+                            </div>
+                        </div>
+                        <div class="flex flex-wrap gap-1">
+                            <button class="action-btn ${investment.favorite ? 'favorite' : ''}" onclick="toggleFavorite('${investment.id}')" title="${investment.favorite ? 'Quitar de favoritos' : 'Agregar a favoritos'}">
+                                <i class="fas fa-star"></i>
+                            </button>
+                            <button class="action-btn" onclick="showDetails('${investment.id}')" title="Ver detalles">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                            <button class="action-btn" onclick="editInvestment('${investment.id}')" title="Editar">
+                                <i class="fas fa-pencil"></i>
+                            </button>
+                            <button class="action-btn" onclick="duplicateInvestment('${investment.id}')" title="Duplicar">
+                                <i class="fas fa-copy"></i>
+                            </button>
+                            ${investment.platformLink ? 
+                                `<button class="action-btn" onclick="copyUrl('${investment.platformLink}')" title="Copiar URL">
+                                    <i class="fas fa-link"></i>
+                                </button>
+                                <button class="action-btn" onclick="generateQR('${investment.platformLink}', '${sanitizeHtml(investment.platformName)}')" title="Generar QR">
+                                    <i class="fas fa-qrcode"></i>
+                                </button>
+                                <button class="action-btn" onclick="openLink('${investment.platformLink}', '${investment.id}')" title="Abrir página">
+                                    <i class="fas fa-external-link-alt"></i>
+                                </button>` : 
+                                `<button class="action-btn opacity-50 cursor-not-allowed" title="No hay enlace disponible">
+                                    <i class="fas fa-external-link-alt"></i>
+                                </button>`
+                            }
+                            <button class="action-btn" onclick="deleteInvestment('${investment.id}')" title="Eliminar">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="space-y-2 mb-4">
+                        <p><strong>💰 Inversión Inicial:</strong> ${investmentDisplay}</p>
+                        <p><strong>📈 Ganancia Diaria:</strong> ${dailyProfitDisplay}</p>
+                        ${usdtEquivalent}
+                        <p><strong>📂 Categoría:</strong> ${investment.category}</p>
+                        <p><strong>📅 Fecha:</strong> ${formatDate(investment.date)}</p>
+                        ${historyNote}
+                    </div>
+                    
+                    <div class="calculations">
+                        <h4 class="font-semibold mb-2 flex items-center">
+                            <i class="fas fa-calculator mr-2"></i>
+                            Cálculos Automáticos (${currencyMode === 'crypto' ? primaryCrypto : 'USDT'})
+                        </h4>
+                        <div class="text-sm space-y-1">
+                            <p>⏱️ Tiempo de recuperación: <strong>${calculations.recovery} días</strong></p>
+                            <p>🔥 Ganancia en 3 días: <strong>${formatCurrency(calculations.threeDays, currencyMode === 'crypto' ? primaryCrypto : 'USDT', currencyMode === 'crypto' ? 8 : 2)}</strong></p>
+                            <p>📊 Ganancia semanal: <strong>${formatCurrency(calculations.weekly, currencyMode === 'crypto' ? primaryCrypto : 'USDT', currencyMode === 'crypto' ? 8 : 2)}</strong></p>
+                            <p>💎 Ganancia mensual: <strong>${formatCurrency(calculations.monthly, currencyMode === 'crypto' ? primaryCrypto : 'USDT', currencyMode === 'crypto' ? 8 : 2)}</strong></p>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        async function toggleFavorite(id) {
+            const investment = investments.find(inv => inv.id === id);
+            if (!investment) return;
+            
+            investment.favorite = !investment.favorite;
+            
+            try {
+                await db.save(investment);
+                localStorage.setItem('lunaria_investments_pro', JSON.stringify(investments));
+                updateStatistics();
+                renderInvestments();
+                showNotification(investment.favorite ? 'Agregado a favoritos ⭐' : 'Removido de favoritos');
+            } catch (error) {
+                console.error('Error toggling favorite:', error);
+            }
+        }
+
+        async function duplicateInvestment(id) {
+            const investment = investments.find(inv => inv.id === id);
+            if (!investment) return;
+            
+            const duplicate = {
+                ...investment,
+                id: generateId(),
+                platformName: investment.platformName + ' (Copia)',
+                date: new Date().toISOString().split('T')[0],
+                favorite: false,
+                clickCount: 0,
+                lastOpened: null,
+                history: []
+            };
+            
+            try {
+                investments.push(duplicate);
+                await db.save(duplicate);
+                localStorage.setItem('lunaria_investments_pro', JSON.stringify(investments));
+                updateStatistics();
+                renderInvestments();
+                showNotification('Inversión duplicada correctamente 📋');
+            } catch (error) {
+                console.error('Error duplicating investment:', error);
+                showNotification('Error al duplicar la inversión', 'error');
+            }
+        }
+
+        async function copyUrl(url) {
+            await copyToClipboard(url);
+        }
+
+        function generateQR(url, title) {
+            const modal = document.getElementById('qrModal');
+            const canvas = document.getElementById('qrCanvas');
+            
+            QRCode.toCanvas(canvas, url, {
+                width: 256,
+                margin: 2,
+                color: {
+                    dark: '#000000',
+                    light: '#FFFFFF'
+                }
+            }, (error) => {
+                if (error) {
+                    console.error('Error generating QR:', error);
+                    showNotification('Error al generar código QR', 'error');
+                } else {
+                    modal.querySelector('h2').textContent = `Código QR - ${title}`;
+                    modal.classList.add('show');
+                }
+            });
+        }
+
+        function showDetails(id) {
+            const investment = investments.find(inv => inv.id === id);
+            if (!investment) return;
+            
+            const modal = document.getElementById('detailsModal');
+            const content = document.getElementById('detailsContent');
+            
+            const primaryCrypto = investment.primaryCrypto || 'BTC';
+            const priceData = investment.priceData || { price: 0, change24h: 0 };
+            const currencyMode = investment.currencyMode || 'usdt';
+            
+            const recoveryTime = calculateRecovery(investment.investmentAmount, investment.dailyProfit);
+            const calculations = {
+                recovery: recoveryTime,
+                threeDays: investment.dailyProfit * 3,
+                weekly: investment.dailyProfit * 7,
+                monthly: investment.dailyProfit * 30,
+                yearly: investment.dailyProfit * 365
+            };
+            
+            const historyHtml = investment.history && investment.history.length > 0 ? `
+                <div class="mb-6">
+                    <h4 class="font-semibold mb-3 flex items-center">
+                        <i class="fas fa-history mr-2"></i>
+                        Historial de Modificaciones
+                    </h4>
+                    ${investment.history.map(entry => `
+                        <div class="history-item">
+                            <p><strong>💰 Inversión anterior:</strong> ${formatCurrency(entry.investmentAmount)}</p>
+                            <p><strong>📈 Ganancia anterior:</strong> ${formatCurrency(entry.dailyProfit)}/día</p>
+                            <p><strong>📅 Fecha de modificación:</strong> ${formatDate(entry.dateModified)}</p>
+                        </div>
+                    `).join('')}
+                </div>
+            ` : '';
+            
+            const statusLabels = {
+                active: '🟢 Activo',
+                attention: '🟡 Requiere Atención', 
+                inactive: '⚪ Inactivo'
+            };
+
+            let priceInfo = '';
+            if (currencyMode === 'crypto' && priceData.price > 0) {
+                priceInfo = `
+                    <p><strong>💵 Precio Actual ${primaryCrypto}:</strong> ${formatCurrency(priceData.price, 'USD')} ${getPriceChangeIndicator(priceData.change24h)}</p>
+                    <p><strong>💰 Valor USDT Actual:</strong> ${formatCurrency(investment.investmentAmount * priceData.price, 'USD')}</p>
+                `;
+            }
+            
+            content.innerHTML = `
+                <div class="space-y-6">
+                    <div class="text-center">
+                        <h3 class="text-2xl font-bold mb-2" style="color: ${investment.color}">
+                            <div class="crypto-icon inline-block mr-2">${primaryCrypto.charAt(0)}</div>
+                            ${sanitizeHtml(investment.platformName)}
+                        </h3>
+                        <div class="flex justify-center items-center space-x-4 text-sm text-gray-300">
+                            <span>${statusLabels[investment.status || 'active']}</span>
+                            <span>💰 ${primaryCrypto}</span>
+                            ${investment.favorite ? '<span>⭐ Favorito</span>' : ''}
+                            <span>👆 ${investment.clickCount || 0} clicks</span>
+                        </div>
+                        ${investment.platformLink ? 
+                            `<p class="mt-2"><strong>🔗 Enlace:</strong> <a href="#" onclick="openAdvancedBrowser('${investment.platformLink}', '${sanitizeHtml(investment.platformName)}')" class="text-blue-400 hover:text-blue-300">${investment.platformLink}</a></p>` : 
+                            ''
+                        }
+                    </div>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="space-y-3">
+                            <h4 class="font-semibold text-lg border-b border-gray-600 pb-2">💼 Información de Inversión</h4>
+                            <p><strong>💰 Inversión Inicial:</strong> ${formatCurrency(investment.investmentAmount, currencyMode === 'crypto' ? primaryCrypto : 'USDT', currencyMode === 'crypto' ? 8 : 2)}</p>
+                            <p><strong>📈 Ganancia Diaria:</strong> ${investment.dailyProfit > 0 ? formatCurrency(investment.dailyProfit, currencyMode === 'crypto' ? primaryCrypto : 'USDT', currencyMode === 'crypto' ? 8 : 2) : 'No especificada'}</p>
+                            <p><strong>📅 Fecha de Inversión:</strong> ${formatDate(investment.date)}</p>
+                            <p><strong>🎨 Color:</strong> <span class="inline-block w-4 h-4 rounded-full ml-2" style="background: ${investment.color}"></span></p>
+                            ${priceInfo}
+                        </div>
+                        <div class="space-y-3">
+                            <h4 class="font-semibold text-lg border-b border-gray-600 pb-2">📊 Detalles Adicionales</h4>
+                            <p><strong>🪙 Criptomoneda Principal:</strong> ${primaryCrypto}</p>
+                            <p><strong>💱 Modo de Moneda:</strong> ${currencyMode === 'crypto' ? 'Criptomoneda' : 'USDT'}</p>
+                            <p><strong>📂 Categoría:</strong> ${investment.category}</p>
+                            <p><strong>👆 Total de clicks:</strong> ${investment.clickCount || 0}</p>
+                            <p><strong>🕒 Última apertura:</strong> ${investment.lastOpened ? formatDate(investment.lastOpened) : 'Nunca'}</p>
+                        </div>
+                    </div>
+                    
+                    ${historyHtml}
+                    
+                    <div class="calculations">
+                        <h4 class="font-semibold mb-4 flex items-center">
+                            <i class="fas fa-calculator mr-2"></i>
+                            Proyecciones Detalladas (${currencyMode === 'crypto' ? primaryCrypto : 'USDT'})
+                        </h4>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div class="space-y-2">
+                                <p><strong>⏱️ Tiempo de recuperación:</strong> ${calculations.recovery} días</p>
+                                <p class="text-xs text-gray-400">💡 Fórmula: Inversión Inicial ÷ Ganancia Diaria</p>
+                                
+                                <p><strong>🔥 Ganancia en 3 días:</strong> ${formatCurrency(calculations.threeDays, currencyMode === 'crypto' ? primaryCrypto : 'USDT', currencyMode === 'crypto' ? 8 : 2)}</p>
+                                <p class="text-xs text-gray-400">💡 Fórmula: Ganancia Diaria × 3</p>
+                                
+                                <p><strong>📊 Ganancia semanal:</strong> ${formatCurrency(calculations.weekly, currencyMode === 'crypto' ? primaryCrypto : 'USDT', currencyMode === 'crypto' ? 8 : 2)}</p>
+                                <p class="text-xs text-gray-400">💡 Fórmula: Ganancia Diaria × 7</p>
+                            </div>
+                            <div class="space-y-2">
+                                <p><strong>💎 Ganancia mensual:</strong> ${formatCurrency(calculations.monthly, currencyMode === 'crypto' ? primaryCrypto : 'USDT', currencyMode === 'crypto' ? 8 : 2)}</p>
+                                <p class="text-xs text-gray-400">💡 Fórmula: Ganancia Diaria × 30</p>
+                                
+                                <p><strong>🚀 Ganancia anual:</strong> ${formatCurrency(calculations.yearly, currencyMode === 'crypto' ? primaryCrypto : 'USDT', currencyMode === 'crypto' ? 8 : 2)}</p>
+                                <p class="text-xs text-gray-400">💡 Fórmula: Ganancia Diaria × 365</p>
+                                
+                                <p><strong>📈 ROI Anual:</strong> ${investment.dailyProfit > 0 ? ((calculations.yearly / investment.investmentAmount) * 100).toFixed(1) + '%' : 'N/A'}</p>
+                                <p class="text-xs text-gray-400">💡 Fórmula: (Ganancia Anual ÷ Inversión) × 100</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            modal.classList.add('show');
+        }
+
+        function editInvestment(id) {
+            const investment = investments.find(inv => inv.id === id);
+            if (investment) {
+                openModal(investment);
+            }
+        }
+
+        async function deleteInvestment(id) {
+            if (!confirm('¿Estás seguro de que deseas eliminar esta inversión? Esta acción no se puede deshacer.')) return;
+            
+            try {
+                await db.delete(id);
+                investments = investments.filter(inv => inv.id !== id);
+                localStorage.setItem('lunaria_investments_pro', JSON.stringify(investments));
+                updateStatistics();
+                renderInvestments();
+                showNotification('Inversión eliminada correctamente 🗑️');
+            } catch (error) {
+                console.error('Error deleting investment:', error);
+                showNotification('Error al eliminar la inversión', 'error');
+            }
+        }
+
+        async function openLink(url, investmentId) {
+            if (url) {
+                const investment = investments.find(inv => inv.id === investmentId);
+                if (investment) {
+                    investment.clickCount = (investment.clickCount || 0) + 1;
+                    investment.lastOpened = new Date().toISOString().split('T')[0];
+                    
+                    try {
+                        await db.save(investment);
+                        localStorage.setItem('lunaria_investments_pro', JSON.stringify(investments));
+                        updateStatistics();
+                        renderInvestments();
+                    } catch (error) {
+                        console.error('Error updating click stats:', error);
+                    }
+                }
+                
+                openAdvancedBrowser(url, investment ? investment.platformName : 'Sitio Web');
+            }
+        }
+
+        function openStatsModal() {
+            const modal = document.getElementById('statisticsModal');
+            modal.classList.add('show');
+            
+            setTimeout(() => {
+                generateInvestmentChart();
+                generateCategoryChart();
+            }, 100);
+        }
+
+        function generateInvestmentChart() {
+            const ctx = document.getElementById('investmentChart').getContext('2d');
+            
+            const monthlyData = {};
+            investments.forEach(inv => {
+                const month = new Date(inv.date).toLocaleDateString('es-ES', { year: 'numeric', month: 'short' });
+                const usdValue = inv.currencyMode === 'usdt' ? inv.investmentAmount : (inv.investmentAmount * (inv.priceData?.price || 0));
+                monthlyData[month] = (monthlyData[month] || 0) + usdValue;
+            });
+            
+            new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: Object.keys(monthlyData),
+                    datasets: [{
+                        label: 'Inversiones por Mes (USD)',
+                        data: Object.values(monthlyData),
+                        borderColor: '#007BFF',
+                        backgroundColor: 'rgba(0, 123, 255, 0.1)',
+                        fill: true,
+                        tension: 0.4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        title: {
+                            display: true,
+                            text: 'Evolución de Inversiones por Mes (USDT)',
+                            color: '#FFFFFF'
+                        },
+                        legend: {
+                            labels: {
+                                color: '#FFFFFF'
+                            }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                color: '#FFFFFF',
+                                callback: function(value) {
+                                    return '$' + value.toLocaleString();
+                                }
+                            },
+                            grid: {
+                                color: 'rgba(255, 255, 255, 0.1)'
+                            }
+                        },
+                        x: {
+                            ticks: {
+                                color: '#FFFFFF'
+                            },
+                            grid: {
+                                color: 'rgba(255, 255, 255, 0.1)'
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        function generateCategoryChart() {
+            const ctx = document.getElementById('categoryChart').getContext('2d');
+            
+            const categoryData = {};
+            investments.forEach(inv => {
+                categoryData[inv.category] = (categoryData[inv.category] || 0) + 1;
+            });
+            
+            const colors = [
+                '#007BFF', '#10b981', '#f59e0b', '#ef4444', '#8b5cf6',
+                '#f97316', '#06b6d4', '#84cc16', '#ec4899', '#6366f1'
+            ];
+            
+            new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: Object.keys(categoryData),
+                    datasets: [{
+                        data: Object.values(categoryData),
+                        backgroundColor: colors.slice(0, Object.keys(categoryData).length),
+                        borderWidth: 2,
+                        borderColor: '#001F3F'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        title: {
+                            display: true,
+                            text: 'Distribución por Categoría',
+                            color: '#FFFFFF'
+                        },
+                        legend: {
+                            position: 'bottom',
+                            labels: {
+                                color: '#FFFFFF',
+                                padding: 15,
+                                usePointStyle: true
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        function exportData() {
+            const dataToExport = {
+                investments: investments,
+                cryptos: cryptoManager.cryptos,
+                bookmarks: advancedBrowser.bookmarks,
+                exportDate: new Date().toISOString(),
+                version: '5.0',
+                appName: 'Lunaria Inversión Pro - Sistema Crypto Avanzado'
+            };
+            
+            const blob = new Blob([JSON.stringify(dataToExport, null, 2)], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `lunaria_crypto_advanced_${new Date().toISOString().split('T')[0]}.json`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+            
+            showNotification('Datos exportados correctamente 📄');
+        }
+
+        async function importData(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+            
+            try {
+                const text = await file.text();
+                const data = JSON.parse(text);
+                
+                if (!data.investments || !Array.isArray(data.investments)) {
+                    throw new Error('Formato de archivo inválido');
+                }
+                
+                let imported = 0;
+                let errors = 0;
+                let updated = 0;
+                
+                for (const investment of data.investments) {
+                    try {
+                        if (!investment.id || !investment.platformName || !investment.investmentAmount || !investment.category) {
+                            errors++;
+                            continue;
+                        }
+                        
+                        if (!investment.hasOwnProperty('favorite')) {
+                            investment.favorite = false;
+                            investment.clickCount = 0;
+                            investment.lastOpened = null;
+                            investment.color = '#007BFF';
+                            investment.status = 'active';
+                        }
+                        
+                        if (!investment.hasOwnProperty('primaryCrypto')) {
+                            investment.primaryCrypto = 'BTC';
+                            investment.currencyMode = 'usdt';
+                            investment.priceData = { price: 0, change24h: 0 };
+                        }
+                        
+                        const existingIndex = investments.findIndex(inv => inv.id === investment.id);
+                        if (existingIndex >= 0) {
+                            investments[existingIndex] = investment;
+                            updated++;
+                        } else {
+                            investments.push(investment);
+                            imported++;
+                        }
+                        
+                        await db.save(investment);
+                        
+                    } catch (error) {
+                        console.error('Error importing investment:', error);
+                        errors++;
+                    }
+                }
+                
+                // Import custom cryptos if available
+                if (data.cryptos && Array.isArray(data.cryptos)) {
+                    const customCryptos = data.cryptos.filter(crypto => 
+                        !cryptoManager.isDefaultCrypto(crypto.symbol)
+                    );
+                    
+                    customCryptos.forEach(crypto => {
+                        if (!cryptoManager.cryptos.find(c => c.symbol === crypto.symbol)) {
+                            cryptoManager.cryptos.push(crypto);
+                        }
+                    });
+                    
+                    cryptoManager.saveCryptos();
+                }
+                
+                // Import bookmarks if available
+                if (data.bookmarks && Array.isArray(data.bookmarks)) {
+                    advancedBrowser.bookmarks = [...advancedBrowser.bookmarks, ...data.bookmarks];
+                    localStorage.setItem('lunaria_bookmarks', JSON.stringify(advancedBrowser.bookmarks));
+                    advancedBrowser.renderBookmarks();
+                }
+                
+                localStorage.setItem('lunaria_investments_pro', JSON.stringify(investments));
+                updateStatistics();
+                renderInvestments();
+                
+                let message = `Importación completada: ${imported} nuevas, ${updated} actualizadas`;
+                if (errors > 0) message += `, ${errors} errores`;
+                
+                showNotification(message + ' 📂');
+                
+            } catch (error) {
+                console.error('Error importing data:', error);
+                showNotification('Error al importar el archivo. Verifica que sea un archivo JSON válido.', 'error');
+            }
+            
+            e.target.value = '';
+        }
+
+        // Initialize app when DOM is loaded
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', initApp);
+        } else {
+            initApp();
+        }
+
+        // Make functions globally available
+        window.showDetails = showDetails;
+        window.editInvestment = editInvestment;
+        window.deleteInvestment = deleteInvestment;
+        window.duplicateInvestment = duplicateInvestment;
+        window.openLink = openLink;
+        window.toggleFavorite = toggleFavorite;
+        window.copyUrl = copyUrl;
+        window.generateQR = generateQR;
+        window.openAdvancedBrowser = openAdvancedBrowser;
+        window.closeBrowser = closeBrowser;
+        window.advancedBrowser = advancedBrowser;
+        window.cryptoManager = cryptoManager;
+    </script>
+</body>
+</html>
