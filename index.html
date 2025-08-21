@@ -530,7 +530,7 @@
         <div class="grid grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-8">
             <button class="menu-button faucet-button" onclick="openExternalUrl('https://faucetpay.io/'); closeMainMenu();"><img src="https://i.postimg.cc/xd3HS5CW/Picsart-25-07-12-19-07-45-544.png" alt="FaucetPay" class="faucet-logo"><span>FaucetPay</span></button>
             <button class="menu-button investment-button" onclick="window.location.href='invercion.html'; closeMainMenu();"><i class="fas fa-money-bill-wave" style="font-size: 3rem;"></i><span>Inversión</span></button>
-            <button class="menu-button url-add-button" onclick="openAddUrlModal(); closeMainMenu()"><i class="fas fa-globe" style="font-size: 3rem;"></i><span>URL Directa</span></button>
+            <button class="menu-button url-add-button" onclick="openAddUrlModal(); closeMainMenu()"><i class="fas fa-code" style="font-size: 3rem;"></i><span>Integrar JSON</span></button>
             <button class="menu-button add-button" onclick="openAddModal(); closeMainMenu()"><i class="fas fa-plus" style="font-size: 3rem;"></i><span>Agregar Página</span></button>
             <button class="menu-button export-button" onclick="openExportModal(); closeMainMenu()"><i class="fas fa-download" style="font-size: 3rem;"></i><span>Exportar/Importar</span></button>
             <button class="menu-button delete-button" onclick="showDeleteAllConfirmation(); closeMainMenu()"><i class="fas fa-trash-alt" style="font-size: 3rem;"></i><span>Borrar Todo</span></button>
@@ -666,28 +666,28 @@
         </div>
     </div>
 
-    <!-- Nuevo Modal: Añadir URL Directa (Simplificado) -->
+    <!-- Nuevo Modal: Integrar Tarjeta por Código JSON -->
     <div id="addUrlModal" class="modal">
         <div class="modal-content">
             <div class="flex justify-between items-center mb-6">
-                <h2 class="text-2xl font-bold text-green-400"><i class="fas fa-globe mr-2"></i>Integrar Tarjeta por Enlace</h2>
+                <h2 class="text-2xl font-bold text-green-400"><i class="fas fa-code mr-2"></i>Integrar Tarjeta por Código JSON</h2>
                 <button class="text-gray-400 hover:text-white text-2xl" onclick="closeAddUrlModal()"><i class="fas fa-times"></i></button>
             </div>
             <form id="addUrlForm" class="space-y-6">
                 <div>
-                    <label class="block text-sm font-medium mb-2">Pegar Enlace de Tarjeta *</label>
-                    <input type="url" id="fullUrlInput" class="form-input" placeholder="https://czuseguridad.github.io/?eva=..." required>
-                    <div id="fullUrlInputError" class="text-red-500 text-sm mt-1"></div>
-                    <p class="text-gray-400 text-sm mt-2">Pega aquí el enlace de una tarjeta compartida (debe contener los datos 'eva').</p>
+                    <label class="block text-sm font-medium mb-2">Pegar Código JSON de Tarjeta *</label>
+                    <textarea id="jsonInput" class="form-input" rows="8" placeholder='{"id": "...", "name": "...", "category": "...", ...}' required></textarea>
+                    <div id="jsonInputError" class="text-red-500 text-sm mt-1"></div>
+                    <p class="text-gray-400 text-sm mt-2">Pega aquí el código JSON de una tarjeta exportada o compartida.</p>
                 </div>
                 <div class="flex gap-4 justify-end">
                     <button type="button" class="btn btn-secondary" onclick="closeAddUrlModal()"><i class="fas fa-times"></i>Cancelar</button>
-                    <button type="submit" class="btn btn-success"><i class="fas fa-plus"></i>Integrar</button>
+                    <button type="submit" class="btn btn-success"><i class="fas fa-plus"></i>Integrar Tarjeta</button>
                 </div>
             </form>
         </div>
     </div>
-    <!-- Fin del Nuevo Modal: Añadir URL Directa -->
+    <!-- Fin del Nuevo Modal: Integrar Tarjeta por Código JSON -->
 
     <!-- Modal de Ver Entrada -->
     <div id="viewModal" class="modal"><div class="modal-content"><div class="flex justify-between items-center mb-6"><h2 class="text-2xl font-bold text-blue-400"><i class="fas fa-eye mr-2"></i>Detalles de la Entrada</h2><button class="text-gray-400 hover:text-white text-2xl" onclick="closeViewModal()"><i class="fas fa-times"></i></button></div><div id="viewContent"></div></div></div>
@@ -696,7 +696,16 @@
     <div id="confirmModal" class="modal"><div class="modal-content"><div class="flex justify-between items-center mb-6"><h2 class="text-2xl font-bold text-red-400"><i class="fas fa-exclamation-triangle mr-2"></i>Confirmar Acción</h2></div><p id="confirmMessage" class="mb-6 text-lg"></p><div class="flex gap-4 justify-end"><button class="btn btn-secondary" onclick="closeConfirmModal()"><i class="fas fa-times"></i>Cancelar</button><button id="confirmActionButton" class="btn btn-danger" onclick="confirmAction()"><i class="fas fa-check"></i>Confirmar</button></div></div></div>
 
     <!-- Modal de Compartir -->
-    <div id="shareModal" class="share-modal"><div class="share-content"><div class="flex justify-between items-center mb-6"><h2 class="text-2xl font-bold text-green-400"><i class="fas fa-share-alt mr-2"></i>Compartir Entrada</h2><button class="text-gray-400 hover:text-white text-2xl" onclick="closeShareModal()"><i class="fas fa-times"></i></button></div><div id="sharePreview" class="share-preview"><img id="shareImage" src="https://i.postimg.cc/GpPsSmmX/4491470.png" alt="Vista previa"><div><h3 id="shareName" class="font-bold">Nombre de entrada</h3><p id="shareCategory" class="text-sm text-gray-400">Categoría</p></div></div><div class="share-options"><div class="share-option" onclick="shareViaWebShare()"><i class="fas fa-share-alt"></i><span>Compartir</span></div><div class="share-option" onclick="shareViaWhatsApp()"><i class="fab fa-whatsapp"></i><span>WhatsApp</span></div><div class="share-option" onclick="shareViaTelegram()"><i class="fab fa-telegram"></i><span>Telegram</span></div><div class="share-option" onclick="shareViaMessenger()"><i class="fab fa-facebook-messenger"></i><span>Messenger</span></div><div class="share-option" onclick="shareViaEmail()"><i class="fas fa-envelope"></i><span>Email</span></div><div class="share-option" onclick="copyShareLink()"><i class="fas fa-copy"></i><span>Copiar Enlace</span></div><div class="share-option" onclick="showQrCode(currentShareEntry.id)"><i class="fas fa-qrcode"></i><span>Generar QR</span></div></div></div></div>
+    <div id="shareModal" class="share-modal"><div class="share-content"><div class="flex justify-between items-center mb-6"><h2 class="text-2xl font-bold text-green-400"><i class="fas fa-share-alt mr-2"></i>Compartir Entrada</h2><button class="text-gray-400 hover:text-white text-2xl" onclick="closeShareModal()"><i class="fas fa-times"></i></button></div><div id="sharePreview" class="share-preview"><img id="shareImage" src="https://i.postimg.cc/GpPsSmmX/4491470.png" alt="Vista previa"><div><h3 id="shareName" class="font-bold">Nombre de entrada</h3><p id="shareCategory" class="text-sm text-gray-400">Categoría</p></div></div><div class="share-options">
+        <div class="share-option" onclick="copyShareJson()"><i class="fas fa-copy"></i><span>Copiar JSON</span></div>
+        <div class="share-option" onclick="showQrCode(currentShareEntry.id)"><i class="fas fa-qrcode"></i><span>Generar QR</span></div>
+        <!-- Estas opciones ahora copiarán el JSON al portapapeles y avisarán al usuario que lo pegue -->
+        <div class="share-option" onclick="copyShareJsonAndNotify('WhatsApp')"><i class="fab fa-whatsapp"></i><span>WhatsApp</span></div>
+        <div class="share-option" onclick="copyShareJsonAndNotify('Telegram')"><i class="fab fa-telegram"></i><span>Telegram</span></div>
+        <div class="share-option" onclick="copyShareJsonAndNotify('Messenger')"><i class="fab fa-facebook-messenger"></i><span>Messenger</span></div>
+        <div class="share-option" onclick="copyShareJsonAndNotify('Email')"><i class="fas fa-envelope"></i><span>Email</span></div>
+        <div class="share-option" onclick="copyShareJsonAndNotify('Web Share')"><i class="fas fa-share-alt"></i><span>Web Share</span></div>
+    </div></div></div>
 
     <!-- Modal de Exportar/Importar -->
     <div id="exportModal" class="modal"><div class="modal-content"><div class="flex justify-between items-center mb-6"><h2 class="text-2xl font-bold text-blue-400"><i class="fas fa-download mr-2"></i>Exportar/Importar Datos</h2><button class="text-gray-400 hover:text-white text-2xl" onclick="closeExportModal()"><i class="fas fa-times"></i></button></div><div class="space-y-6"><div><h3 class="text-lg font-semibold mb-4">Exportar Datos</h3><div class="flex gap-4"><button class="btn btn-primary" onclick="exportData()"><i class="fas fa-download"></i>Descargar JSON</button><button class="btn btn-secondary" onclick="exportCSV()"><i class="fas fa-file-csv"></i>Descargar CSV</button></div></div><div><h3 class="text-lg font-semibold mb-4">Importar Datos</h3><input type="file" id="importFile" accept=".json,.csv" class="form-input mb-4"><button class="btn btn-success" onclick="importData()"><i class="fas fa-upload"></i>Importar Archivo</button><div id="importProgress" class="import-progress"><div class="flex items-center justify-between mb-2"><span>Procesando archivo...</span><div class="loading-spinner"></div></div><div class="progress-bar"><div id="importProgressBar" class="progress-fill" style="width: 0%"></div></div><div id="importLog" class="import-log"></div></div></div></div></div>
@@ -713,7 +722,8 @@
         </div>
     </div>
 
-    <!-- Modal para confirmar la instalación de la tarjeta (reutilizado) -->
+    <!-- Modal para confirmar la instalación de la tarjeta (NO SE USA MÁS PARA EVA, SOLO PARA JSON) -->
+    <!-- Este modal ya no se activará automáticamente por el parámetro EVA, solo por el modal de JSON -->
     <div id="installCardModal" class="modal">
         <div class="modal-content">
             <h2 class="text-2xl font-bold text-green-400 mb-4"><i class="fas fa-download mr-2"></i>Tarjeta Recibida</h2>
@@ -744,13 +754,13 @@
         let currentShareEntry = null;
         let tooltipTimeout = null;
         let currentUpdateIdShown = null;
-        // Variable para datos de tarjeta recibidos por URL
+        // Variable para datos de tarjeta recibidos por URL (ahora solo se usará internamente para el modal de integrar JSON)
         let incomingCardData = null;
 
         // IMPORTANTE: Asegúrate de que esta URL base coincida con la URL donde está alojada tu aplicación.
         // Por ejemplo, si tu aplicación está en 'https://misitio.com/lunaria/', entonces APP_BASE_URL debe ser esa URL.
         const APP_BASE_URL = "https://czuseguridad.github.io/"; 
-        const APP_SHARE_KEY = "eva"; // Clave para compartir datos de tarjeta vía URL
+        const APP_SHARE_KEY = "eva"; // Esta clave ya no se usará para la recepción automática de enlaces
 
         const appUpdates = [
             { id: 'v1.0.0', title: '¡Bienvenido a Lunaria Mining Premium!', description: 'Hemos lanzado la aplicación para ayudarte a gestionar tus entradas de minería. ¡Esperamos que te sea muy útil!' },
@@ -787,8 +797,7 @@
             checkAppUpdates();
             setupToolTip();
             
-            // Manejar datos de tarjeta entrantes desde la URL
-            handleIncomingLinkData();
+            // REMOVED: handleIncomingLinkData() - No more automatic URL processing for 'eva' links
 
             if ('launchQueue' in window) {
                 launchQueue.setConsumer(async (launchParams) => {
@@ -922,68 +931,42 @@
 
         function closeShareModal() { document.getElementById('shareModal').classList.remove('active'); currentShareEntry = null; }
 
-        async function shareViaWebShare() {
-            if (!currentShareEntry) return;
-            if (!navigator.share) {
-                return showNotification('Tu navegador no soporta la API de Compartir. Intenta copiar el enlace.', 'warning');
+        // Nueva función para copiar el JSON de la tarjeta
+        function copyShareJson() {
+            if (!currentShareEntry) {
+                return showNotification('No hay entrada seleccionada para copiar el JSON', 'warning');
             }
             try {
-                // Generar el enlace con los datos de la tarjeta para compartir
-                const shareableLink = `${APP_BASE_URL}?${APP_SHARE_KEY}=${encodeURIComponent(btoa(JSON.stringify({ app: "LunariaMiningPremium", data: currentShareEntry })))}`;
-
-                await navigator.share({
-                    title: `${currentShareEntry.name} | Lunaria Mining`,
-                    text: `¡Mira esta página de minería: ${currentShareEntry.name}${currentShareEntry.description ? ' - ' + currentShareEntry.description : ''}!`,
-                    url: shareableLink // Usar el enlace generado
-                });
-                showNotification('¡Contenido compartido!', 'success');
-                closeShareModal();
-            } catch (error) {
-                if (error.name !== 'AbortError') {
-                    showNotification('Error al compartir', 'error');
-                    console.error('Error al compartir:', error);
-                }
-            }
-        }
-
-        function shareViaWhatsApp() { if (!currentShareEntry) return; const text = encodeURIComponent(`¡Mira esta página de minería: ${currentShareEntry.name}${currentShareEntry.description ? ' - ' + currentShareEntry.description : ''}! ${APP_BASE_URL}?${APP_SHARE_KEY}=${encodeURIComponent(btoa(JSON.stringify({ app: "LunariaMiningPremium", data: currentShareEntry })))}`); window.open(`https://wa.me/?text=${text}`, '_blank'); closeShareModal(); }
-        function shareViaTelegram() { if (!currentShareEntry) return; const text = encodeURIComponent(`¡Mira esta página de minería: ${currentShareEntry.name}${currentShareEntry.description ? ' - ' + currentShareEntry.description : ''}!`); const shareUrl = `${APP_BASE_URL}?${APP_SHARE_KEY}=${encodeURIComponent(btoa(JSON.stringify({ app: "LunariaMiningPremium", data: currentShareEntry })))}`; window.open(`https://t.me/share/url?url=${encodeURIComponent(shareUrl)}&text=${text}`, '_blank'); closeShareModal(); }
-        function shareViaMessenger() { if (!currentShareEntry) return; const shareUrl = `${APP_BASE_URL}?${APP_SHARE_KEY}=${encodeURIComponent(btoa(JSON.stringify({ app: "LunariaMiningPremium", data: currentShareEntry })))}`; window.open(`https://www.facebook.com/dialog/send?link=${encodeURIComponent(shareUrl)}&app_id=123456789&redirect_uri=${encodeURIComponent(window.location.href)}`, '_blank'); closeShareModal(); }
-        function shareViaEmail() { if (!currentShareEntry) return; const shareUrl = `${APP_BASE_URL}?${APP_SHARE_KEY}=${encodeURIComponent(btoa(JSON.stringify({ app: "LunariaMiningPremium", data: currentShareEntry })))}`; const subject = encodeURIComponent(`Sitio de minería: ${currentShareEntry.name}`); const body = encodeURIComponent(`¡Hola!\n\nQuiero compartir contigo esta página de minería:\n\nNombre: ${currentShareEntry.name}\nCategoría: ${categories[currentShareEntry.category]?.name || 'Otra'}\n${currentShareEntry.description ? 'Descripción: ' + currentShareEntry.description + '\n' : ''}${currentShareEntry.url ? 'URL Original: ' + currentShareEntry.url + '\n' : ''}\n\nPara unir esta tarjeta en la app Lunaria Mining Premium, abre este enlace:\n${shareUrl}\n\n¡Saludos!`); window.location.href = `mailto:?subject=${subject}&body=${body}`; closeShareModal(); }
-
-        // Genera un enlace compartible con los datos de la tarjeta incrustados
-        function copyShareLink() {
-            if (!currentShareEntry) return showNotification('No hay entrada seleccionada para compartir', 'warning');
-
-            try {
-                // Prepara los datos para incrustarlos en la URL
-                const shareData = {
-                    app: "LunariaMiningPremium", // Identificador para nuestra aplicación
-                    data: currentShareEntry // El objeto completo de la entrada
-                };
-                
-                // Convierte a cadena, codifica en base64 y luego codifica para URL
-                const encodedData = encodeURIComponent(btoa(JSON.stringify(shareData)));
-                const shareableLink = `${APP_BASE_URL}?${APP_SHARE_KEY}=${encodedData}`;
-
+                const jsonString = JSON.stringify(currentShareEntry, null, 2);
                 if (navigator.clipboard && navigator.clipboard.writeText) {
-                    navigator.clipboard.writeText(shareableLink)
+                    navigator.clipboard.writeText(jsonString)
                         .then(() => {
-                            showNotification('Enlace de la tarjeta copiado al portapapeles', 'success');
+                            showNotification('JSON de la tarjeta copiado al portapapeles', 'success');
                             closeShareModal();
                         })
                         .catch(err => {
-                            console.error('Error al copiar el enlace usando la API del Portapapeles:', err);
-                            copyTextToClipboardLegacy(shareableLink);
+                            console.error('Error al copiar el JSON usando la API del Portapapeles:', err);
+                            copyTextToClipboardLegacy(jsonString);
                         });
                 } else {
-                    copyTextToClipboardLegacy(shareableLink);
+                    copyTextToClipboardLegacy(jsonString);
                 }
             } catch (error) {
-                console.error('Error al generar o copiar el enlace para compartir:', error);
-                showNotification('Error al generar el enlace de la tarjeta', 'error');
+                console.error('Error al generar o copiar el JSON para compartir:', error);
+                showNotification('Error al generar el JSON de la tarjeta', 'error');
             }
         }
+
+        // Función auxiliar para otras opciones de compartir (copia y notifica)
+        function copyShareJsonAndNotify(platformName) {
+            if (!currentShareEntry) {
+                return showNotification('No hay entrada seleccionada para compartir', 'warning');
+            }
+            copyShareJson(); // Copia el JSON al portapapeles
+            showNotification(`JSON de la tarjeta copiado. Pégalo en ${platformName}.`, 'info');
+            closeShareModal();
+        }
+
 
         function copyTextToClipboardLegacy(text) {
             const textArea = document.createElement('textarea');
@@ -995,10 +978,10 @@
             textArea.select();
             try {
                 document.execCommand('copy');
-                showNotification('Enlace copiado al portapapeles (método antiguo)', 'success');
-                closeShareModal();
+                showNotification('JSON copiado al portapapeles (método antiguo)', 'success');
+                // closeShareModal(); // No cerrar si es una notificación para pegar manualmente
             } catch (error) {
-                showNotification('Error al copiar el enlace. Tu navegador no soporta la copia automática.', 'error');
+                showNotification('Error al copiar el JSON. Tu navegador no soporta la copia automática.', 'error');
                 console.error('Error al copiar texto con execCommand:', error);
             } finally {
                 document.body.removeChild(textArea);
@@ -1202,67 +1185,102 @@
 
         function closeAddModal() { document.getElementById('addModal').classList.remove('active'); editingEntry = null; clearErrors(); }
 
-        // Nuevas funciones para el modal de añadir URL directa
+        // Nuevas funciones para el modal de INTEGRAR JSON
         function openAddUrlModal() {
             document.getElementById('addUrlForm').reset();
-            document.getElementById('fullUrlInputError').textContent = ''; // Limpiar errores
+            document.getElementById('jsonInputError').textContent = ''; // Limpiar errores
             document.getElementById('addUrlModal').classList.add('active');
         }
 
         function closeAddUrlModal() {
             document.getElementById('addUrlModal').classList.remove('active');
-            document.getElementById('fullUrlInput').value = ''; // Limpiar campo
-            document.getElementById('fullUrlInputError').textContent = ''; // Limpiar errores
+            document.getElementById('jsonInput').value = ''; // Limpiar campo
+            document.getElementById('jsonInputError').textContent = ''; // Limpiar errores
         }
 
         document.getElementById('addUrlForm').addEventListener('submit', async function(e) {
             e.preventDefault();
-            const fullUrl = document.getElementById('fullUrlInput').value.trim();
-            const errorDisplay = document.getElementById('fullUrlInputError');
+            const jsonText = document.getElementById('jsonInput').value.trim();
+            const errorDisplay = document.getElementById('jsonInputError');
             errorDisplay.textContent = ''; // Limpiar errores anteriores
 
-            if (!fullUrl) {
-                errorDisplay.textContent = 'El enlace es obligatorio.';
+            if (!jsonText) {
+                errorDisplay.textContent = 'El código JSON es obligatorio.';
                 return;
             }
 
             try {
-                const urlObj = new URL(fullUrl);
-                const evaData = urlObj.searchParams.get(APP_SHARE_KEY);
+                const parsedData = JSON.parse(jsonText);
 
-                if (!evaData) {
-                    errorDisplay.textContent = `El enlace no contiene datos de tarjeta válidos ('${APP_SHARE_KEY}' no encontrado).`;
-                    showNotification("El enlace no es una tarjeta válida.", "error");
+                // Si el JSON es un array, intentar integrar cada elemento como una tarjeta
+                if (Array.isArray(parsedData)) {
+                    let successCount = 0;
+                    let errorCount = 0;
+                    for (const cardData of parsedData) {
+                        try {
+                            await integrateSingleCard(cardData);
+                            successCount++;
+                        } catch (cardError) {
+                            console.error('Error al integrar una tarjeta de un array:', cardData, cardError);
+                            errorCount++;
+                        }
+                    }
+                    if (successCount > 0) {
+                        showNotification(`Se integraron ${successCount} tarjetas (Errores: ${errorCount})`, 'success');
+                    } else {
+                        showNotification('No se pudo integrar ninguna tarjeta del JSON proporcionado.', 'error');
+                    }
+
+                } else if (typeof parsedData === 'object' && parsedData !== null) {
+                    // Si el JSON es un objeto, intentar integrarlo como una sola tarjeta
+                    await integrateSingleCard(parsedData);
+                    showNotification('Tarjeta integrada con éxito', 'success');
+                } else {
+                    errorDisplay.textContent = 'El código JSON no es un objeto o array de tarjetas válido.';
+                    showNotification("Formato JSON inválido para tarjeta.", "error");
                     return;
                 }
+                
+                await loadEntries(); // Recargar la lista de entradas
+                updateStats(); // Actualizar estadísticas
+                updateUsageCharts(); // Actualizar gráficas
 
-                // Decodificar URL, luego Base64, luego analizar JSON
-                const decodedUri = decodeURIComponent(evaData);
-                const base64Decoded = atob(decodedUri);
-                const parsedPayload = JSON.parse(base64Decoded);
-
-                // Validar que es de nuestra aplicación y contiene datos de tarjeta
-                if (parsedPayload && parsedPayload.app === "LunariaMiningPremium" && parsedPayload.data) {
-                    // Validar la estructura mínima de la tarjeta antes de intentar unir
-                    if (!parsedPayload.data.name || !parsedPayload.data.category) {
-                         errorDisplay.textContent = 'La tarjeta en el enlace es inválida (falta nombre o categoría).';
-                         showNotification("Tarjeta inválida en el enlace.", "error");
-                         return;
-                    }
-                    // Si todo es válido, proceder a instalar la tarjeta
-                    await confirmInstallIncomingCard(parsedPayload.data);
-                    closeAddUrlModal(); // Cerrar el modal después de procesar
-                } else {
-                    errorDisplay.textContent = 'El formato de los datos de la tarjeta en el enlace es incorrecto.';
-                    showNotification("Formato de tarjeta incorrecto.", "error");
-                }
+                closeAddUrlModal(); // Cerrar el modal después de procesar
 
             } catch (error) {
-                console.error('Error al procesar el enlace de la tarjeta:', error);
-                errorDisplay.textContent = `Error al procesar el enlace: ${error.message}. Asegúrate de que es un enlace de tarjeta válido.`;
-                showNotification(`Error al procesar el enlace: ${error.message}`, "error");
+                console.error('Error al procesar el código JSON:', error);
+                errorDisplay.textContent = `Error al analizar el JSON: ${error.message}. Asegúrate de que es un JSON válido de tarjeta.`;
+                showNotification(`Error al procesar el JSON: ${error.message}`, "error");
             }
         });
+
+        // Función para integrar una única tarjeta, con validación
+        async function integrateSingleCard(cardData) {
+            // Validar la estructura mínima de la tarjeta antes de intentar unir
+            if (!cardData.name || !cardData.category || !validateCategory(cardData.category)) {
+                throw new Error('La tarjeta JSON es inválida (falta nombre o categoría válida).');
+            }
+
+            // Crear una nueva entrada a partir de los datos entrantes
+            const newEntry = { ...cardData };
+            
+            // Asignar un nuevo ID para evitar conflictos con entradas existentes
+            newEntry.id = generateId();
+            // Reiniciar datos específicos del usuario que no deben copiarse de la fuente
+            newEntry.isFavorite = false;
+            newEntry.clickCount = 0;
+            newEntry.lastOpened = null;
+            newEntry.createdAt = new Date().toISOString();
+            newEntry.updatedAt = new Date().toISOString();
+            // Asegurar valores por defecto si no están presentes en los datos entrantes
+            newEntry.status = newEntry.status || 'active';
+            newEntry.cardColor = newEntry.cardColor || '#0ea5e9';
+            newEntry.tags = Array.isArray(newEntry.tags) ? newEntry.tags : [];
+            newEntry.image = newEntry.image || 'https://i.postimg.cc/GpPsSmmX/4491470.png';
+
+            await saveEntry(newEntry);
+        }
+
 
         async function editEntry(id) {
             try {
@@ -1755,29 +1773,13 @@
                     for (let i = 0; i < importedEntries.length; i++) {
                         const entry = importedEntries[i];
                         try {
-                            if (await getEntryById(entry.id)) {
-                                entry.id = generateId();
-                                updateImportProgress(50 + (i / importedEntries.length * 40), `Entrada "${entry.name}" con ID duplicado, generando nuevo ID.`, 'warning');
-                            }
-                            if (!entry.name || !entry.category || !validateCategory(entry.category)) {
-                                errorCount++;
-                                updateImportProgress(50 + (i / importedEntries.length * 40), `Error: Entrada inválida (nombre o categoría faltante/inválida) - ${JSON.stringify(entry)}`, 'error');
-                                continue;
-                            }
-                            entry.isFavorite = entry.isFavorite !== undefined ? entry.isFavorite : false;
-                            entry.clickCount = entry.clickCount !== undefined ? entry.clickCount : 0;
-                            entry.lastOpened = entry.lastOpened !== undefined ? entry.lastOpened : null;
-                            entry.status = entry.status !== undefined ? entry.status : 'active';
-                            entry.cardColor = entry.cardColor !== undefined ? entry.cardColor : '#0ea5e9';
-                            entry.tags = Array.isArray(entry.tags) ? entry.tags : [];
-                            entry.image = entry.image || 'https://i.postimg.cc/GpPsSmmX/4491470.png';
-
-                            await saveEntry(entry);
+                            // Integrate single card logic with error handling for each entry
+                            await integrateSingleCard(entry);
                             successCount++;
-                            updateImportProgress(50 + (i / importedEntries.length * 40), `Importado: "${entry.name}"`, 'info');
+                            updateImportProgress(50 + (i / importedEntries.length * 40), `Importado: "${entry.name || 'Sin Nombre'}"`, 'info');
                         } catch (saveError) {
                             errorCount++;
-                            updateImportProgress(50 + (i / importedEntries.length * 40), `Error al guardar "${entry.name}": ${saveError.message}`, 'error');
+                            updateImportProgress(50 + (i / importedEntries.length * 40), `Error al guardar "${entry.name || 'Sin Nombre'}": ${saveError.message}`, 'error');
                             console.error('Error al guardar la entrada importada:', entry, saveError);
                         }
                     }
@@ -1803,17 +1805,24 @@
         async function parseJSONFile(text) {
             try {
                 const data = JSON.parse(text);
-                if (Array.isArray(data)) {
+                // Return data directly, the integrateSingleCard will handle it.
+                // If the top-level JSON is an object, wrap it in an array to be consistent with iteration logic.
+                if (typeof data === 'object' && data !== null && !Array.isArray(data)) {
+                    // Check if it's an export format that contains an 'entries' array
+                    if (data.entries && Array.isArray(data.entries)) {
+                        return data.entries;
+                    }
+                    return [data]; // Assume it's a single entry object
+                } else if (Array.isArray(data)) {
                     return data;
-                } else if (data && Array.isArray(data.entries)) {
-                    return data.entries;
                 }
-                return [];
+                return []; // Not a valid structure
             } catch (error) {
                 console.error('Error al analizar archivo JSON:', error);
                 throw new Error('Formato JSON inválido.');
             }
         }
+
 
         async function parseCSVFile(text) {
             const lines = text.split('\n').filter(line => line.trim() !== '');
@@ -1951,15 +1960,14 @@
             } 
             if (e.key === 'Escape') {
                 if (document.getElementById('addModal').classList.contains('active')) closeAddModal(); 
-                else if (document.getElementById('addUrlModal').classList.contains('active')) closeAddUrlModal(); // Agregado: cerrar modal de URL
+                else if (document.getElementById('addUrlModal').classList.contains('active')) closeAddUrlModal(); 
                 else if (document.getElementById('viewModal').classList.contains('active')) closeViewModal(); 
                 else if (document.getElementById('confirmModal').classList.contains('active')) closeConfirmModal(); 
-                else if (document.getElementById('exportModal').classList.contains('active')) closeExportModal(); 
                 else if (document.getElementById('shareModal').classList.contains('active')) closeShareModal(); 
                 else if (document.getElementById('updateNotification').classList.contains('show')) closeUpdateNotification(); 
                 else if (document.getElementById('mainMenuModal').classList.contains('active')) closeMainMenu(); 
                 else if (document.getElementById('qrCodeModal').classList.contains('active')) closeQrCodeModal();
-                else if (document.getElementById('installCardModal').classList.contains('active')) closeInstallCardModal();
+                // REMOVED: installCardModal no es activado por enlace externo directamente, así que no necesita cierre aquí
             } 
         });
 
@@ -2066,24 +2074,19 @@
             }
         }
 
-        // El QR ahora contiene los datos de la tarjeta y explícitamente incluye un identificador de aplicación
+        // El QR ahora contiene el JSON completo de la tarjeta
         async function showQrCode(id) {
             try {
                 const entry = await getEntryById(id);
                 if (!entry) return showNotification('No se encontró la entrada para generar el QR', 'error');
                 
-                // Objeto a codificar en el QR, incluyendo el identificador de la aplicación
-                const qrData = {
-                    app: "LunariaMiningPremium",
-                    data: entry
-                };
-                const qrText = JSON.stringify(qrData);
+                const qrJsonText = JSON.stringify(entry, null, 2); // JSON formateado para mejor lectura si se escanea
 
                 const qrContainer = document.getElementById('qrCodeContainer');
                 qrContainer.innerHTML = '';
                 
                 new QRCode(qrContainer, {
-                    text: qrText,
+                    text: qrJsonText,
                     width: 256,
                     height: 256,
                     colorDark: "#000000",
@@ -2091,7 +2094,7 @@
                     correctLevel: QRCode.CorrectLevel.H
                 });
 
-                document.getElementById('qrCodeInfo').textContent = `Muestra este QR a otro usuario para que pueda unir "${entry.name}".`;
+                document.getElementById('qrCodeInfo').textContent = `Muestra este QR a otro usuario para que escanee y copie la tarjeta.`;
                 document.getElementById('qrCodeModal').classList.add('active');
             } catch (error) {
                 console.error('Error al mostrar código QR:', error);
@@ -2104,103 +2107,8 @@
             document.getElementById('qrCodeContainer').innerHTML = '';
         }
 
-        // --- Funciones para manejar datos de enlaces entrantes ---
-
-        async function handleIncomingLinkData() {
-            const urlParams = new URLSearchParams(window.location.search);
-            const evaData = urlParams.get(APP_SHARE_KEY); // Obtener datos usando la clave especificada 'eva'
-
-            if (evaData) {
-                try {
-                    // Decodificar URL, luego Base64, luego analizar JSON
-                    const decodedUri = decodeURIComponent(evaData);
-                    const base64Decoded = atob(decodedUri);
-                    const parsedPayload = JSON.parse(base64Decoded);
-
-                    // Validar que es de nuestra aplicación y contiene datos de tarjeta
-                    if (parsedPayload && parsedPayload.app === "LunariaMiningPremium" && parsedPayload.data) {
-                        // Antes de mostrar el modal, validar la estructura mínima de la tarjeta
-                        if (!parsedPayload.data.name || !parsedPayload.data.category) {
-                             console.warn("Tarjeta entrante inválida: falta nombre o categoría.", parsedPayload.data);
-                             showNotification("La tarjeta recibida es inválida (falta nombre o categoría).", "error");
-                             return;
-                        }
-                        showInstallIncomingCardPrompt(parsedPayload.data);
-                    } else {
-                        console.warn("Los datos del enlace entrante no son de una tarjeta Lunaria Mining válida o el formato es incorrecto:", parsedPayload);
-                        showNotification("El enlace no contiene una tarjeta válida para unir.", "warning");
-                    }
-                } catch (e) {
-                    console.error("Error al analizar los datos del enlace entrante:", e);
-                    showNotification(`Error al procesar la información del enlace: ${e.message}`, "error");
-                } finally {
-                    // Limpiar el parámetro de la URL después de procesar para evitar que se active de nuevo al recargar
-                    history.replaceState({}, document.title, window.location.pathname);
-                }
-            }
-        }
-        
-        function showInstallIncomingCardPrompt(cardData) {
-            incomingCardData = cardData; // Almacenar datos para la instalación
-            
-            document.getElementById('installCardImage').src = cardData.image || 'https://i.postimg.cc/GpPsSmmX/4491470.png';
-            document.getElementById('installCardName').textContent = cardData.name;
-            document.getElementById('installCardCategory').textContent = categories[cardData.category]?.name || 'Categoría desconocida';
-            
-            document.getElementById('installCardModal').classList.add('active');
-        }
-        
-        function closeInstallCardModal() {
-            document.getElementById('installCardModal').classList.remove('active');
-            incomingCardData = null; // Limpiar datos
-        }
-
-        async function confirmInstallIncomingCard(dataToInstall = incomingCardData) {
-            if (!dataToInstall) {
-                return showNotification('No hay datos de tarjeta para unir', 'error');
-            }
-
-            try {
-                // Crear una nueva entrada a partir de los datos entrantes
-                const newEntry = { ...dataToInstall };
-                
-                // Asignar un nuevo ID para evitar conflictos con entradas existentes
-                newEntry.id = generateId();
-                // Reiniciar datos específicos del usuario que no deben copiarse de la fuente
-                newEntry.isFavorite = false;
-                newEntry.clickCount = 0;
-                newEntry.lastOpened = null;
-                newEntry.createdAt = new Date().toISOString();
-                newEntry.updatedAt = new Date().toISOString();
-                // Asegurar valores por defecto si no están presentes en los datos entrantes
-                newEntry.status = newEntry.status || 'active';
-                newEntry.cardColor = newEntry.cardColor || '#0ea5e9';
-                newEntry.tags = Array.isArray(newEntry.tags) ? newEntry.tags : [];
-                newEntry.image = newEntry.image || 'https://i.postimg.cc/GpPsSmmX/4491470.png';
-
-
-                // Validar nuevamente antes de guardar
-                if (!newEntry.name || !newEntry.category || !validateCategory(newEntry.category)) {
-                    showNotification('Error: La tarjeta entrante es inválida (falta nombre o categoría válida).', 'error');
-                    console.error('Tarjeta entrante inválida al intentar unir:', newEntry);
-                    closeInstallCardModal();
-                    return;
-                }
-
-                await saveEntry(newEntry);
-                
-                showNotification(`Tarjeta "${newEntry.name}" unida con éxito`, 'success');
-                
-                await loadEntries();
-                updateStats();
-                updateUsageCharts();
-                
-                closeInstallCardModal();
-            } catch (error) {
-                console.error('Error al unir la tarjeta entrante:', error);
-                showNotification('Error al unir la tarjeta', 'error');
-            }
-        }
+        // REMOVED: Funciones de manejo de enlaces entrantes (handleIncomingLinkData, showInstallIncomingCardPrompt, closeInstallCardModal)
+        // El modal installCardModal se mantendrá en el HTML por si se decide reutilizar, pero no se activará desde enlaces externos.
 
     </script>
 </body>
