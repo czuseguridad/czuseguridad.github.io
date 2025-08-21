@@ -1035,11 +1035,18 @@
                         store.createIndex('clickCount', 'clickCount', { unique: false });
                         // NEW: originalCategory index for easier access if needed
                         store.createIndex('originalCategory', 'originalCategory', { unique: false, multiEntry: false });
+                        // Added index for name and url to facilitate duplicate checks
+                        store.createIndex('nameAndUrl', ['name', 'url'], { unique: false }); 
+
                     } else {
                         // If upgrading from an older version, add the index if it doesn't exist
                         const store = event.target.transaction.objectStore('entries');
                         if (!store.indexNames.contains('originalCategory')) {
                             store.createIndex('originalCategory', 'originalCategory', { unique: false, multiEntry: false });
+                        }
+                         // Add nameAndUrl index if it doesn't exist
+                        if (!store.indexNames.contains('nameAndUrl')) {
+                            store.createIndex('nameAndUrl', ['name', 'url'], { unique: false });
                         }
                     }
                     if (!db.objectStoreNames.contains('pageUsage')) {
@@ -1062,6 +1069,20 @@
         async function trackCategoryUsage(categoryKey) { if (!categoryKey) return; return new Promise((resolve, reject) => { const transaction = db.transaction(['categoryUsage'], 'readwrite'); const store = transaction.objectStore('categoryUsage'); const getRequest = store.get(categoryKey); getRequest.onsuccess = () => { const existingEntry = getRequest.result; let count = existingEntry ? existingEntry.count + 1 : 1; const putRequest = store.put({ category: categoryKey, name: categories[categoryKey]?.name || categoryKey, count: count }); putRequest.onerror = () => reject(putRequest.error); putRequest.onsuccess = () => { resolve(); updateCategoryUsageChart(); }; }; getRequest.onerror = () => reject(getRequest.error); }); }
         async function getPageUsageStats() { return new Promise((resolve, reject) => { const transaction = db.transaction(['pageUsage'], 'readonly'); const store = transaction.objectStore('pageUsage'); const request = store.getAll(); request.onerror = () => reject(request.error); request.onsuccess = () => resolve(request.result); }); }
         async function getCategoryUsageStats() { return new Promise((resolve, reject) => { const transaction = db.transaction(['categoryUsage'], 'readonly'); const store = transaction.objectStore('categoryUsage'); const request = store.getAll(); request.onerror = () => reject(request.error); request.onsuccess = () => resolve(request.result); }); }
+        
+        // --- NEW: Function to check for duplicate entry by name and URL ---
+        async function findEntryByNameAndUrl(name, url) {
+            return new Promise((resolve, reject) => {
+                const transaction = db.transaction(['entries'], 'readonly');
+                const store = transaction.objectStore('entries');
+                const index = store.index('nameAndUrl');
+                const request = index.get([name, url]);
+
+                request.onerror = () => reject(request.error);
+                request.onsuccess = () => resolve(request.result);
+            });
+        }
+        // --- END NEW FUNCTION ---
 
         async function loadEntries() {
             try {
@@ -1262,25 +1283,34 @@
                 if (Array.isArray(parsedData)) {
                     let successCount = 0;
                     let errorCount = 0;
+                    let duplicateCount = 0; // NEW: Track duplicates
                     for (const cardData of parsedData) {
                         try {
-                            await integrateSingleCard(cardData);
-                            successCount++;
+                            const result = await integrateSingleCard(cardData); // NEW: Get result from integrateSingleCard
+                            if (result === 'added') {
+                                successCount++;
+                            } else if (result === 'duplicate') {
+                                duplicateCount++;
+                            }
                         } catch (cardError) {
                             console.error('Error al integrar una tarjeta de un array:', cardData, cardError);
                             errorCount++;
                         }
                     }
-                    if (successCount > 0) {
-                        showNotification(`Se integraron ${successCount} tarjetas (Errores: ${errorCount})`, 'success');
+                    if (successCount > 0 || duplicateCount > 0) { // NEW: Include duplicates in success message
+                        showNotification(`Se integraron ${successCount} tarjetas (Duplicados: ${duplicateCount}, Errores: ${errorCount})`, 'success');
                     } else {
                         showNotification('No se pudo integrar ninguna tarjeta del JSON proporcionado.', 'error');
                     }
 
                 } else if (typeof parsedData === 'object' && parsedData !== null) {
                     // Si el JSON es un objeto, intentar integrarlo como una sola tarjeta
-                    await integrateSingleCard(parsedData);
-                    showNotification('Tarjeta integrada con éxito', 'success');
+                    const result = await integrateSingleCard(parsedData); // NEW: Get result
+                    if (result === 'added') {
+                        showNotification('Tarjeta integrada con éxito', 'success');
+                    } else if (result === 'duplicate') {
+                        showNotification('La tarjeta ya existe y no fue agregada.', 'info');
+                    }
                 } else {
                     errorDisplay.textContent = 'El código JSON no es un objeto o array de tarjetas válido.';
                     showNotification("Formato JSON inválido para tarjeta.", "error");
@@ -1300,13 +1330,22 @@
             }
         });
 
-        // Función para integrar una única tarjeta, con validación
+        // Función para integrar una única tarjeta, con validación y chequeo de duplicados
         async function integrateSingleCard(cardData) {
             // Validar la estructura mínima de la tarjeta antes de intentar unir
             if (!cardData.name || !cardData.category || !validateCategory(cardData.category)) {
                 throw new Error('La tarjeta JSON es inválida (falta nombre o categoría válida).');
             }
 
+            // NEW: Check for duplicates before adding
+            if (cardData.name && cardData.url) { // Only check if both name and URL are present
+                const existingEntry = await findEntryByNameAndUrl(cardData.name, cardData.url);
+                if (existingEntry) {
+                    console.log(`Tarjeta duplicada detectada: "${cardData.name}" con URL "${cardData.url}". No se agregará.`);
+                    return 'duplicate'; // Indicate that a duplicate was found and skipped
+                }
+            }
+            
             // Crear una nueva entrada a partir de los datos entrantes
             const newEntry = { ...cardData };
             
@@ -1329,6 +1368,7 @@
 
 
             await saveEntry(newEntry);
+            return 'added'; // Indicate that the card was successfully added
         }
 
 
@@ -1874,12 +1914,18 @@
                     updateImportProgress(50, `Importando ${importedEntries.length} entradas...`);
                     let successCount = 0;
                     let errorCount = 0;
+                    let duplicateCount = 0; // NEW: Track duplicates for importData
                     for (let i = 0; i < importedEntries.length; i++) {
                         const entry = importedEntries[i];
                         try {
-                            await integrateSingleCard(entry);
-                            successCount++;
-                            updateImportProgress(50 + (i / importedEntries.length * 40), `Importado: "${entry.name || 'Sin Nombre'}"`, 'info');
+                            const result = await integrateSingleCard(entry); // NEW: Get result
+                            if (result === 'added') {
+                                successCount++;
+                                updateImportProgress(50 + (i / importedEntries.length * 40), `Importado: "${entry.name || 'Sin Nombre'}"`, 'info');
+                            } else if (result === 'duplicate') {
+                                duplicateCount++;
+                                updateImportProgress(50 + (i / importedEntries.length * 40), `Duplicado: "${entry.name || 'Sin Nombre'}" ya existe.`, 'warning');
+                            }
                         } catch (saveError) {
                             errorCount++;
                             updateImportProgress(50 + (i / importedEntries.length * 40), `Error al guardar "${entry.name || 'Sin Nombre'}": ${saveError.message}`, 'error');
@@ -1887,11 +1933,11 @@
                         }
                     }
 
-                    updateImportProgress(100, `Importación completada. Éxito: ${successCount}, Errores: ${errorCount}.`, successCount > 0 && errorCount === 0 ? 'success' : errorCount > 0 ? 'error' : 'warning');
+                    updateImportProgress(100, `Importación completada. Éxito: ${successCount}, Duplicados: ${duplicateCount}, Errores: ${errorCount}.`, successCount > 0 || duplicateCount > 0 ? 'success' : errorCount > 0 ? 'error' : 'warning');
                     await loadEntries();
                     updateStats();
                     updateUsageCharts();
-                    showNotification(`Importación finalizada: ${successCount} entradas importadas.`, successCount > 0 ? 'success' : 'warning');
+                    showNotification(`Importación finalizada: ${successCount} entradas importadas, ${duplicateCount} duplicados omitidos.`, successCount > 0 || duplicateCount > 0 ? 'success' : 'warning');
                 };
                 reader.onerror = (e) => {
                     updateImportProgress(100, `Error de lectura del archivo: ${e.target.error.message}`, 'error');
@@ -2166,30 +2212,14 @@
             }
 
             try {
-                const newEntry = { ...dataToInstall };
-                newEntry.id = generateId();
-                newEntry.isFavorite = false;
-                newEntry.clickCount = 0;
-                newEntry.lastOpened = null;
-                newEntry.createdAt = new Date().toISOString();
-                newEntry.updatedAt = new Date().toISOString();
-                newEntry.originalCategory = undefined; // Ensure originalCategory is clear on new imports
-
-                newEntry.status = newEntry.status || 'active';
-                newEntry.cardColor = newEntry.cardColor || '#0ea5e9';
-                newEntry.tags = Array.isArray(newEntry.tags) ? newEntry.tags : [];
-                newEntry.image = newEntry.image || 'https://i.postimg.cc/GpPsSmmX/4491470.png';
-
-
-                if (!newEntry.name || !newEntry.category || !validateCategory(newEntry.category)) {
-                    showNotification('Error: La tarjeta entrante es inválida (falta nombre o categoría válida).', 'error');
-                    console.error('Tarjeta entrante inválida al intentar unir:', newEntry);
-                    return;
-                }
-
-                await saveEntry(newEntry);
+                // Directly use integrateSingleCard for logic, it now handles duplicates
+                const result = await integrateSingleCard(dataToInstall);
                 
-                showNotification(`Tarjeta "${newEntry.name}" unida con éxito`, 'success');
+                if (result === 'added') {
+                    showNotification(`Tarjeta "${dataToInstall.name}" unida con éxito`, 'success');
+                } else if (result === 'duplicate') {
+                    showNotification(`La tarjeta "${dataToInstall.name}" ya existe y no fue agregada.`, 'info');
+                }
                 
                 await loadEntries();
                 updateStats();
