@@ -3,585 +3,3280 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CZU Security - Servicios de Seguridad Integral</title>
+    <title>Lunaria Mining Premium</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- El manifiesto se genera dinámicamente en JS y se enlaza aquí -->
+    <link rel="manifest" href="#" id="manifest"> 
+    <link rel="icon" href="https://i.postimg.cc/GpPsSmmX/4491470.png" type="image/png">
+    <meta name="theme-color" content="#06b6d4">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Lunaria Mining Premium">
+    <link rel="apple-touch-icon" href="https://i.postimg.cc/GpPsSmmX/4491470.png">
+    
     <style>
-        /* Definición de variables CSS para un tema oscuro profesional */
         :root {
-            --primary-blue: #60A5FA; /* Un azul claro y vibrante para resaltar sobre fondos oscuros */
-            --secondary-dark: #1F2937; /* Un gris muy oscuro, casi negro, para fondos principales */
-            --card-dark-bg: #374151; /* Un gris oscuro para las tarjetas y elementos de superficie */
-            --text-light: #E5E7EB; /* Gris muy claro para el texto general */
-            --text-muted: #9CA3AF; /* Gris medio para texto secundario o menos prominente */
-            --chatbot-purple: #8B5CF6; /* Un color distintivo para el botón del chatbot */
-        }
-        /* Clases de utilidad de color basadas en variables para el modo oscuro */
-        .bg-primary-dark { background-color: var(--secondary-dark); }
-        .bg-card-dark { background-color: var(--card-dark-bg); }
-        .text-light { color: var(--text-light); }
-        .text-primary-blue { color: var(--primary-blue); }
-        .border-primary-blue { border-color: var(--primary-blue); }
-        .text-muted { color: var(--text-muted); }
-
-        /* Efecto de elevación al pasar el ratón, adaptado al modo oscuro */
-        .hover-lift { transition: transform 0.3s ease, box-shadow 0.3s ease; }
-        .hover-lift:hover { transform: translateY(-5px); box-shadow: 0 15px 20px -5px rgba(0, 0, 0, 0.4); } /* Sombra más oscura */
-        
-        /* Fondo con degradado lineal, adaptado al modo oscuro */
-        .gradient-bg { background: linear-gradient(135deg, var(--secondary-dark) 0%, var(--card-dark-bg) 100%); }
-        
-        /* Fondo para la sección hero con imagen y superposición de color */
-        .hero-bg { 
-            background-image: linear-gradient(rgba(31, 41, 55, 0.8), rgba(55, 65, 81, 0.8)), url('https://www.auservigroup.com/wp-content/uploads/2023/10/Uniformidad-scaled.jpg');
-            background-size: cover;
-            background-position: center;
-            background-attachment: fixed;
-        }
-        /* Ajuste para impresión */
-        @media print {
-            .hero-bg { background-attachment: scroll; }
-            .hover-lift:hover { transform: none; box-shadow: none; }
-        }
-        /* Estilos para las tarjetas de servicio, adaptados al modo oscuro */
-        .service-card {
-            transition: all 0.3s ease;
-            border: 2px solid transparent;
-        }
-        .service-card:hover {
-            border-color: var(--primary-blue);
-            transform: scale(1.02);
-        }
-        /* Relleno estándar para secciones */
-        .section-padding { padding: 80px 0; }
-        /* Estilos específicos para el texto del logo */
-        .logo-text {
-            font-family: 'Arial Black', sans-serif;
-            font-weight: 900;
-            font-size: 2.5rem;
-            color: white;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
-        }
-        /* Botón flotante de WhatsApp */
-        .whatsapp-float {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            z-index: 1000;
-            background: #25d366;
-            border-radius: 50px;
-            padding: 15px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
-            animation: pulse 2s infinite;
-            border: none; /* Elimina el borde predeterminado del botón */
-            cursor: pointer; /* Indica que es clickeable */
-        }
-        
-        /* Botón de Eva en el header */
-        .eva-header-btn {
-            background: var(--chatbot-purple);
-            border-radius: 50%;
-            padding: 8px;
-            margin-left: 12px;
-            border: none;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            animation: breathe 3s ease-in-out infinite;
-        }
-        .eva-header-btn:hover {
-            background: #7C3AED;
-            transform: scale(1.1);
-        }
-        
-        /* Animación de respiración más sutil para el header */
-        @keyframes breathe {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.05); }
-        }
-        
-        /* Animación de pulso para WhatsApp */
-        @keyframes pulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.1); }
-            100% { transform: scale(1); }
+            --primary-bg: #0f172a;
+            --secondary-bg: #1e293b;
+            --card-bg: #334155;
+            --text-primary: #f1f5f9;
+            --text-secondary: #94a3b8;
+            --accent: #0ea5e9;
+            --accent-hover: #0284c7;
+            --success: #22c55e;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --border: #475569;
+            --shadow: rgba(0, 0, 0, 0.5);
         }
 
-        /* Estilos para el modal del chatbot */
-        .modal {
-            display: none !important; /* Oculto por defecto con !important */
-            position: fixed; /* Posición fija para cubrir toda la pantalla */
-            inset: 0; /* Cubre todo el viewport */
-            background-color: rgba(0, 0, 0, 0.75); /* Fondo semitransparente oscuro */
-            align-items: center; /* Centrado vertical */
-            justify-content: center; /* Centrado horizontal */
-            z-index: 1001; /* Mayor que los botones flotantes */
-            padding: 1rem; /* Espacio alrededor del modal en móviles */
+        [data-theme="light"] {
+            --primary-bg: #f8fafc;
+            --secondary-bg: #f1f5f9;
+            --card-bg: #ffffff;
+            --text-primary: #1e293b;
+            --text-secondary: #64748b;
+            --accent: #0ea5e9;
+            --accent-hover: #0284c7;
+            --success: #22c55e;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --border: #e2e8f0;
+            --shadow: rgba(0, 0, 0, 0.1);
         }
-        .modal.show {
-            display: flex !important; /* Mostrar cuando tenga la clase 'show' */
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
-        .modal-content {
-            background-color: var(--card-dark-bg); /* Fondo del contenido del modal */
-            border-radius: 0.5rem; /* Bordes redondeados */
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5); /* Sombra para el modal */
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background-color: var(--primary-bg);
+            color: var(--text-primary);
+            transition: all 0.3s ease;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
+
+        .glass-effect {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .card {
+            background: var(--card-bg);
+            border-radius: 16px;
+            border: 1px solid var(--border);
+            box-shadow: 0 10px 30px var(--shadow);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
             width: 100%;
-            max-width: 32rem; /* Ancho máximo para el modal */
-            height: 80vh; /* Altura del modal, 80% del viewport height */
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+            transition: left 0.5s;
+        }
+
+        .card:hover::before {
+            left: 100%;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px var(--shadow);
+        }
+
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.875rem;
+            text-decoration: none;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+
+        .btn:hover::before {
+            width: 300px;
+            height: 300px;
+        }
+
+        .btn-primary {
+            background: var(--accent);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: var(--accent-hover);
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background: var(--secondary-bg);
+            color: var(--text-primary);
+            border: 1px solid var(--border);
+        }
+
+        .btn-secondary:hover {
+            background: var(--card-bg);
+        }
+
+        .btn-success {
+            background: var(--success);
+            color: white;
+        }
+
+        .btn-warning {
+            background: var(--warning);
+            color: white;
+        }
+
+        .btn-danger {
+            background: var(--danger);
+            color: white;
+        }
+
+        .btn-small {
+            padding: 0.5rem;
+            font-size: 0.8rem;
+            min-width: 35px;
+            height: 35px;
+        }
+
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .modal.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal-content {
+            background: var(--card-bg);
+            border-radius: 20px;
+            border: 1px solid var(--border);
+            padding: 2rem;
+            max-width: 90vw;
+            max-height: 90vh;
+            overflow-y: auto;
+            position: relative;
+            min-width: 500px;
+        }
+
+        .fullscreen-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: var(--primary-bg);
+            z-index: 2000;
             display: flex;
             flex-direction: column;
-            position: relative;
-            animation: scale-in 0.3s ease-out forwards; /* Animación de entrada */
+            justify-content: center;
+            align-items: center;
+            gap: 2rem;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
         }
-        .modal-header {
-            padding: 1rem;
-            background-color: var(--primary-blue);
+
+        .fullscreen-modal.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 0.875rem 1rem;
+            border: 2px solid var(--border);
+            border-radius: 12px;
+            background: var(--primary-bg);
+            color: var(--text-primary);
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px rgba(14, 165, 233, 0.1);
+        }
+
+        .form-select {
+            width: 100%;
+            padding: 0.875rem 1rem;
+            border: 2px solid var(--border);
+            border-radius: 12px;
+            background: var(--primary-bg);
+            color: var(--text-primary);
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .form-select:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px rgba(14, 165, 233, 0.1);
+        }
+
+        .category-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: var(--card-bg);
+            border-radius: 16px;
+            padding: 1.5rem;
+            border: 1px solid var(--border);
+            transition: all 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px var(--shadow);
+        }
+
+        .stat-value {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--accent);
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .search-filter-bar {
+            background: var(--card-bg);
+            border-radius: 16px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            border: 1px solid var(--border);
+        }
+
+        .fab {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            width: 60px;
+            height: 60px;
+            background: var(--accent);
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1.5rem;
             color: white;
-            border-top-left-radius: 0.5rem;
-            border-top-right-radius: 0.5rem;
+            box-shadow: 0 8px 30px rgba(14, 165, 233, 0.4);
+            transition: all 0.3s ease;
+            z-index: 100;
+        }
+
+        .fab:hover {
+            transform: scale(1.1);
+            box-shadow: 0 12px 40px rgba(14, 165, 233, 0.6);
+        }
+
+        .games-button {
+            position: fixed;
+            top: 2rem; /* Align with theme toggle */
+            left: 2rem; /* Position on the top left */
+            width: 50px; /* Make it circular like theme toggle */
+            height: 50px; /* Make it circular like theme toggle */
+            background-color: #22c55e; /* Green color */
+            color: white;
+            border: none;
+            border-radius: 50%; /* Make it circular */
+            cursor: pointer;
+            font-size: 1.25rem; /* Icon size */
+            box-shadow: 0 8px 30px rgba(34, 197, 94, 0.4); /* Green shadow */
+            transition: all 0.3s ease;
+            z-index: 100;
             display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .games-button:hover {
+            background-color: #16a34a; /* Darker green on hover */
+            transform: scale(1.1);
+            box-shadow: 0 12px 40px rgba(34, 197, 94, 0.6);
+        }
+
+
+        .theme-toggle {
+            position: fixed;
+            top: 2rem;
+            right: 2rem;
+            width: 50px;
+            height: 50px;
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1.25rem;
+            color: var(--text-primary);
+            transition: all 0.3s ease;
+            z-index: 100;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .theme-toggle:hover {
+            transform: scale(1.1);
+            background: var(--accent);
+            color: white;
+        }
+
+        .notification {
+            position: fixed;
+            top: 2rem;
+            right: 2rem;
+            padding: 1rem 1.5rem;
+            border-radius: 12px;
+            color: white;
+            font-weight: 600;
+            z-index: 2000;
+            transform: translateX(100%);
+            transition: transform 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .notification.show {
+            transform: translateX(0);
+        }
+
+        .notification.success {
+            background: var(--success);
+        }
+
+        .notification.error {
+            background: var(--danger);
+        }
+
+        .notification.warning {
+            background: var(--warning);
+        }
+
+        .notification.info {
+            background: var(--accent);
+        }
+
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .mining-card {
+            background: var(--card-bg);
+            border-radius: 16px;
+            border: 1px solid var(--border);
+            overflow: hidden;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .mining-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px var(--shadow);
+        }
+
+        .card-image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            object-position: center;
+        }
+
+        .card-content {
+            padding: 1.5rem;
+        }
+
+        .card-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            color: var(--text-primary);
+        }
+
+        .card-url {
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+            margin-bottom: 1rem;
+            word-break: break-all;
+        }
+
+        .card-actions {
+            display: flex;
+            gap: 0.5rem;
             justify-content: space-between;
             align-items: center;
         }
-        .modal-body {
-            flex-grow: 1; /* El cuerpo del modal ocupa el espacio restante */
-            overflow: hidden; /* Asegura que el iframe no desborde */
+
+        .card-header {
+            position: relative;
             display: flex;
-            flex-direction: column;
-            border-bottom-left-radius: 0.5rem;
-            border-bottom-right-radius: 0.5rem;
-        }
-        .modal-body iframe {
-            width: 100%;
-            height: 100%;
-            border: none; /* Elimina el borde del iframe */
-            border-bottom-left-radius: 0.5rem;
-            border-bottom-right-radius: 0.5rem;
-        }
-        .modal-close-btn {
-            background: none;
-            border: none;
-            font-size: 2rem;
-            color: white;
-            cursor: pointer;
-            line-height: 1;
-            padding: 0;
-            margin-left: 1rem;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 1rem;
         }
 
-        /* Animación de escala para el modal */
-        @keyframes scale-in {
-            from {
-                transform: scale(0.9);
-                opacity: 0;
+        .export-individual-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: rgba(0, 0, 0, 0.7);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 35px;
+            height: 35px;
+            cursor: pointer;
+            font-size: 0.875rem;
+            transition: all 0.3s ease;
+            z-index: 10;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .export-individual-btn:hover {
+            background: var(--accent);
+            transform: scale(1.1);
+        }
+        
+        .share-individual-btn {
+            position: absolute;
+            top: 10px;
+            right: 55px;
+            background: rgba(0, 0, 0, 0.7);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 35px;
+            height: 35px;
+            cursor: pointer;
+            font-size: 0.875rem;
+            transition: all 0.3s ease;
+            z-index: 10;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .share-individual-btn:hover {
+            background: var(--success);
+            transform: scale(1.1);
+        }
+
+        .chart-container {
+            background: var(--card-bg);
+            border-radius: 16px;
+            padding: 1.5rem;
+            border: 1px solid var(--border);
+            margin-bottom: 2rem;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 4rem 2rem;
+            color: var(--text-secondary);
+        }
+
+        .empty-state i {
+            font-size: 4rem;
+            color: var(--accent);
+            margin-bottom: 1rem;
+        }
+
+        .filter-chips {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .filter-chip {
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            background: var(--secondary-bg);
+            color: var(--text-primary);
+            border: 1px solid var(--border);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.875rem;
+        }
+
+        .filter-chip:hover,
+        .filter-chip.active {
+            background: var(--category-color, var(--accent));
+            color: white;
+            border-color: var(--category-color, var(--accent));
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: var(--secondary-bg);
+            border-radius: 4px;
+            overflow: hidden;
+            margin-top: 1rem;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--accent), var(--success));
+            transition: width 0.3s ease;
+        }
+
+        .update-notification {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: var(--card-bg);
+            border: 2px solid var(--accent);
+            border-radius: 20px;
+            padding: 2rem;
+            z-index: 3000;
+            max-width: 600px;
+            width: 90vw;
+            text-align: center;
+            box-shadow: 0 20px 60px var(--shadow);
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .update-notification.show {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .update-notification h3 {
+            color: var(--accent);
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .update-notification p {
+            color: var(--text-secondary);
+            margin-bottom: 1.5rem;
+            line-height: 1.6;
+        }
+
+        .storage-permission-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 3000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .storage-permission-modal.show {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .storage-permission-content {
+            background: var(--card-bg);
+            border-radius: 20px;
+            padding: 3rem;
+            max-width: 600px;
+            width: 90vw;
+            text-align: center;
+            border: 2px solid var(--accent);
+        }
+
+        .menu-button {
+            width: 200px;
+            height: 200px;
+            border-radius: 20px;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 1rem;
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+
+        .menu-button:hover {
+            transform: scale(1.05);
+        }
+
+        .menu-button.faucet-button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .menu-button.add-button {
+            background: var(--accent);
+            color: white;
+        }
+
+        .menu-button.export-button {
+            background: var(--success);
+            color: white;
+        }
+
+        .faucet-logo {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .close-menu-btn {
+            position: absolute;
+            top: 2rem;
+            right: 2rem;
+            background: var(--danger);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .close-menu-btn:hover {
+            transform: scale(1.1);
+        }
+
+        .import-progress {
+            background: var(--secondary-bg);
+            border-radius: 8px;
+            padding: 1rem;
+            margin-top: 1rem;
+            display: none;
+        }
+
+        .import-progress.show {
+            display: block;
+        }
+
+        .import-log {
+            background: var(--primary-bg);
+            border-radius: 8px;
+            padding: 1rem;
+            max-height: 200px;
+            overflow-y: auto;
+            font-family: monospace;
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            margin-top: 1rem;
+        }
+
+        .import-log .success {
+            color: var(--success);
+        }
+
+        .import-log .error {
+            color: var(--danger);
+        }
+
+        .import-log .warning {
+            color: var(--warning);
+        }
+        
+        .share-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1500;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .share-modal.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .share-content {
+            background: var(--card-bg);
+            border-radius: 20px;
+            border: 1px solid var(--border);
+            padding: 2rem;
+            max-width: 90vw;
+            width: 500px;
+            position: relative;
+        }
+        
+        .share-options {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+        
+        .share-option {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 1rem;
+            border-radius: 12px;
+            background: var(--secondary-bg);
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        
+        .share-option:hover {
+            transform: translateY(-3px);
+            background: var(--accent);
+            color: white;
+        }
+        
+        .share-option i {
+            font-size: 1.5rem;
+        }
+        
+        .share-preview {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-top: 1rem;
+            padding: 1rem;
+            border-radius: 12px;
+            background: var(--secondary-bg);
+        }
+        
+        .share-preview img {
+            width: 60px;
+            height: 60px;
+            border-radius: 8px;
+            object-fit: cover;
+        }
+
+        .pulse-animation {
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+                opacity: 1;
             }
-            to {
+            50% {
+                transform: scale(1.05);
+                opacity: 0.8;
+            }
+            100% {
                 transform: scale(1);
                 opacity: 1;
             }
         }
 
-        /* Efectos de sonido hover */
-        .sound-hover {
-            transition: all 0.2s ease;
+        .scale-animation {
+            animation: scale 0.3s forwards;
         }
-        .sound-hover:hover {
-            transform: translateY(-2px);
+
+        @keyframes scale {
+            0% {
+                transform: scale(0.8);
+                opacity: 0;
+            }
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 0 0.5rem;
+            }
+
+            .modal-content {
+                min-width: 0;
+                width: 95%;
+                padding: 1.5rem;
+            }
+
+            .cards-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .stats-grid {
+                grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            }
+
+            .fab {
+                bottom: 1rem;
+                right: 1rem;
+                width: 50px;
+                height: 50px;
+            }
+            
+            /* Adjust games button for mobile */
+            .games-button {
+                top: 1rem;
+                left: 1rem;
+                width: 40px;
+                height: 40px;
+                font-size: 1rem;
+            }
+
+            .theme-toggle {
+                top: 1rem;
+                right: 1rem;
+                width: 40px;
+                height: 40px;
+            }
+
+            .filter-chips {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .filter-chip {
+                text-align: center;
+            }
+
+            .fullscreen-modal {
+                gap: 1rem;
+            }
+
+            .menu-button {
+                width: 150px;
+                height: 150px;
+            }
+
+            .faucet-logo {
+                width: 60px;
+                height: 60px;
+            }
+            
+            .share-options {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        .fade-in {
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .loading-spinner {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-top: 2px solid white;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .tooltip {
+            position: absolute;
+            background: var(--secondary-bg);
+            color: var(--text-primary);
+            padding: 0.5rem;
+            border-radius: 6px;
+            font-size: 0.75rem;
+            z-index: 100;
+            pointer-events: none;
+            white-space: nowrap;
+            opacity: 0;
+            transition: opacity 0.2s ease;
+        }
+        
+        .tooltip.visible {
+            opacity: 1;
+        }
+
+        /* New styles for merge card modal */
+        .merge-card-modal-content {
+            background: var(--card-bg);
+            border-radius: 20px;
+            border: 1px solid var(--border);
+            padding: 2rem;
+            max-width: 500px;
+            width: 90vw;
+            text-align: center;
+            position: relative;
+        }
+
+        .merge-card-image {
+            width: 100px;
+            height: 100px;
+            object-fit: cover;
+            border-radius: 12px;
+            margin: 0 auto 1rem;
         }
     </style>
 </head>
-<body class="bg-primary-dark font-sans">
-    <!-- Botón flotante de WhatsApp -->
-    <a href="https://wa.me/qr/AU3Y7IQ2TRVXB1" target="_blank" class="whatsapp-float sound-hover">
-        <i class="fab fa-whatsapp text-white text-2xl"></i>
-    </a>
-
-    <!-- Modal del Chatbot Eva -->
-    <div id="chatbotModal" class="modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h3 class="text-xl font-bold">Asistente Virtual Eva</h3>
-                <button id="closeChatbot" class="modal-close-btn sound-hover">&times;</button>
-            </div>
-            <div class="modal-body">
-                <iframe src="https://eva-asistente-ia-481919130962.us-west1.run.app" title="Chatbot Eva"></iframe>
+<body data-theme="dark">
+    <!-- Storage Permission Modal -->
+    <div id="storagePermissionModal" class="storage-permission-modal">
+        <div class="storage-permission-content">
+            <h2 class="text-2xl font-bold mb-4 text-blue-400">
+                <i class="fas fa-folder-plus mr-2"></i>
+                Permiso de Almacenamiento
+            </h2>
+            <p class="text-gray-300 mb-6">
+                Para garantizar que tus datos estén seguros y respaldados, necesitamos acceso a una carpeta donde guardar automáticamente tus entradas de minería. Esto te permitirá mantener un respaldo actualizado en caso de futuras actualizaciones.
+            </p>
+            <div class="flex gap-4 justify-center">
+                <button class="btn btn-primary" onclick="requestStoragePermission()">
+                    <i class="fas fa-check"></i>
+                    Conceder Permiso
+                </button>
+                <button class="btn btn-secondary" onclick="continueWithoutPermission()">
+                    <i class="fas fa-times"></i>
+                    Continuar sin Permiso
+                </button>
             </div>
         </div>
     </div>
 
-    <!-- Encabezado de la página -->
-    <header class="bg-card-dark shadow-lg sticky top-0 z-50">
-        <div class="container mx-auto px-4">
-            <div class="flex justify-between items-center py-4">
-                <!-- Logo de la empresa -->
-                <div class="flex items-center space-x-3">
-                    <div class="bg-primary-blue p-2 rounded-full">
-                        <i class="fas fa-shield-alt text-white text-2xl"></i>
-                    </div>
-                    <div class="logo-text">CZU SECURITY</div>
+    <!-- Main Menu Modal -->
+    <div id="mainMenuModal" class="fullscreen-modal">
+        <button class="close-menu-btn" onclick="closeMainMenu()">
+            <i class="fas fa-times"></i>
+        </button>
+        
+        <h2 class="text-3xl font-bold mb-8 text-center">
+            <i class="fas fa-ellipsis-h mr-2"></i>
+            Menú Principal
+        </h2>
+        
+        <div class="flex flex-wrap justify-center gap-8">
+            <button class="menu-button faucet-button" onclick="openFaucetPay()">
+                <img src="https://i.postimg.cc/DzTsDH2r/Picsart-25-07-12-19-06-59-338.png" alt="FaucetPay" class="faucet-logo">
+                <span>FaucetPay</span>
+            </button>
+            
+            <button class="menu-button add-button" onclick="openAddModal(); closeMainMenu()">
+                <i class="fas fa-plus" style="font-size: 3rem;"></i>
+                <span>Agregar Página</span>
+            </button>
+            
+            <button class="menu-button export-button" onclick="openExportModal(); closeMainMenu()">
+                <i class="fas fa-download" style="font-size: 3rem;"></i>
+                <span>Exportar/Importar</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- Update Notification -->
+    <div id="updateNotification" class="update-notification">
+        <h3 id="updateNotificationTitle"><i class="fas fa-sparkles mr-2"></i></h3>
+        <p id="updateNotificationDescription"></p>
+        <button class="btn btn-primary" onclick="closeUpdateNotification()">
+            <i class="fas fa-check"></i>
+            ¡Entendido!
+        </button>
+    </div>
+
+    <!-- Theme Toggle -->
+    <button class="theme-toggle" onclick="toggleTheme()" aria-label="Cambiar tema">
+        <i id="themeIcon" class="fas fa-moon"></i>
+    </button>
+
+    <!-- "Tus juegos" Button (Moved to top-left) -->
+    <button class="games-button" onclick="window.location.href='juegosluminaria.html'" aria-label="Tus juegos">
+        <i class="fas fa-gamepad"></i>
+    </button>
+
+    <!-- Header -->
+    <header class="bg-gradient-to-r from-blue-600 to-purple-600 text-white py-8">
+        <div class="container">
+            <div class="text-center">
+                <div class="flex justify-center items-center gap-4 mb-4">
+                    <img src="https://i.postimg.cc/GpPsSmmX/4491470.png" alt="Logo" class="w-16 h-16">
+                    <h1 class="text-5xl font-bold">Lunaria Mining Premium</h1>
                 </div>
-                
-                <!-- Navegación principal (oculta en móviles) -->
-                <nav class="hidden md:flex space-x-8">
-                    <a href="#inicio" class="text-light hover:text-primary-blue transition duration-300 font-medium sound-hover">Inicio</a>
-                    <a href="#nosotros" class="text-light hover:text-primary-blue transition duration-300 font-medium sound-hover">Nosotros</a>
-                    <a href="#servicios" class="text-light hover:text-primary-blue transition duration-300 font-medium sound-hover">Servicios</a>
-                </nav>
-                
-                <!-- Botón de WhatsApp en el encabezado (visible en escritorio) -->
-                <div class="hidden lg:flex items-center space-x-4">
-                    <a href="https://wa.me/qr/AU3Y7IQ2TRVXB1" target="_blank" class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-full flex items-center space-x-2 transition duration-300 sound-hover">
-                        <i class="fab fa-whatsapp"></i>
-                        <span>WhatsApp</span>
-                    </a>
-                </div>
-                
-                <!-- Botones de menú móvil y Eva -->
-                <div class="flex items-center md:hidden">
-                    <!-- Botón de Eva en el header -->
-                    <button id="openChatbot" class="eva-header-btn sound-hover" title="Abrir Asistente Eva">
-                        <i class="fas fa-robot text-white text-sm"></i>
-                    </button>
-                    <!-- Botón de menú móvil -->
-                    <button class="text-light ml-3 sound-hover">
-                        <i class="fas fa-bars text-xl"></i>
-                    </button>
-                </div>
+                <p class="text-xl opacity-90">Gestión avanzada de entradas de minería con estadísticas y categorías</p>
             </div>
         </div>
     </header>
 
-    <!-- Sección Hero - La primera vista de la página -->
-    <section id="inicio" class="hero-bg min-h-screen flex items-center text-light">
-        <div class="container mx-auto px-4 text-center">
-            <h1 class="text-5xl md:text-7xl font-bold mb-6 animate-fade-in">
-                Protegemos lo que más <span class="text-primary-blue">Importa</span>
-            </h1>
-            <p class="text-xl md:text-2xl mb-8 max-w-3xl mx-auto text-muted">
-                Servicios integrales de seguridad con el más alto nivel de profesionalismo y confianza. 
-                Tu tranquilidad es nuestra prioridad.
-            </p>
-            <div class="flex flex-col sm:flex-row gap-4 justify-center">
-                <a href="#servicios" class="bg-primary-blue hover:bg-blue-700 text-white px-8 py-4 rounded-full text-lg font-semibold transition duration-300 hover-lift sound-hover">
-                    Ver Servicios
-                </a>
-                <!-- Botón de WhatsApp en la sección Hero -->
-                <a href="https://wa.me/qr/AU3Y7IQ2TRVXB1" target="_blank" class="bg-green-500 hover:bg-green-600 text-white px-8 py-4 rounded-full text-lg font-semibold transition duration-300 hover-lift sound-hover">
-                    <i class="fab fa-whatsapp mr-2"></i>Contactar Ahora
-                </a>
+    <!-- Statistics Dashboard -->
+    <section class="py-8">
+        <div class="container">
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-value" id="totalEntries">0</div>
+                    <div class="stat-label">Total Entradas</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="totalCategories">0</div>
+                    <div class="stat-label">Categorías</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="activeEntries">0</div>
+                    <div class="stat-label">Entradas Activas</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="recentEntries">0</div>
+                    <div class="stat-label">Añadidas Hoy</div>
+                </div>
             </div>
-        </div>
-    </section>
 
-    <!-- Sección "Nosotros" - Información sobre la empresa -->
-    <section id="nosotros" class="section-padding bg-primary-dark">
-        <div class="container mx-auto px-4">
-            <div class="text-center mb-16">
-                <h2 class="text-4xl md:text-5xl font-bold text-light mb-6">Sobre CZU Security</h2>
-                <div class="w-24 h-1 bg-primary-blue mx-auto mb-8"></div>
-                <p class="text-xl text-muted max-w-4xl mx-auto">
-                    Somos una empresa líder en servicios de seguridad integral, comprometida con brindar 
-                    protección y tranquilidad a nuestros clientes a través de soluciones personalizadas 
-                    y personal altamente capacitado.
-                </p>
-            </div>
-            
-            <!-- Tarjetas de valores de la empresa -->
-            <div class="grid md:grid-cols-3 gap-8">
-                <div class="text-center p-8 bg-card-dark rounded-lg shadow-lg hover-lift sound-hover">
-                    <div class="bg-primary-blue text-white w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-6">
-                        <i class="fas fa-medal text-2xl"></i>
+            <!-- Charts -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+                <!-- Chart for Most Used Pages -->
+                <div class="chart-container">
+                    <h3 class="text-xl font-bold mb-4">Páginas Más Usadas</h3>
+                    <div style="height: 300px;">
+                        <canvas id="pageUsageChart"></canvas>
                     </div>
-                    <h3 class="text-2xl font-bold text-light mb-4">Profesionalismo</h3>
-                    <p class="text-muted">Personal altamente capacitado y certificado para brindar servicios de la más alta calidad.</p>
                 </div>
-                
-                <div class="text-center p-8 bg-card-dark rounded-lg shadow-lg hover-lift sound-hover">
-                    <div class="bg-primary-blue text-white w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-6">
-                        <i class="fas fa-handshake text-2xl"></i>
+                <!-- Chart for Most Used Categories -->
+                <div class="chart-container">
+                    <h3 class="text-xl font-bold mb-4">Categorías Más Usadas</h3>
+                    <div style="height: 300px;">
+                        <canvas id="categoryUsageChart"></canvas>
                     </div>
-                    <h3 class="text-2xl font-bold text-light mb-4">Confianza</h3>
-                    <p class="text-muted">Construimos relaciones duraderas basadas en la transparencia y el cumplimiento de compromisos.</p>
-                </div>
-                
-                <div class="text-center p-8 bg-card-dark rounded-lg shadow-lg hover-lift sound-hover">
-                    <div class="bg-primary-blue text-white w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-6">
-                        <i class="fas fa-heart text-2xl"></i>
-                    </div>
-                    <h3 class="text-2xl font-bold text-light mb-4">Compromiso</h3>
-                    <p class="text-muted">Dedicación total para garantizar la seguridad y satisfacción de cada uno de nuestros clientes.</p>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Sección de Servicios - Detalle de los servicios ofrecidos -->
-    <section id="servicios" class="section-padding bg-primary-dark">
-        <div class="container mx-auto px-4">
-            <div class="text-center mb-16">
-                <h2 class="text-4xl md:text-5xl font-bold text-light mb-6">Nuestros Servicios de Seguridad</h2>
-                <div class="w-24 h-1 bg-primary-blue mx-auto mb-8"></div>
-                <p class="text-xl text-muted max-w-3xl mx-auto">
-                    Ofrecemos servicios especializados enfocados en la protección y vigilancia, adaptados a sus necesidades.
-                </p>
-            </div>
-
-            <!-- Servicio: Oficiales de Seguridad -->
-            <div class="service-card bg-card-dark rounded-xl shadow-lg overflow-hidden mb-12 sound-hover">
-                <div class="md:flex">
-                    <div class="md:w-1/2">
-                        <img src="https://www.auservigroup.com/wp-content/uploads/2023/10/Uniformidad-scaled.jpg" alt="Oficiales de Seguridad" class="w-full h-80 md:h-full object-cover">
-                    </div>
-                    <div class="md:w-1/2 p-8 md:p-12 flex items-center">
-                        <div>
-                            <h3 class="text-3xl font-bold text-primary-blue mb-6">Oficiales de Seguridad</h3>
-                            <p class="text-light text-lg leading-relaxed mb-6">
-                                En CZU Security, ofrecemos oficiales de seguridad altamente capacitados y entrenados para proteger tanto a personas como a propiedades. Nuestros oficiales están preparados para gestionar situaciones de riesgo, brindar respuesta ante emergencias y garantizar la tranquilidad en cualquier entorno. Proporcionamos patrullajes preventivos, control de accesos, vigilancia en tiempo real y apoyo en la implementación de medidas de seguridad personalizadas para cada cliente, ya sea en residencias, empresas o instalaciones industriales.
-                            </p>
-                            <ul class="text-light space-y-2">
-                                <li><i class="fas fa-check text-primary-blue mr-2"></i>Patrullajes preventivos</li>
-                                <li><i class="fas fa-check text-primary-blue mr-2"></i>Control de accesos</li>
-                                <li><i class="fas fa-check text-primary-blue mr-2"></i>Vigilancia en tiempo real</li>
-                                <li><i class="fas fa-check text-primary-blue mr-2"></i>Respuesta ante emergencias</li>
-                            </ul>
+    <!-- Search and Filter Bar -->
+    <section class="py-4">
+        <div class="container">
+            <div class="search-filter-bar">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+                    <div>
+                        <label class="block text-sm font-medium mb-2">Buscar</label>
+                        <div class="relative">
+                            <i class="fas fa-search absolute left-3 top-3 text-gray-400"></i>
+                            <input type="text" id="searchInput" class="form-input pl-10" placeholder="Buscar entradas...">
                         </div>
                     </div>
-                </div>
-            </div>
-
-            <!-- Servicio: Portería -->
-            <div class="service-card bg-card-dark rounded-xl shadow-lg overflow-hidden mb-12 sound-hover">
-                <div class="md:flex">
-                    <div class="md:w-1/2 md:order-2">
-                        <img src="https://coldomotica.com/images/2018/06/20/control_de_acceso_vehicular.jpg" alt="Servicio de Portería" class="w-full h-80 md:h-full object-cover">
+                    <div>
+                        <label class="block text-sm font-medium mb-2">Categoría</label>
+                        <select id="categoryFilter" class="form-select">
+                            <option value="">Todas las categorías</option>
+                            <option value="faucet">Faucets</option>
+                            <option value="mining">Mining</option>
+                            <option value="staking">Staking</option>
+                            <option value="defi">DeFi</option>
+                            <option value="trading">Trading</option>
+                            <option value="shorlin">Shorlin Fause</option>
+                            <option value="pago">Pago</option>
+                            <option value="other">Otros</option>
+                        </select>
                     </div>
-                    <div class="md:w-1/2 p-8 md:p-12 flex items-center">
-                        <div>
-                            <h3 class="text-3xl font-bold text-primary-blue mb-6">Portería de Seguridad</h3>
-                            <p class="text-light text-lg leading-relaxed mb-6">
-                                El servicio de portería de CZU Security está diseñado para ofrecer control de acceso y vigilancia permanente en entradas y salidas de edificios, condominios, urbanizaciones o instalaciones empresariales. Nuestros porteros son responsables de gestionar el ingreso de visitantes, vehículos y mercancías, siguiendo procedimientos de seguridad rigurosos y garantizando un ambiente organizado y seguro.
-                            </p>
-                            <ul class="text-light space-y-2">
-                                <li><i class="fas fa-check text-primary-blue mr-2"></i>Control de acceso vehicular y peatonal</li>
-                                <li><i class="fas fa-check text-primary-blue mr-2"></i>Gestión de visitantes con protocolos de seguridad</li>
-                                <li><i class="fas fa-check text-primary-blue mr-2"></i>Monitoreo de entradas y salidas</li>
-                                <li><i class="fas fa-check text-primary-blue mr-2"></i>Registro detallado de actividades</li>
-                            </ul>
-                        </div>
+                    <div>
+                        <label class="block text-sm font-medium mb-2">Ordenar por</label>
+                        <select id="sortBy" class="form-select">
+                            <option value="newest">Más recientes</option>
+                            <option value="oldest">Más antiguos</option>
+                            <option value="name">Nombre A-Z</option>
+                            <option value="category">Categoría</option>
+                        </select>
                     </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Sección de Ventajas Competitivas -->
-    <section class="section-padding bg-primary-dark">
-        <div class="container mx-auto px-4">
-            <div class="text-center mb-16">
-                <h2 class="text-4xl md:text-5xl font-bold text-light mb-6">¿Por qué elegir CZU Security?</h2>
-                <div class="w-24 h-1 bg-primary-blue mx-auto mb-8"></div>
-            </div>
-            
-            <!-- Tarjetas de ventajas -->
-            <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-                <div class="text-center p-6 bg-card-dark rounded-lg shadow-lg hover-lift sound-hover">
-                    <div class="bg-primary-blue text-white w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
-                        <i class="fas fa-graduation-cap text-2xl"></i>
-                    </div>
-                    <h3 class="text-xl font-bold text-light mb-2">Personal Capacitado</h3>
-                    <p class="text-muted text-sm">Equipo altamente entrenado y certificado en seguridad</p>
                 </div>
                 
-                <div class="text-center p-6 bg-card-dark rounded-lg shadow-lg hover-lift sound-hover">
-                    <div class="bg-primary-blue text-white w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
-                        <i class="fas fa-clock text-2xl"></i>
+                <div class="filter-chips">
+                    <div class="filter-chip active" data-category="">Todas</div>
+                    <div class="filter-chip" data-category="faucet">
+                        <i class="fas fa-tint"></i> Faucets
                     </div>
-                    <h3 class="text-xl font-bold text-light mb-2">Vigilancia 24/7</h3>
-                    <p class="text-muted text-sm">Disponibilidad completa todos los días del año</p>
-                </div>
-                
-                <div class="text-center p-6 bg-card-dark rounded-lg shadow-lg hover-lift sound-hover">
-                    <div class="bg-primary-blue text-white w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
-                        <i class="fas fa-shield-alt text-2xl"></i>
+                    <div class="filter-chip" data-category="mining">
+                        <i class="fas fa-pickaxe"></i> Mining
                     </div>
-                    <h3 class="text-xl font-bold text-light mb-2">Cobertura Integral</h3>
-                    <p class="text-muted text-sm">Servicios completos de protección y seguridad</p>
-                </div>
-                
-                <div class="text-center p-6 bg-card-dark rounded-lg shadow-lg hover-lift sound-hover">
-                    <div class="bg-primary-blue text-white w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
-                        <i class="fas fa-laptop text-2xl"></i>
+                    <div class="filter-chip" data-category="staking">
+                        <i class="fas fa-coins"></i> Staking
                     </div>
-                    <h3 class="text-xl font-bold text-light mb-2">Tecnología Avanzada</h3>
-                    <p class="text-muted text-sm">Uso de equipos de última generación para la seguridad</p>
+                    <div class="filter-chip" data-category="defi">
+                        <i class="fas fa-chart-line"></i> DeFi
+                    </div>
+                    <div class="filter-chip" data-category="trading">
+                        <i class="fas fa-exchange-alt"></i> Trading
+                    </div>
+                    <div class="filter-chip" data-category="shorlin">
+                        <i class="fas fa-briefcase"></i> Shorlin Fause
+                    </div>
+                    <div class="filter-chip" onclick="window.location.href='luminariapagos.html'">
+                        <i class="fas fa-money-bill-wave"></i> Pago
+                    </div>
+                    <div class="filter-chip" data-category="other">
+                        <i class="fas fa-ellipsis-h"></i> Otros
+                    </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Pie de página -->
-    <footer class="bg-card-dark text-light py-12">
-        <div class="container mx-auto px-4">
-            <div class="grid md:grid-cols-3 gap-8">
-                <!-- Sección del logo en el pie de página -->
+    <!-- Main Content -->
+    <main class="py-8">
+        <div class="container">
+            <!-- Empty State -->
+            <div id="emptyState" class="empty-state">
+                <i class="fas fa-gem"></i>
+                <h3 class="text-2xl font-bold mb-2">No hay entradas de minería</h3>
+                <p class="mb-4">Comienza agregando tu primera entrada de minería</p>
+                <button class="btn btn-primary" onclick="openAddModal()">
+                    <i class="fas fa-plus"></i>
+                    Agregar Primera Entrada
+                </button>
+            </div>
+
+            <!-- Cards Grid -->
+            <div id="cardsGrid" class="cards-grid"></div>
+        </div>
+    </main>
+
+    <!-- More Button FAB -->
+    <button class="fab" onclick="openMainMenu()" aria-label="Menú principal">
+        <i class="fas fa-ellipsis-h"></i>
+    </button>
+    
+    <!-- Tooltip -->
+    <div id="tooltip" class="tooltip"></div>
+
+    <!-- Add/Edit Modal -->
+    <div id="addModal" class="modal">
+        <div class="modal-content">
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="text-2xl font-bold text-blue-400">
+                    <i class="fas fa-plus mr-2"></i>
+                    <span id="modalTitle">Agregar Entrada de Minería</span>
+                </h2>
+                <button class="text-gray-400 hover:text-white text-2xl" onclick="closeAddModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+
+            <form id="miningForm" class="space-y-6">
                 <div>
-                    <div class="flex items-center space-x-3 mb-6">
-                        <div class="bg-primary-blue p-2 rounded-full">
-                            <i class="fas fa-shield-alt text-white text-xl"></i>
-                        </div>
-                        <h3 class="text-xl font-bold">CZU SECURITY</h3>
+                    <label class="block text-sm font-medium mb-2">Imagen de Portada</label>
+                    <div class="border-2 border-dashed border-gray-600 rounded-lg p-6 text-center cursor-pointer hover:border-blue-500 transition-colors" onclick="document.getElementById('imageInput').click()">
+                        <img id="imagePreview" class="w-full max-w-sm h-48 object-cover rounded-lg mx-auto mb-4" src="https://i.postimg.cc/GpPsSmmX/4491470.png" alt="Preview">
+                        <p class="text-gray-400">
+                            <i class="fas fa-upload mr-2"></i>
+                            Hacer clic para cambiar imagen
+                        </p>
                     </div>
-                    <p class="text-muted mb-4">
-                        Protección y tranquilidad para lo que más importa. Servicios de seguridad integral con el más alto nivel de profesionalismo.
-                    </p>
+                    <input type="file" id="imageInput" accept="image/*" style="display: none;" onchange="handleImageUpload(event)">
                 </div>
-                
-                <!-- Sección de servicios en el pie de página -->
+
                 <div>
-                    <h4 class="text-lg font-semibold mb-4">Servicios</h4>
-                    <ul class="space-y-2 text-muted">
-                        <li><a href="#servicios" class="hover:text-primary-blue transition duration-300 sound-hover">Oficiales de Seguridad</a></li>
-                        <li><a href="#servicios" class="hover:text-primary-blue transition duration-300 sound-hover">Portería de Seguridad</a></li>
-                    </ul>
+                    <label class="block text-sm font-medium mb-2">Nombre *</label>
+                    <input type="text" id="nameInput" class="form-input" placeholder="Nombre de la entrada" maxlength="100" required>
+                    <div id="nameError" class="text-red-500 text-sm mt-1"></div>
                 </div>
-                
-                <!-- Sección de enlaces en el pie de página -->
+
                 <div>
-                    <h4 class="text-lg font-semibold mb-4">Enlaces</h4>
-                    <ul class="space-y-2 text-muted">
-                        <li><a href="#inicio" class="hover:text-primary-blue transition duration-300 sound-hover">Inicio</a></li>
-                        <li><a href="#nosotros" class="hover:text-primary-blue transition duration-300 sound-hover">Nosotros</a></li>
-                        <li><a href="#servicios" class="hover:text-primary-blue transition duration-300 sound-hover">Servicios</a></li>
-                    </ul>
+                    <label class="block text-sm font-medium mb-2">Categoría *</label>
+                    <select id="categoryInput" class="form-select" required>
+                        <option value="">Seleccionar categoría</option>
+                        <option value="faucet">Faucets</option>
+                        <option value="mining">Mining</option>
+                        <option value="staking">Staking</option>
+                        <option value="defi">DeFi</option>
+                        <option value="trading">Trading</option>
+                        <option value="shorlin">Shorlin Fause</option>
+                        <option value="other">Otros</option>
+                    </select>
+                    <div id="categoryError" class="text-red-500 text-sm mt-1"></div>
+                </div>
+
+                <div>
+                    <label class="block text-sm font-medium mb-2">URL</label>
+                    <input type="url" id="urlInput" class="form-input" placeholder="https://ejemplo.com">
+                    <div id="urlError" class="text-red-500 text-sm mt-1"></div>
+                </div>
+
+                <div>
+                    <label class="block text-sm font-medium mb-2">Descripción (Opcional)</label>
+                    <textarea id="descriptionInput" class="form-input" rows="3" placeholder="Descripción breve de la entrada"></textarea>
+                </div>
+
+                <div>
+                    <label class="block text-sm font-medium mb-2">Etiquetas (Opcional)</label>
+                    <input type="text" id="tagsInput" class="form-input" placeholder="bitcoin, ethereum, defi (separadas por comas)">
+                </div>
+
+                <div class="flex gap-4 justify-end">
+                    <button type="button" class="btn btn-secondary" onclick="closeAddModal()">
+                        <i class="fas fa-times"></i>
+                        Cancelar
+                    </button>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-save"></i>
+                        <span id="saveButtonText">Guardar</span>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- View Entry Modal -->
+    <div id="viewModal" class="modal">
+        <div class="modal-content">
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="text-2xl font-bold text-blue-400">
+                    <i class="fas fa-eye mr-2"></i>
+                    Detalles de la Entrada
+                </h2>
+                <button class="text-gray-400 hover:text-white text-2xl" onclick="closeViewModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div id="viewContent"></div>
+        </div>
+    </div>
+
+    <!-- Confirm Modal -->
+    <div id="confirmModal" class="modal">
+        <div class="modal-content">
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="text-2xl font-bold text-red-400">
+                    <i class="fas fa-exclamation-triangle mr-2"></i>
+                    Confirmar Acción
+                </h2>
+            </div>
+            <p id="confirmMessage" class="mb-6 text-lg"></p>
+            <div class="flex gap-4 justify-end">
+                <button class="btn btn-secondary" onclick="closeConfirmModal()">
+                    <i class="fas fa-times"></i>
+                    Cancelar
+                    </button>
+                <button class="btn btn-danger" onclick="confirmAction()">
+                    <i class="fas fa-check"></i>
+                    Confirmar
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Share Modal -->
+    <div id="shareModal" class="share-modal">
+        <div class="share-content">
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="text-2xl font-bold text-green-400">
+                    <i class="fas fa-share-alt mr-2"></i>
+                    Compartir Entrada
+                </h2>
+                <button class="text-gray-400 hover:text-white text-2xl" onclick="closeShareModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            
+            <div id="sharePreview" class="share-preview">
+                <img id="shareImage" src="https://i.postimg.cc/GpPsSmmX/4491470.png" alt="Vista previa">
+                <div>
+                    <h3 id="shareName" class="font-bold">Nombre de entrada</h3>
+                    <p id="shareCategory" class="text-sm text-gray-400">Categoría</p>
                 </div>
             </div>
             
-            <hr class="border-gray-700 my-8">
-            
-            <!-- Derechos de autor -->
-            <div class="text-center text-muted">
-                <p>&copy; 2024 CZU Security. Todos los derechos reservados. | Protección y seguridad integral</p>
+            <div class="share-options">
+                <div class="share-option" onclick="shareViaWebShare()">
+                    <i class="fas fa-share-alt"></i>
+                    <span>Compartir</span>
+                </div>
+                <div class="share-option" onclick="shareViaWhatsApp()">
+                    <i class="fab fa-whatsapp"></i>
+                    <span>WhatsApp</span>
+                </div>
+                <div class="share-option" onclick="shareViaTelegram()">
+                    <i class="fab fa-telegram"></i>
+                    <span>Telegram</span>
+                </div>
+                <div class="share-option" onclick="shareViaMessenger()">
+                    <i class="fab fa-facebook-messenger"></i>
+                    <span>Messenger</span>
+                </div>
+                <div class="share-option" onclick="shareViaEmail()">
+                    <i class="fas fa-envelope"></i>
+                    <span>Email</span>
+                </div>
+                <div class="share-option" onclick="copyShareLink()">
+                    <i class="fas fa-copy"></i>
+                    <span>Copiar Link</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- New Merge Card Modal -->
+    <div id="mergeCardModal" class="modal">
+        <div class="merge-card-modal-content">
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="text-2xl font-bold text-blue-400">
+                    <i class="fas fa-handshake mr-2"></i>
+                    ¡Tarjeta Recibida!
+                </h2>
+                <button class="text-gray-400 hover:text-white text-2xl" onclick="cancelMerge()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <p class="mb-4 text-gray-300">¿Quieres unir esta tarjeta a tu colección?</p>
+            <div class="flex flex-col items-center gap-4 mb-6">
+                <img id="mergeCardImage" src="https://i.postimg.cc/GpPsSmmX/4491470.png" alt="Card Preview" class="merge-card-image">
+                <h3 id="mergeCardName" class="font-bold text-xl">Nombre de la Tarjeta</h3>
+                <p id="mergeCardCategory" class="text-sm text-gray-400">Categoría: </p>
+                <p id="mergeCardUrl" class="text-xs text-gray-500 truncate w-full"></p>
+            </div>
+            <div class="flex gap-4 justify-center">
+                <button class="btn btn-primary" onclick="mergeReceivedCard()">
+                    <i class="fas fa-check"></i>
+                    Unir Tarjeta
+                </button>
+                <button class="btn btn-secondary" onclick="cancelMerge()">
+                    <i class="fas fa-times"></i>
+                    Cancelar
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Export/Import Modal -->
+    <div id="exportModal" class="modal">
+        <div class="modal-content">
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="text-2xl font-bold text-blue-400">
+                    <i class="fas fa-download mr-2"></i>
+                    Exportar/Importar Datos
+                </h2>
+                <button class="text-gray-400 hover:text-white text-2xl" onclick="closeExportModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="space-y-6">
+                <div>
+                    <h3 class="text-lg font-semibold mb-4">Exportar Datos</h3>
+                    <div class="flex gap-4">
+                        <button class="btn btn-primary" onclick="exportData()">
+                            <i class="fas fa-download"></i>
+                            Descargar JSON
+                        </button>
+                        <button class="btn btn-secondary" onclick="exportCSV()">
+                            <i class="fas fa-file-csv"></i>
+                            Descargar CSV
+                        </button>
+                    </div>
+                </div>
+                <div>
+                    <h3 class="text-lg font-semibold mb-4">Importar Datos</h3>
+                    <input type="file" id="importFile" accept=".json,.csv" class="form-input mb-4">
+                    <button class="btn btn-success" onclick="importData()">
+                        <i class="fas fa-upload"></i>
+                        Importar Archivo
+                    </button>
+                    
+                    <!-- Import Progress -->
+                    <div id="importProgress" class="import-progress">
+                        <div class="flex items-center justify-between mb-2">
+                            <span>Procesando archivo...</span>
+                            <div class="loading-spinner"></div>
+                        </div>
+                        <div class="progress-bar">
+                            <div id="importProgressBar" class="progress-fill" style="width: 0%"></div>
+                        </div>
+                        <div id="importLog" class="import-log"></div>
+                    </div>
+                </div>
             </div>
         </div>
     </footer>
 
     <script>
-        // Sistema de sonidos táctiles
-        const sounds = {
-            click: new Audio('data:audio/wav;base64,UklGRnoGAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQoGAACBhYqFbF1fdJivrJBhNjVgodDbq2EcBj+a2/LDciUFLIHO8tiJNwgZaLvt559NEAxQp+PwtmMcBjiR1/LMeSwFJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhCSqL0fLZdSUFKnbE7OOYQwMBcPv8AAAAcPv8AAAAcPv8AAAAcPv8AAAAcPv8AAAA'),
-            hover: new Audio('data:audio/wav;base64,UklGRnoGAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQoGAACBhYqFbF1fdJivrJBhNjVgodDbq2EcBj+a2/LDciUFLIHO8tiJNwgZaLvt559NEAxQp+PwtmMcBjiR1/LMeSwFJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhCSqL0fLZdSUFKnbE7OOYQwMBcPv8AAAAcPv8AAAAcPv8AAAAcPv8AAAAcPv8AAAA'),
-            chatbotOpen: new Audio('data:audio/wav;base64,UklGRnoGAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQoGAACBhYqFbF1fdJivrJBhNjVgodDbq2EcBj+a2/LDciUFLIHO8tiJNwgZaLvt559NEAxQp+PwtmMcBjiR1/LMeSwFJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhCSqL0fLZdSUFKnbE7OOYQwMBcPv8AAAAcPv8AAAAcPv8AAAAcPv8AAAAcPv8AAAA'),
-            chatbotClose: new Audio('data:audio/wav;base64,UklGRnoGAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQoGAACBhYqFbF1fdJivrJBhNjVgodDbq2EcBj+a2/LDciUFLIHO8tiJNwgZaLvt559NEAxQp+PwtmMcBjiR1/LMeSwFJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhCSqL0fLZdSUFKnbE7OOYQwMBcPv8AAAAcPv8AAAAcPv8AAAAcPv8AAAAcPv8AAAA')
+        // Global variables
+        let db;
+        let editingEntry = null;
+        let confirmCallback = null;
+        let pageUsageChart = null; // New global variable for page usage chart
+        let categoryUsageChart = null; // New global variable for category usage chart
+        let directoryHandle = null;
+        let storagePermissionGranted = false;
+        let currentShareEntry = null; // Holds the entry being shared
+        let currentMergeCardData = null; // Holds the card data received via URL for merging
+        let tooltipTimeout = null;
+        let currentUpdateIdShown = null; // Variable para rastrear la ID de la actualización mostrada
+
+        // Definición de las actualizaciones de la aplicación
+        const appUpdates = [
+            {
+                id: 'v1.0.0',
+                title: '¡Bienvenido a Lunaria Mining Premium!',
+                description: 'Hemos lanzado la aplicación para ayudarte a gestionar tus entradas de minería. ¡Esperamos que te sea muy útil!'
+            },
+            {
+                id: 'v1.1.0',
+                title: '¡Nuevas Funciones Disponibles!',
+                description: 'Hemos mejorado la aplicación! Ahora puedes compartir las tarjetas directamente a través de las aplicaciones de mensajería de tu dispositivo con la nueva función de compartir. Además, hemos añadido una nueva categoría <strong>"Shorlin Fause"</strong> especialmente diseñada para páginas donde puedes realizar trabajo como ver anuncios, hacer ciertas tareas, y generar ingresos adicionales.'
+            },
+            {
+                id: 'v1.2.0',
+                title: '¡Mejoras en la Interfaz y Rendimiento!',
+                description: 'Hemos optimizado la interfaz de usuario para una navegación más fluida y una experiencia visual mejorada. También se han realizado ajustes internos para un rendimiento más rápido. ¡Disfrútalo!'
+            },
+            {
+                id: 'v1.3.0',
+                title: '¡Gráficas de Uso y Notificaciones Automáticas!',
+                description: 'Ahora puedes ver las páginas y categorías que más usas en nuevas gráficas de barras dinámicas. Además, recibirás notificaciones automáticas con cada actualización importante de la aplicación. ¡Mantente al día con las novedades!'
+            },
+            {
+                id: 'v1.4.0', // ¡Esta es la nueva actualización para la integración de archivos!
+                title: '¡Integración Avanzada de Archivos!',
+                description: 'Ahora puedes **abrir directamente tus archivos JSON y CSV** con la aplicación Lunaria Mining Premium desde el explorador de archivos de tu dispositivo. También apareceremos en la opción "Abrir con" para que importar tus tarjetas sea más fácil que nunca. ¡Comparte tus datos sin esfuerzo!'
+            },
+            {
+                id: 'v1.5.0', // New update for "Eva" link sharing
+                title: '¡Compartir Tarjetas por Enlace "EVA" Mejorado!',
+                description: 'Ahora puedes compartir tus tarjetas de minería a través de un enlace especial "EVA". Cuando alguien abre este enlace, tu tarjeta se muestra y se puede agregar fácilmente a su propia colección. ¡Compartir nunca fue tan sencillo!'
+            }
+        ];
+
+        // Categories configuration with colors
+        const categories = {
+            faucet: { name: 'Faucets', icon: 'fas fa-tint', color: 'rgba(75, 192, 192, 0.8)' },
+            mining: { name: 'Mining', icon: 'fas fa-pickaxe', color: 'rgba(255, 159, 64, 0.8)' },
+            staking: { name: 'Staking', icon: 'fas fa-coins', color: 'rgba(54, 162, 235, 0.8)' },
+            defi: { name: 'DeFi', icon: 'fas fa-chart-line', color: 'rgba(153, 102, 255, 0.8)' },
+            trading: { name: 'Trading', icon: 'fas fa-exchange-alt', color: 'rgba(255, 99, 132, 0.8)' },
+            shorlin: { name: 'Shorlin Fause', icon: 'fas fa-briefcase', color: 'rgba(99, 255, 132, 0.8)' },
+            pago: { name: 'Pago', icon: 'fas fa-money-bill-wave', color: 'rgba(255, 206, 86, 0.8)' },
+            other: { name: 'Otros', icon: 'fas fa-ellipsis-h', color: 'rgba(199, 199, 199, 0.8)' }
         };
 
-        // Configurar volumen bajo para todos los sonidos
-        Object.values(sounds).forEach(sound => {
-            sound.volume = 0.3;
+        // Colors for bar charts (can be independent or derived from categories)
+        const barColors = Object.values(categories).map(c => c.color);
+
+
+        // Initialize app
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeApp();
         });
 
-        // Función para reproducir sonidos
-        function playSound(soundName) {
-            try {
-                if (sounds[soundName]) {
-                    sounds[soundName].currentTime = 0;
-                    sounds[soundName].play().catch(() => {
-                        // Ignorar errores de reproducción de audio
-                    });
+        async function initializeApp() {
+            await initializeDatabase();
+            await loadEntries();
+            setupEventListeners();
+            updateStats();
+            updateUsageCharts();
+            loadTheme();
+            checkStoragePermission();
+            checkAppUpdates();
+            setupToolTip();
+            
+            // --- MEJORA: Manejo optimizado de archivos entrantes ---
+            // Verifica si la API Launch Queue está disponible.
+            if ('launchQueue' in window) {
+                console.log('File Handling API is supported.');
+                // Establece un consumidor para la cola de lanzamiento.
+                launchQueue.setConsumer(async (launchParams) => {
+                    // Si no hay archivos, no hace nada.
+                    if (!launchParams || !launchParams.files || launchParams.files.length === 0) {
+                        return;
+                    }
+                    
+                    showNotification('Detectando archivo entrante...', 'info');
+                    
+                    // Itera sobre cada archivo recibido.
+                    for (const fileHandle of launchParams.files) {
+                        try {
+                            // Obtiene el objeto File del manejador.
+                            const file = await fileHandle.getFile();
+                            showNotification(`Procesando archivo: ${file.name}`, 'info');
+                            
+                            // Llama a la función de importación con el archivo.
+                            await importData(file);
+                            
+                        } catch (error) {
+                            console.error('Error al procesar archivo entrante:', error);
+                            showNotification(`Error al procesar el archivo: ${error.message}`, 'error');
+                        }
+                    }
+                });
+            } else {
+                console.warn('File Handling API not supported in this browser.');
+            }
+
+            // --- EVA Link Handling ---
+            // Check for 'eva' parameter in the URL
+            const urlParams = new URLSearchParams(window.location.search);
+            const evaData = urlParams.get('eva');
+            
+            if (evaData) {
+                try {
+                    const decodedData = atob(evaData);
+                    const receivedCard = JSON.parse(decodedData);
+                    
+                    // Validate received card data structure
+                    if (receivedCard && receivedCard.name && receivedCard.category) {
+                        openMergeCardModal(receivedCard);
+                    } else {
+                        showNotification('Formato de tarjeta EVA inválido', 'error');
+                        console.error('Invalid EVA card format:', receivedCard);
+                    }
+                    // Clean the URL after processing to avoid re-prompting on refresh
+                    history.replaceState({}, document.title, window.location.pathname);
+                } catch (error) {
+                    showNotification('Error al decodificar la tarjeta EVA', 'error');
+                    console.error('Error decoding EVA card:', error);
                 }
-            } catch (error) {
-                // Ignorar errores de audio
             }
         }
 
-        // Agregar eventos de sonido hover
-        document.querySelectorAll('.sound-hover').forEach(element => {
-            element.addEventListener('mouseenter', () => {
-                playSound('hover');
+        // Tooltip setup
+        function setupToolTip() {
+            const tooltip = document.getElementById('tooltip');
+            
+            document.addEventListener('mouseover', (e) => {
+                const target = e.target.closest('[data-tooltip]');
+                if (target) {
+                    const tooltipText = target.getAttribute('data-tooltip');
+                    tooltip.textContent = tooltipText;
+                    
+                    const rect = target.getBoundingClientRect();
+                    
+                    // Position tooltip above the element
+                    tooltip.style.left = `${rect.left + rect.width / 2}px`;
+                    tooltip.style.top = `${rect.top - 10}px`;
+                    tooltip.style.transform = 'translate(-50%, -100%)';
+                    
+                    clearTimeout(tooltipTimeout);
+                    tooltipTimeout = setTimeout(() => {
+                        tooltip.classList.add('visible');
+                    }, 200);
+                }
             });
             
-            element.addEventListener('click', () => {
-                playSound('click');
-            });
-        });
-
-        // Smooth scrolling para enlaces de navegación
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
-                if (target) {
-                    target.scrollIntoView({
-                        behavior: 'smooth',
-                        block: 'start'
-                    });
-                }
-            });
-        });
-
-        // Alternar menú móvil
-        const mobileMenuBtn = document.querySelector('.md\\:hidden button:last-child');
-        const nav = document.querySelector('nav');
-        
-        if (mobileMenuBtn) {
-            mobileMenuBtn.addEventListener('click', () => {
-                nav.classList.toggle('hidden');
-                playSound('click');
+            document.addEventListener('mouseout', (e) => {
+                 const target = e.target.closest('[data-tooltip]');
+                 if(target) {
+                    clearTimeout(tooltipTimeout);
+                    tooltip.classList.remove('visible');
+                 }
             });
         }
 
-        // Observador de intersección para animar elementos al hacer scroll
-        const observerOptions = {
-            threshold: 0.1,
-            rootMargin: '0px 0px -50px 0px'
+        // Storage permission functions
+        async function checkStoragePermission() {
+            const hasSeenPermission = localStorage.getItem('storagePermissionChecked');
+            if (!hasSeenPermission) {
+                setTimeout(() => {
+                    document.getElementById('storagePermissionModal').classList.add('show');
+                }, 1000);
+            } else {
+                storagePermissionGranted = localStorage.getItem('storagePermissionGranted') === 'true';
+            }
+        }
+
+        async function requestStoragePermission() {
+            try {
+                if ('showDirectoryPicker' in window) {
+                    directoryHandle = await window.showDirectoryPicker();
+                    storagePermissionGranted = true;
+                    localStorage.setItem('storagePermissionGranted', 'true');
+                    localStorage.setItem('storagePermissionChecked', 'true');
+                    showNotification('Permiso de almacenamiento concedido correctamente', 'success');
+                    
+                    await createBackup();
+                } else {
+                    showNotification('La API de sistema de archivos no está disponible en este navegador', 'warning');
+                    continueWithoutPermission();
+                }
+            } catch (error) {
+                console.error('Error requesting storage permission:', error);
+                showNotification('Error al solicitar permiso de almacenamiento', 'error');
+                continueWithoutPermission();
+            }
+            
+            document.getElementById('storagePermissionModal').classList.remove('show');
+        }
+
+        function continueWithoutPermission() {
+            localStorage.setItem('storagePermissionChecked', 'true');
+            localStorage.setItem('storagePermissionGranted', 'false');
+            document.getElementById('storagePermissionModal').classList.remove('show');
+            showNotification('Continuando sin permiso de almacenamiento', 'info');
+        }
+
+        async function createBackup() {
+            if (!storagePermissionGranted || !directoryHandle) return;
+            
+            try {
+                const entries = await getEntries();
+                const backupData = {
+                    timestamp: new Date().toISOString(),
+                    version: '1.5.0', // Updated version for backup
+                    entries: entries
+                };
+                
+                const fileName = `lunaria_backup_${new Date().toISOString().split('T')[0]}.json`;
+                const fileHandle = await directoryHandle.getFileHandle(fileName, { create: true });
+                const writable = await fileHandle.createWritable();
+                
+                await writable.write(JSON.stringify(backupData, null, 2));
+                await writable.close();
+                
+                console.log('Backup created successfully');
+            } catch (error) {
+                console.error('Error creating backup:', error);
+            }
+        }
+
+        // Menu functions
+        function openMainMenu() {
+            document.getElementById('mainMenuModal').classList.add('active');
+        }
+
+        function closeMainMenu() {
+            document.getElementById('mainMenuModal').classList.remove('active');
+        }
+
+        function openFaucetPay() {
+            window.open('https://faucetpay.io/', '_blank');
+            closeMainMenu();
+        }
+
+        async function checkAppUpdates() {
+            const lastSeenUpdateId = localStorage.getItem('lastSeenAppUpdateId');
+            const latestUpdate = appUpdates[appUpdates.length - 1];
+
+            if (latestUpdate && latestUpdate.id !== lastSeenUpdateId) {
+                document.getElementById('updateNotificationTitle').innerHTML = `<i class="fas fa-sparkles mr-2"></i> ${latestUpdate.title}`;
+                document.getElementById('updateNotificationDescription').innerHTML = latestUpdate.description;
+                document.getElementById('updateNotification').classList.add('show');
+                currentUpdateIdShown = latestUpdate.id;
+            }
+        }
+
+        function closeUpdateNotification() {
+            document.getElementById('updateNotification').classList.remove('show');
+            if (currentUpdateIdShown) {
+                localStorage.setItem('lastSeenAppUpdateId', currentUpdateIdShown);
+                currentUpdateIdShown = null;
+            }
+        }
+
+        // Share functionality
+        function openShareModal(id) {
+            getEntryById(id).then(entry => {
+                if (!entry) {
+                    showNotification('Entrada no encontrada', 'error');
+                    return;
+                }
+                
+                currentShareEntry = entry;
+                
+                document.getElementById('shareImage').src = entry.image;
+                document.getElementById('shareName').textContent = entry.name;
+                document.getElementById('shareCategory').textContent = categories[entry.category]?.name || 'Otra categoría';
+                
+                document.getElementById('shareModal').classList.add('active');
+            }).catch(error => {
+                console.error('Error getting entry for sharing:', error);
+                showNotification('Error al preparar la entrada para compartir', 'error');
+            });
+        }
+
+        function closeShareModal() {
+            document.getElementById('shareModal').classList.remove('active');
+            currentShareEntry = null;
+        }
+
+        // Function to generate the special "EVA" share link
+        function generateEvaShareLink(entry) {
+            const cardData = {
+                id: entry.id,
+                name: entry.name,
+                category: entry.category,
+                url: entry.url || '',
+                description: entry.description || '',
+                tags: entry.tags || [],
+                image: entry.image,
+                createdAt: entry.createdAt,
+                updatedAt: entry.updatedAt
+            };
+            const encodedData = btoa(JSON.stringify(cardData));
+            // Use the base URL provided by the user
+            const baseUrl = 'https://czuseguridad.github.io/';
+            return `${baseUrl}?eva=${encodedData}`;
+        }
+
+        async function shareViaWebShare() {
+            if (!currentShareEntry) return;
+            
+            if (!navigator.share) {
+                showNotification('Tu navegador no soporta la API de Compartir. Usa "Copiar Link" en su lugar.', 'warning');
+                return;
+            }
+            
+            try {
+                const shareLink = generateEvaShareLink(currentShareEntry); // Use the EVA link
+                await navigator.share({
+                    title: `${currentShareEntry.name} | Lunaria Mining`,
+                    text: `¡Mira esta tarjeta de minería de Lunaria Mining Premium! Puedes añadirla a tu colección usando este enlace:`,
+                    url: shareLink
+                });
+                
+                showNotification('¡Tarjeta compartida exitosamente!', 'success');
+                closeShareModal();
+            } catch (error) {
+                if (error.name !== 'AbortError') {
+                    showNotification('Error al compartir la tarjeta', 'error');
+                    console.error('Error sharing:', error);
+                }
+            }
+        }
+
+        function shareViaWhatsApp() {
+            if (!currentShareEntry) return;
+            const shareLink = generateEvaShareLink(currentShareEntry);
+            const text = encodeURIComponent(`¡Mira esta tarjeta de minería de Lunaria Mining Premium! Puedes añadirla a tu colección usando este enlace:\n${shareLink}`);
+            const url = `https://wa.me/?text=${text}`;
+            window.open(url, '_blank');
+            closeShareModal();
+        }
+
+        function shareViaTelegram() {
+            if (!currentShareEntry) return;
+            const shareLink = generateEvaShareLink(currentShareEntry);
+            const text = encodeURIComponent(`¡Mira esta tarjeta de minería de Lunaria Mining Premium! Puedes añadirla a tu colección usando este enlace:\n${shareLink}`);
+            const url = `https://t.me/share/url?url=${encodeURIComponent(shareLink)}&text=${text}`;
+            window.open(url, '_blank');
+            closeShareModal();
+        }
+
+        function shareViaMessenger() {
+            if (!currentShareEntry) return;
+            // Messenger share requires an app_id for custom content,
+            // For simplicity, we'll just share the link directly if no app_id is available.
+            const shareLink = generateEvaShareLink(currentShareEntry);
+            const url = `https://www.facebook.com/dialog/send?link=${encodeURIComponent(shareLink)}&redirect_uri=${encodeURIComponent(window.location.href)}`;
+            window.open(url, '_blank');
+            closeShareModal();
+        }
+
+        function shareViaEmail() {
+            if (!currentShareEntry) return;
+            const shareLink = generateEvaShareLink(currentShareEntry);
+            const subject = encodeURIComponent(`Tarjeta de Lunaria Mining Premium: ${currentShareEntry.name}`);
+            const body = encodeURIComponent(`¡Hola!\n\nQuiero compartir contigo esta tarjeta de Lunaria Mining Premium. Puedes añadirla a tu colección haciendo clic en este enlace:\n\n${shareLink}\n\nDetalles de la tarjeta:\nNombre: ${currentShareEntry.name}\nCategoría: ${categories[currentShareEntry.category]?.name || 'Otra'}\n${currentShareEntry.description ? 'Descripción: ' + currentShareEntry.description + '\n' : ''}\n\n¡Saludos!`);
+            const url = `mailto:?subject=${subject}&body=${body}`;
+            window.location.href = url;
+            closeShareModal();
+        }
+
+        function copyShareLink() {
+            if (!currentShareEntry) {
+                showNotification('No hay tarjeta seleccionada para copiar el link', 'warning');
+                return;
+            }
+            
+            const shareLink = generateEvaShareLink(currentShareEntry); // Get the EVA link
+            const textArea = document.createElement('textarea');
+            textArea.value = shareLink;
+            document.body.appendChild(textArea);
+            textArea.select();
+            
+            try {
+                document.execCommand('copy');
+                showNotification('Enlace EVA copiado al portapapeles', 'success');
+                closeShareModal();
+            } catch (error) {
+                showNotification('Error al copiar el enlace', 'error');
+                console.error('Error copying text:', error);
+            }
+            
+            document.body.removeChild(textArea);
+        }
+
+        // --- New Merge Card Functionality ---
+        function openMergeCardModal(cardData) {
+            currentMergeCardData = cardData;
+            document.getElementById('mergeCardImage').src = cardData.image || 'https://i.postimg.cc/GpPsSmmX/4491470.png';
+            document.getElementById('mergeCardName').textContent = cardData.name;
+            document.getElementById('mergeCardCategory').textContent = `Categoría: ${categories[cardData.category]?.name || 'Otro'}`;
+            document.getElementById('mergeCardUrl').textContent = cardData.url || 'No URL provided';
+            document.getElementById('mergeCardModal').classList.add('active');
+        }
+
+        async function mergeReceivedCard() {
+            if (!currentMergeCardData) {
+                showNotification('No hay tarjeta para unir', 'error');
+                return;
+            }
+
+            try {
+                const existingEntries = await getEntries();
+                let newCard = { ...currentMergeCardData }; // Create a copy
+
+                // Check for duplicate name and adjust if necessary
+                let originalName = newCard.name;
+                let counter = 1;
+                while (existingEntries.some(entry => entry.name.toLowerCase() === newCard.name.toLowerCase())) {
+                    newCard.name = `${originalName} (${counter})`;
+                    counter++;
+                }
+
+                newCard.id = generateId(); // Assign a new ID to the merged card
+                newCard.createdAt = new Date().toISOString(); // Set new creation date
+                newCard.updatedAt = new Date().toISOString(); // Set new update date
+
+                await saveEntry(newCard);
+                await loadEntries();
+                updateStats();
+                updateUsageCharts();
+                showNotification(`Tarjeta "${newCard.name}" unida correctamente`, 'success');
+                cancelMerge();
+            } catch (error) {
+                console.error('Error merging card:', error);
+                showNotification('Error al unir la tarjeta', 'error');
+            }
+        }
+
+        function cancelMerge() {
+            document.getElementById('mergeCardModal').classList.remove('active');
+            currentMergeCardData = null;
+        }
+
+        // Database functions
+        async function initializeDatabase() {
+            return new Promise((resolve, reject) => {
+                const request = indexedDB.open('LunariaMiningPremiumDB', 4);
+
+                request.onerror = () => reject(request.error);
+                request.onsuccess = () => {
+                    db = request.result;
+                    resolve();
+                };
+                
+                request.onupgradeneeded = (event) => {
+                    const db = event.target.result;
+                    
+                    if (!db.objectStoreNames.contains('entries')) {
+                        const store = db.createObjectStore('entries', { keyPath: 'id' });
+                        store.createIndex('name', 'name', { unique: false });
+                        store.createIndex('category', 'category', { unique: false });
+                        store.createIndex('createdAt', 'createdAt', { unique: false });
+                    }
+
+                    if (!db.objectStoreNames.contains('pageUsage')) {
+                        const pageUsageStore = db.createObjectStore('pageUsage', { keyPath: 'url' });
+                        pageUsageStore.createIndex('count', 'count', { unique: false });
+                    }
+
+                    if (!db.objectStoreNames.contains('categoryUsage')) {
+                        const categoryUsageStore = db.createObjectStore('categoryUsage', { keyPath: 'category' });
+                        categoryUsageStore.createIndex('count', 'count', { unique: false });
+                    }
+                };
+            });
+        }
+
+        async function saveEntry(entry) {
+            return new Promise((resolve, reject) => {
+                const transaction = db.transaction(['entries'], 'readwrite');
+                const store = transaction.objectStore('entries');
+                
+                const request = store.put(entry);
+                request.onerror = () => reject(request.error);
+                request.onsuccess = () => {
+                    resolve();
+                    if (storagePermissionGranted) {
+                        createBackup();
+                    }
+                };
+            });
+        }
+
+        async function getEntries() {
+            return new Promise((resolve, reject) => {
+                const transaction = db.transaction(['entries'], 'readonly');
+                const store = transaction.objectStore('entries');
+                
+                const request = store.getAll();
+                request.onerror = () => reject(request.error);
+                request.onsuccess = () => resolve(request.result);
+            });
+        }
+
+        async function getEntryById(id) {
+            return new Promise((resolve, reject) => {
+                const transaction = db.transaction(['entries'], 'readonly');
+                const store = transaction.objectStore('entries');
+                
+                const request = store.get(id);
+                request.onerror = () => reject(request.error);
+                request.onsuccess = () => resolve(request.result);
+            });
+        }
+
+        async function deleteEntry(id) {
+            return new Promise((resolve, reject) => {
+                const transaction = db.transaction(['entries'], 'readwrite');
+                const store = transaction.objectStore('entries');
+                
+                const request = store.delete(id);
+                request.onerror = () => reject(request.error);
+                request.onsuccess = () => {
+                    resolve();
+                    if (storagePermissionGranted) {
+                        createBackup();
+                    }
+                };
+            });
+        }
+
+        async function trackPageUsage(url, name) {
+            if (!url) return;
+            return new Promise((resolve, reject) => {
+                const transaction = db.transaction(['pageUsage'], 'readwrite');
+                const store = transaction.objectStore('pageUsage');
+                
+                const getRequest = store.get(url);
+                getRequest.onsuccess = () => {
+                    const existingEntry = getRequest.result;
+                    let count = 1;
+                    if (existingEntry) {
+                        count = existingEntry.count + 1;
+                    }
+                    const putRequest = store.put({ url: url, name: name, count: count });
+                    putRequest.onerror = () => reject(putRequest.error);
+                    putRequest.onsuccess = () => {
+                        resolve();
+                        updatePageUsageChart();
+                    };
+                };
+                getRequest.onerror = () => reject(getRequest.error);
+            });
+        }
+
+        async function trackCategoryUsage(categoryKey) {
+            if (!categoryKey) return;
+            return new Promise((resolve, reject) => {
+                const transaction = db.transaction(['categoryUsage'], 'readwrite');
+                const store = transaction.objectStore('categoryUsage');
+                
+                const getRequest = store.get(categoryKey);
+                getRequest.onsuccess = () => {
+                    const existingEntry = getRequest.result;
+                    let count = 1;
+                    if (existingEntry) {
+                        count = existingEntry.count + 1;
+                    }
+                    const putRequest = store.put({ category: categoryKey, name: categories[categoryKey]?.name || categoryKey, count: count });
+                    putRequest.onerror = () => reject(putRequest.error);
+                    putRequest.onsuccess = () => {
+                        resolve();
+                        updateCategoryUsageChart();
+                    };
+                };
+                getRequest.onerror = () => reject(getRequest.error);
+            });
+        }
+
+        async function getPageUsageStats() {
+            return new Promise((resolve, reject) => {
+                const transaction = db.transaction(['pageUsage'], 'readonly');
+                const store = transaction.objectStore('pageUsage');
+                const request = store.getAll();
+                request.onerror = () => reject(request.error);
+                request.onsuccess = () => resolve(request.result);
+            });
+        }
+
+        async function getCategoryUsageStats() {
+            return new Promise((resolve, reject) => {
+                const transaction = db.transaction(['categoryUsage'], 'readonly');
+                const store = transaction.objectStore('categoryUsage');
+                const request = store.getAll();
+                request.onerror = () => reject(request.error);
+                request.onsuccess = () => resolve(request.result);
+            });
+        }
+
+        // UI Functions
+        async function loadEntries() {
+            try {
+                const entries = await getEntries();
+                const filteredEntries = filterEntries(entries);
+                renderEntries(filteredEntries);
+            } catch (error) {
+                console.error('Error loading entries:', error);
+                showNotification('Error al cargar las entradas', 'error');
+            }
+        }
+
+        function filterEntries(entries) {
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+            const categoryFilter = document.getElementById('categoryFilter').value;
+            const sortBy = document.getElementById('sortBy').value;
+
+            let filtered = entries.filter(entry => {
+                const matchesSearch = entry.name.toLowerCase().includes(searchTerm) ||
+                                    (entry.description && entry.description.toLowerCase().includes(searchTerm)) ||
+                                    (entry.tags && entry.tags.some(tag => tag.toLowerCase().includes(searchTerm)));
+                
+                const matchesCategory = !categoryFilter || entry.category === categoryFilter;
+                
+                return matchesSearch && matchesCategory;
+            });
+
+            switch (sortBy) {
+                case 'newest':
+                    filtered.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+                    break;
+                case 'oldest':
+                    filtered.sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt));
+                    break;
+                case 'name':
+                    filtered.sort((a, b) => a.name.localeCompare(b.name));
+                    break;
+                case 'category':
+                    filtered.sort((a, b) => a.category.localeCompare(b.category));
+                    break;
+            }
+
+            return filtered;
+        }
+
+        function renderEntries(entries) {
+            const grid = document.getElementById('cardsGrid');
+            const emptyState = document.getElementById('emptyState');
+            
+            if (entries.length === 0) {
+                grid.style.display = 'none';
+                emptyState.style.display = 'block';
+            } else {
+                grid.style.display = 'grid';
+                emptyState.style.display = 'none';
+                
+                grid.innerHTML = entries.map(entry => createCardHTML(entry)).join('');
+            }
+        }
+
+        function createCardHTML(entry) {
+            const category = categories[entry.category] || categories.other;
+            const dateTimeFormat = { year: 'numeric', month: 'numeric', day: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric', hour12: false };
+            const formattedDate = new Date(entry.createdAt).toLocaleString(undefined, dateTimeFormat);
+            
+            return `
+                <div class="mining-card fade-in" style="border-top: 4px solid ${category.color};">
+                    <div class="relative">
+                        <img src="${entry.image}" alt="${escapeHtml(entry.name)}" class="card-image" loading="lazy">
+                        <button class="export-individual-btn" onclick="exportIndividualEntry('${entry.id}')" data-tooltip="Exportar tarjeta">
+                            <i class="fas fa-arrow-down"></i>
+                        </button>
+                        <button class="share-individual-btn" onclick="openShareModal('${entry.id}')" data-tooltip="Compartir tarjeta">
+                            <i class="fas fa-share-alt"></i>
+                        </button>
+                    </div>
+                    <div class="card-content">
+                        <div class="card-header">
+                            <h3 class="card-title">${escapeHtml(entry.name)}</h3>
+                            <div class="category-badge" style="background-color: ${category.color.replace('0.8', '0.2')}; color: ${category.color}; border: 1px solid ${category.color};">
+                                <i class="${category.icon}"></i>
+                                ${category.name}
+                            </div>
+                        </div>
+                        
+                        ${entry.description ? `<p class="text-gray-400 text-sm mb-3">${escapeHtml(entry.description)}</p>` : ''}
+                        
+                        ${entry.url ? `<div class="card-url mb-3"><i class="fas fa-link mr-1"></i>${escapeHtml(entry.url)}</div>` : ''}
+                        
+                        <div class="flex justify-between items-center text-xs text-gray-500 mb-4">
+                            <span class="flex items-center gap-1"><i class="fas fa-calendar-alt"></i><i class="fas fa-clock"></i>${formattedDate}</span>
+                            ${entry.tags && entry.tags.length > 0 ? `<div class="flex gap-1 flex-wrap">${entry.tags.map(tag => `<span class="bg-gray-700 px-2 py-1 rounded">${escapeHtml(tag)}</span>`).join('')}</div>` : ''}
+                        </div>
+                        
+                        <div class="card-actions">
+                            <button class="btn btn-primary flex-1" onclick="openMiningPage('${entry.id}')">
+                                <i class="fas fa-play"></i>
+                                Abrir
+                            </button>
+                            <button class="btn btn-secondary btn-small" onclick="viewEntry('${entry.id}')" data-tooltip="Ver detalles">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                            <button class="btn btn-warning btn-small" onclick="editEntry('${entry.id}')" data-tooltip="Editar">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            <button class="btn btn-danger btn-small" onclick="showDeleteConfirmation('${entry.id}')" data-tooltip="Eliminar">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function escapeHtml(text) {
+            if (!text) return '';
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
+        async function exportIndividualEntry(id) {
+            try {
+                const entries = await getEntries();
+                const entry = entries.find(e => e.id === id);
+                
+                if (!entry) {
+                    showNotification('Entrada no encontrada', 'error');
+                    return;
+                }
+                
+                const exportData = {
+                    version: '1.5.0', // Updated version for export
+                    exportDate: new Date().toISOString(),
+                    exportType: 'individual',
+                    totalEntries: 1,
+                    entries: [{
+                        id: entry.id,
+                        name: entry.name,
+                        category: entry.category,
+                        url: entry.url || '',
+                        description: entry.description || '',
+                        tags: entry.tags || [],
+                        image: entry.image,
+                        createdAt: entry.createdAt,
+                        updatedAt: entry.updatedAt
+                    }]
+                };
+                
+                const dataStr = JSON.stringify(exportData, null, 2);
+                const dataBlob = new Blob([dataStr], { type: 'application/json;charset=utf-8' });
+                
+                const url = URL.createObjectURL(dataBlob);
+                const link = document.createElement('a');
+                link.href = url;
+                
+                const sanitizedName = entry.name.replace(/[^a-zA-Z0-9]/g, '_').substring(0, 50);
+                link.download = `lunaria-entry-${sanitizedName}-${new Date().toISOString().split('T')[0]}.json`;
+                
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+                
+                URL.revokeObjectURL(url);
+                showNotification(`Entrada "${entry.name}" exportada correctamente`, 'success');
+                
+            } catch (error) {
+                console.error('Error exporting individual entry:', error);
+                showNotification('Error al exportar la entrada', 'error');
+            }
+        }
+
+        // Modal functions
+        function openAddModal() {
+            editingEntry = null;
+            document.getElementById('modalTitle').textContent = 'Agregar Entrada de Minería';
+            document.getElementById('saveButtonText').textContent = 'Guardar';
+            document.getElementById('miningForm').reset();
+            document.getElementById('imagePreview').src = 'https://i.postimg.cc/GpPsSmmX/4491470.png';
+            clearErrors();
+            document.getElementById('addModal').classList.add('active');
+        }
+
+        function closeAddModal() {
+            document.getElementById('addModal').classList.remove('active');
+            editingEntry = null;
+            clearErrors();
+        }
+
+        async function editEntry(id) {
+            try {
+                const entries = await getEntries();
+                const entry = entries.find(e => e.id === id);
+                
+                if (!entry) {
+                    showNotification('Entrada no encontrada', 'error');
+                    return;
+                }
+                
+                editingEntry = entry;
+                document.getElementById('modalTitle').textContent = 'Editar Entrada de Minería';
+                document.getElementById('saveButtonText').textContent = 'Actualizar';
+                document.getElementById('nameInput').value = entry.name;
+                document.getElementById('categoryInput').value = entry.category;
+                document.getElementById('urlInput').value = entry.url || '';
+                document.getElementById('descriptionInput').value = entry.description || '';
+                document.getElementById('tagsInput').value = entry.tags ? entry.tags.join(', ') : '';
+                document.getElementById('imagePreview').src = entry.image;
+                clearErrors();
+                document.getElementById('addModal').classList.add('active');
+            } catch (error) {
+                console.error('Error loading entry for edit:', error);
+                showNotification('Error al cargar la entrada', 'error');
+            }
+        }
+
+        async function viewEntry(id) {
+            try {
+                const entries = await getEntries();
+                const entry = entries.find(e => e.id === id);
+                
+                if (!entry) {
+                    showNotification('Entrada no encontrada', 'error');
+                    return;
+                }
+                
+                const category = categories[entry.category] || categories.other;
+                const dateTimeFormat = { year: 'numeric', month: 'numeric', day: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric', hour12: false };
+                const formattedDate = new Date(entry.createdAt).toLocaleString(undefined, dateTimeFormat);
+                const updatedDate = entry.updatedAt && entry.updatedAt !== entry.createdAt ? new Date(entry.updatedAt).toLocaleString(undefined, dateTimeFormat) : null;
+
+                const content = `
+                    <div class="space-y-6">
+                        <div class="text-center">
+                            <img src="${entry.image}" alt="${escapeHtml(entry.name)}" class="w-full max-w-md h-64 object-cover rounded-lg mx-auto mb-4">
+                            <h3 class="text-2xl font-bold">${escapeHtml(entry.name)}</h3>
+                            <div class="category-badge mt-2" style="background-color: ${category.color.replace('0.8', '0.2')}; color: ${category.color}; border: 1px solid ${category.color};">
+                                <i class="${category.icon}"></i>
+                                ${category.name}
+                            </div>
+                        </div>
+                        
+                        ${entry.description ? `<div><strong>Descripción:</strong><p class="mt-2 text-gray-400">${escapeHtml(entry.description)}</p></div>` : ''}
+                        
+                        ${entry.url ? `<div><strong>URL:</strong><p class="mt-2"><a href="${entry.url}" target="_blank" class="text-blue-400 hover:underline">${escapeHtml(entry.url)}</a></p></div>` : ''}
+                        
+                        ${entry.tags && entry.tags.length > 0 ? `<div><strong>Etiquetas:</strong><div class="flex flex-wrap gap-2 mt-2">${entry.tags.map(tag => `<span class="bg-gray-700 px-3 py-1 rounded-full text-sm">${escapeHtml(tag)}</span>`).join('')}</div></div>` : ''}
+                        
+                        <div class="text-sm text-gray-500">
+                            <p><strong>Creado:</strong> ${formattedDate}</p>
+                            ${updatedDate ? `<p><strong>Actualizado:</strong> ${updatedDate}</p>` : ''}
+                        </div>
+                        
+                        <div class="flex flex-wrap gap-4 justify-center">
+                            ${entry.url ? `<button class="btn btn-primary" onclick="openMiningPage('${entry.id}')"><i class="fas fa-external-link-alt mr-1"></i> Abrir Sitio</button>` : ''}
+                            <button class="btn btn-warning" onclick="editEntry('${entry.id}'); closeViewModal()"><i class="fas fa-edit mr-1"></i> Editar</button>
+                            <button class="btn btn-success" onclick="exportIndividualEntry('${entry.id}')"><i class="fas fa-download mr-1"></i> Exportar</button>
+                            <button class="btn btn-secondary" onclick="openShareModal('${entry.id}'); closeViewModal()"><i class="fas fa-share-alt mr-1"></i> Compartir</button>
+                        </div>
+                    </div>
+                `;
+                
+                document.getElementById('viewContent').innerHTML = content;
+                document.getElementById('viewModal').classList.add('active');
+            } catch (error) {
+                console.error('Error loading entry for view:', error);
+                showNotification('Error al cargar la entrada', 'error');
+            }
+        }
+
+        function closeViewModal() {
+            document.getElementById('viewModal').classList.remove('active');
+        }
+
+        function showDeleteConfirmation(id) {
+            confirmCallback = () => performDelete(id);
+            document.getElementById('confirmMessage').textContent = '¿Estás seguro de que deseas eliminar esta entrada de minería? Esta acción no se puede deshacer.';
+            document.getElementById('confirmModal').classList.add('active');
+        }
+
+        async function performDelete(id) {
+            try {
+                await deleteEntry(id);
+                await loadEntries();
+                updateStats();
+                updateUsageCharts();
+                showNotification('Entrada eliminada correctamente', 'success');
+                closeConfirmModal();
+            } catch (error) {
+                console.error('Error deleting entry:', error);
+                showNotification('Error al eliminar la entrada', 'error');
+            }
+        }
+
+        function closeConfirmModal() {
+            document.getElementById('confirmModal').classList.remove('active');
+            confirmCallback = null;
+        }
+
+        function confirmAction() {
+            if (confirmCallback) {
+                confirmCallback();
+            }
+        }
+
+        // Form handling
+        document.getElementById('miningForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const name = document.getElementById('nameInput').value.trim();
+            const category = document.getElementById('categoryInput').value;
+            const url = document.getElementById('urlInput').value.trim();
+            const description = document.getElementById('descriptionInput').value.trim();
+            const tagsInput = document.getElementById('tagsInput').value.trim();
+            const image = document.getElementById('imagePreview').src;
+            
+            if (!validateForm(name, category, url)) {
+                return;
+            }
+            
+            try {
+                const tags = tagsInput ? tagsInput.split(',').map(tag => tag.trim()).filter(tag => tag) : [];
+                
+                const entry = {
+                    id: editingEntry ? editingEntry.id : generateId(),
+                    name: name,
+                    category: category,
+                    url: url,
+                    description: description,
+                    tags: tags,
+                    image: image,
+                    createdAt: editingEntry ? editingEntry.createdAt : new Date().toISOString(),
+                    updatedAt: new Date().toISOString()
+                };
+                
+                await saveEntry(entry);
+                await loadEntries();
+                updateStats();
+                updateUsageCharts();
+                
+                const message = editingEntry ? 'Entrada actualizada correctamente' : '¡Entrada de minería guardada!';
+                showNotification(message, 'success');
+                closeAddModal();
+            } catch (error) {
+                console.error('Error saving entry:', error);
+                showNotification('Error al guardar la entrada', 'error');
+            }
+        });
+
+        function validateForm(name, category, url) {
+            clearErrors();
+            let isValid = true;
+            
+            if (!name) {
+                showFieldError('nameError', 'El nombre es obligatorio');
+                isValid = false;
+            } else if (name.length > 100) {
+                showFieldError('nameError', 'El nombre no puede exceder 100 caracteres');
+                isValid = false;
+            }
+            
+            if (!category) {
+                showFieldError('categoryError', 'La categoría es obligatoria');
+                isValid = false;
+            }
+            
+            if (url && !isValidUrl(url)) {
+                showFieldError('urlError', 'Por favor, proporciona una URL válida');
+                isValid = false;
+            }
+            
+            return isValid;
+        }
+
+        function showFieldError(elementId, message) {
+            document.getElementById(elementId).textContent = message;
+        }
+
+        function clearErrors() {
+            document.getElementById('nameError').textContent = '';
+            document.getElementById('categoryError').textContent = '';
+            document.getElementById('urlError').textContent = '';
+        }
+
+        function isValidUrl(string) {
+            try {
+                new URL(string);
+                return true;
+            } catch (_) {
+                return false;
+            }
+        }
+
+        // Image handling
+        async function handleImageUpload(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            
+            const validTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
+            if (!validTypes.includes(file.type)) {
+                showNotification('Formato de imagen no soportado', 'error');
+                return;
+            }
+            
+            if (file.size > 10 * 1024 * 1024) {
+                showNotification('La imagen es demasiado grande. Máximo 10MB', 'error');
+                return;
+            }
+            
+            try {
+                const compressedImage = await compressImage(file);
+                document.getElementById('imagePreview').src = compressedImage;
+            } catch (error) {
+                console.error('Error processing image:', error);
+                showNotification('Error al procesar la imagen', 'error');
+            }
+        }
+
+        function compressImage(file) {
+            return new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.onload = (event) => {
+                    const img = new Image();
+                    img.onload = () => {
+                        const canvas = document.createElement('canvas');
+                        const ctx = canvas.getContext('2d');
+                        
+                        const maxWidth = 800;
+                        const maxHeight = 600;
+                        let { width, height } = img;
+                        
+                        if (width > height) {
+                            if (width > maxWidth) {
+                                height = (height * maxWidth) / width;
+                                width = maxWidth;
+                            }
+                        } else {
+                            if (height > maxHeight) {
+                                width = (width * maxHeight) / height;
+                                height = maxHeight;
+                            }
+                        }
+                        
+                        canvas.width = width;
+                        canvas.height = height;
+                        
+                        ctx.drawImage(img, 0, 0, width, height);
+                        resolve(canvas.toDataURL('image/jpeg', 0.8));
+                    };
+                    img.onerror = reject;
+                    img.src = event.target.result;
+                };
+                reader.onerror = reject;
+                reader.readAsDataURL(file);
+            });
+        }
+
+        // Statistics functions
+        async function updateStats() {
+            try {
+                const entries = await getEntries();
+                const today = new Date().toDateString();
+                const recentEntries = entries.filter(entry => 
+                    new Date(entry.createdAt).toDateString() === today
+                );
+                
+                const uniqueCategories = [...new Set(entries.map(entry => entry.category))];
+                const activeEntries = entries.filter(entry => entry.url);
+                
+                document.getElementById('totalEntries').textContent = entries.length;
+                document.getElementById('totalCategories').textContent = uniqueCategories.length;
+                document.getElementById('activeEntries').textContent = activeEntries.length;
+                document.getElementById('recentEntries').textContent = recentEntries.length;
+            } catch (error) {
+                console.error('Error updating stats:', error);
+            }
+        }
+
+        async function updateUsageCharts() {
+            await updatePageUsageChart();
+            await updateCategoryUsageChart();
+        }
+
+        async function updatePageUsageChart() {
+            const ctx = document.getElementById('pageUsageChart').getContext('2d');
+            const usageStats = await getPageUsageStats();
+
+            const sortedStats = usageStats.sort((a, b) => b.count - a.count).slice(0, 10);
+
+            const labels = sortedStats.map(stat => stat.name);
+            const data = sortedStats.map(stat => stat.count);
+            const backgroundColors = labels.map((_, i) => barColors[i % barColors.length]);
+
+            if (pageUsageChart) {
+                pageUsageChart.destroy();
+            }
+            
+            pageUsageChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Veces Usada',
+                        data: data,
+                        backgroundColor: backgroundColors,
+                        borderColor: backgroundColors.map(color => color.replace('0.8', '1')),
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                color: getComputedStyle(document.documentElement).getPropertyValue('--text-secondary').trim(),
+                                precision: 0
+                            },
+                            grid: {
+                                color: getComputedStyle(document.documentElement).getPropertyValue('--border').trim()
+                            }
+                        },
+                        x: {
+                            ticks: {
+                                color: getComputedStyle(document.documentElement).getPropertyValue('--text-secondary').trim()
+                            },
+                            grid: {
+                                color: getComputedStyle(document.documentElement).getPropertyValue('--border').trim()
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        async function updateCategoryUsageChart() {
+            const ctx = document.getElementById('categoryUsageChart').getContext('2d');
+            const usageStats = await getCategoryUsageStats();
+
+            const sortedStats = usageStats.sort((a, b) => b.count - a.count).slice(0, 10);
+
+            const labels = sortedStats.map(stat => categories[stat.category]?.name || stat.category);
+            const data = sortedStats.map(stat => stat.count);
+            const backgroundColors = sortedStats.map(stat => categories[stat.category]?.color || categories.other.color);
+
+            if (categoryUsageChart) {
+                categoryUsageChart.destroy();
+            }
+            
+            categoryUsageChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Veces Usada',
+                        data: data,
+                        backgroundColor: backgroundColors,
+                        borderColor: backgroundColors.map(color => color.replace('0.8', '1')),
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                color: getComputedStyle(document.documentElement).getPropertyValue('--text-secondary').trim(),
+                                precision: 0
+                            },
+                            grid: {
+                                color: getComputedStyle(document.documentElement).getPropertyValue('--border').trim()
+                            }
+                        },
+                        x: {
+                            ticks: {
+                                color: getComputedStyle(document.documentElement).getPropertyValue('--text-secondary').trim()
+                            },
+                            grid: {
+                                color: getComputedStyle(document.documentElement).getPropertyValue('--border').trim()
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+
+        // Event listeners
+        function setupEventListeners() {
+            document.getElementById('searchInput').addEventListener('input', debounce(loadEntries, 300));
+            
+            document.getElementById('categoryFilter').addEventListener('change', function() {
+                loadEntries();
+                if (this.value) trackCategoryUsage(this.value);
+            });
+
+            document.getElementById('sortBy').addEventListener('change', loadEntries);
+            
+            // Set CSS variables for category colors on filter chips
+            document.querySelectorAll('.filter-chip[data-category]').forEach(chip => {
+                const categoryKey = chip.dataset.category;
+                if (categoryKey && categories[categoryKey]) {
+                    chip.style.setProperty('--category-color', categories[categoryKey].color);
+                }
+            });
+
+            document.querySelectorAll('.filter-chip').forEach(chip => {
+                chip.addEventListener('click', function() {
+                    // If the chip has a direct onclick (like the Pago button), let it execute
+                    if (this.hasAttribute('onclick')) {
+                        return;
+                    }
+                    
+                    document.querySelectorAll('.filter-chip').forEach(c => c.classList.remove('active'));
+                    this.classList.add('active');
+                    
+                    const category = this.dataset.category;
+                    document.getElementById('categoryFilter').value = category;
+                    loadEntries();
+                    if (category) trackCategoryUsage(category);
+                });
+            });
+        }
+
+        // Theme functions
+        function toggleTheme() {
+            const body = document.body;
+            const themeIcon = document.getElementById('themeIcon');
+            
+            if (body.dataset.theme === 'dark') {
+                body.dataset.theme = 'light';
+                themeIcon.className = 'fas fa-sun';
+                localStorage.setItem('theme', 'light');
+            }
+             else {
+                body.dataset.theme = 'dark';
+                themeIcon.className = 'fas fa-moon';
+                localStorage.setItem('theme', 'dark');
+            }
+            
+            setTimeout(() => {
+                updateUsageCharts();
+            }, 100);
+        }
+
+        function loadTheme() {
+            const savedTheme = localStorage.getItem('theme') || 'dark';
+            const body = document.body;
+            const themeIcon = document.getElementById('themeIcon');
+            
+            body.dataset.theme = savedTheme;
+            themeIcon.className = savedTheme === 'dark' ? 'fas fa-moon' : 'fas fa-sun';
+        }
+
+        // Export/Import functions
+        function openExportModal() {
+            document.getElementById('exportModal').classList.add('active');
+        }
+
+        function closeExportModal() {
+            document.getElementById('exportModal').classList.remove('active');
+            hideImportProgress();
+        }
+
+        function showImportProgress() {
+            document.getElementById('importProgress').classList.add('show');
+        }
+
+        function hideImportProgress() {
+            document.getElementById('importProgress').classList.remove('show');
+            document.getElementById('importLog').innerHTML = '';
+            document.getElementById('importProgressBar').style.width = '0%';
+        }
+
+        function updateImportProgress(progress, message, type = 'info') {
+            document.getElementById('importProgressBar').style.width = `${progress}%`;
+            const log = document.getElementById('importLog');
+            const logEntry = document.createElement('div');
+            logEntry.className = type;
+            logEntry.textContent = `${new Date().toLocaleTimeString()}: ${message}`;
+            log.appendChild(logEntry);
+            log.scrollTop = log.scrollHeight;
+        }
+
+        async function exportData() {
+            try {
+                const entries = await getEntries();
+                
+                if (entries.length === 0) {
+                    showNotification('No hay entradas para exportar', 'warning');
+                    return;
+                }
+                
+                const exportData = {
+                    version: '1.5.0', // Updated version for export
+                    exportDate: new Date().toISOString(),
+                    totalEntries: entries.length,
+                    entries: entries.map(entry => ({
+                        id: entry.id,
+                        name: entry.name,
+                        category: entry.category,
+                        url: entry.url || '',
+                        description: entry.description || '',
+                        tags: entry.tags || [],
+                        image: entry.image,
+                        createdAt: entry.createdAt,
+                        updatedAt: entry.updatedAt
+                    }))
+                };
+                
+                const dataStr = JSON.stringify(exportData, null, 2);
+                const dataBlob = new Blob([dataStr], { type: 'application/json;charset=utf-8' });
+                
+                const url = URL.createObjectURL(dataBlob);
+                const link = document.createElement('a');
+                link.href = url;
+                link.download = `lunaria-mining-backup-${new Date().toISOString().split('T')[0]}.json`;
+                
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+                
+                URL.revokeObjectURL(url);
+                showNotification(`${entries.length} entradas exportadas correctamente`, 'success');
+                
+            } catch (error) {
+                console.error('Error exporting data:', error);
+                showNotification('Error al exportar los datos', 'error');
+            }
+        }
+
+        async function exportCSV() {
+            try {
+                const entries = await getEntries();
+                
+                if (entries.length === 0) {
+                    showNotification('No hay entradas para exportar', 'warning');
+                    return;
+                }
+                
+                const escapeCSV = (value) => {
+                    if (value === null || value === undefined) return '';
+                    const str = String(value);
+                    if (str.includes(',') || str.includes('"') || str.includes('\n')) {
+                        return `"${str.replace(/"/g, '""')}"`;
+                    }
+                    return str;
+                };
+                
+                const headers = ['ID', 'Nombre', 'Categoría', 'URL', 'Descripción', 'Etiquetas', 'Fecha Creación', 'Última Actualización'];
+                const csvContent = [
+                    headers.join(','),
+                    ...entries.map(entry => [
+                        escapeCSV(entry.id),
+                        escapeCSV(entry.name),
+                        escapeCSV(entry.category),
+                        escapeCSV(entry.url || ''),
+                        escapeCSV(entry.description || ''),
+                        escapeCSV(entry.tags ? entry.tags.join('; ') : ''),
+                        escapeCSV(new Date(entry.createdAt).toLocaleDateString()),
+                        escapeCSV(new Date(entry.updatedAt).toLocaleDateString())
+                    ].join(','))
+                ].join('\n');
+                
+                const BOM = '\uFEFF';
+                const dataBlob = new Blob([BOM + csvContent], { type: 'text/csv;charset=utf-8' });
+                
+                const url = URL.createObjectURL(dataBlob);
+                const link = document.createElement('a');
+                link.href = url;
+                link.download = `lunaria-mining-backup-${new Date().toISOString().split('T')[0]}.csv`;
+                
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+                
+                URL.revokeObjectURL(url);
+                showNotification(`${entries.length} entradas exportadas en CSV`, 'success');
+                
+            } catch (error) {
+                console.error('Error exporting CSV:', error);
+                showNotification('Error al exportar el CSV', 'error');
+            }
+        }
+
+        // --- MEJORA: Función de importación optimizada para manejar archivos externos ---
+        async function importData(fileToImport = null) {
+            const fileInput = document.getElementById('importFile');
+            // Usa el archivo pasado como argumento (desde Launch Queue) o el del input.
+            const file = fileToImport || fileInput.files[0];
+            
+            if (!file) {
+                showNotification('Por favor, selecciona un archivo', 'warning');
+                return;
+            }
+            
+            showImportProgress();
+            updateImportProgress(0, 'Iniciando importación...');
+            
+            try {
+                const text = await file.text();
+                let importedEntries = [];
+                let successCount = 0;
+                let errorCount = 0;
+                let skippedCount = 0;
+                
+                if (file.type === 'application/json' || file.name.endsWith('.json')) {
+                    updateImportProgress(10, 'Procesando archivo JSON...');
+                    importedEntries = await parseJSONFile(text);
+                } else if (file.type === 'text/csv' || file.name.endsWith('.csv')) {
+                    updateImportProgress(10, 'Procesando archivo CSV...');
+                    importedEntries = await parseCSVFile(text);
+                } else {
+                    throw new Error('Formato de archivo no soportado');
+                }
+                
+                updateImportProgress(30, `Encontradas ${importedEntries.length} entradas para procesar`);
+                
+                const existingEntries = await getEntries();
+                const existingNames = new Set(existingEntries.map(e => e.name.toLowerCase()));
+                
+                for (let i = 0; i < importedEntries.length; i++) {
+                    const entry = importedEntries[i];
+                    const progress = 30 + (i / importedEntries.length) * 60;
+                    
+                    try {
+                        if (!entry.name || !entry.category) {
+                            updateImportProgress(progress, `Saltando entrada ${i + 1}: faltan datos obligatorios`, 'warning');
+                            skippedCount++;
+                            continue;
+                        }
+                        
+                        if (existingNames.has(entry.name.toLowerCase())) {
+                            updateImportProgress(progress, `Saltando entrada "${entry.name}": ya existe`, 'warning');
+                            skippedCount++;
+                            continue;
+                        }
+                        
+                        const newEntry = {
+                            id: generateId(),
+                            name: entry.name,
+                            category: validateCategory(entry.category),
+                            url: entry.url || '',
+                            description: entry.description || '',
+                            tags: Array.isArray(entry.tags) ? entry.tags : [],
+                            image: entry.image || 'https://i.postimg.cc/GpPsSmmX/4491470.png',
+                            createdAt: entry.createdAt ? new Date(entry.createdAt).toISOString() : new Date().toISOString(),
+                            updatedAt: new Date().toISOString()
+                        };
+                        
+                        await saveEntry(newEntry);
+                        existingNames.add(newEntry.name.toLowerCase()); // Add the new name (potentially modified)
+                        successCount++;
+                        
+                        updateImportProgress(progress, `Importada: "${newEntry.name}"`, 'success');
+                        
+                    } catch (error) {
+                        updateImportProgress(progress, `Error al importar "${entry.name}": ${error.message}`, 'error');
+                        errorCount++;
+                    }
+                }
+                
+                updateImportProgress(100, 'Finalizando importación...');
+                
+                await loadEntries();
+                updateStats();
+                updateUsageCharts();
+                
+                const summary = `Importación completada: ${successCount} exitosas, ${skippedCount} omitidas, ${errorCount} con errores`;
+                updateImportProgress(100, summary, successCount > 0 ? 'success' : 'warning');
+                
+                if (successCount > 0) {
+                    showNotification(`${successCount} entradas importadas correctamente`, 'success');
+                } else {
+                    showNotification('No se importaron entradas nuevas', 'warning');
+                }
+                
+                if (!fileToImport) {
+                    fileInput.value = '';
+                }
+                
+            } catch (error) {
+                console.error('Error importing data:', error);
+                updateImportProgress(100, `Error de importación: ${error.message}`, 'error');
+                showNotification('Error al importar los datos', 'error');
+            }
+        }
+
+        async function parseJSONFile(text) {
+            try {
+                const data = JSON.parse(text);
+                
+                if (Array.isArray(data)) {
+                    return data;
+                } else if (data.entries && Array.isArray(data.entries)) {
+                    return data.entries;
+                } else if (data.data && Array.isArray(data.data)) {
+                    return data.data;
+                } else {
+                    throw new Error('Formato JSON no reconocido');
+                }
+            } catch (error) {
+                throw new Error(`Error al parsear JSON: ${error.message}`);
+            }
+        }
+
+        async function parseCSVFile(text) {
+            try {
+                const bom = '\uFEFF';
+                if (text.startsWith(bom)) {
+                    text = text.substr(bom.length);
+                }
+                
+                const lines = text.split('\n').filter(line => line.trim());
+                if (lines.length < 2) {
+                    throw new Error('El archivo CSV debe tener al menos una línea de encabezado y una de datos');
+                }
+                
+                const headers = parseCSVLine(lines[0]);
+                const entries = [];
+                
+                for (let i = 1; i < lines.length; i++) {
+                    const values = parseCSVLine(lines[i]);
+                    if (values.length === 0) continue;
+                    
+                    const entry = {};
+                    headers.forEach((header, index) => {
+                        const normalizedHeader = header.toLowerCase().trim();
+                        let value = values[index] || '';
+                        
+                        if (normalizedHeader.includes('nombre') || normalizedHeader.includes('name')) {
+                            entry.name = value;
+                        } else if (normalizedHeader.includes('categoría') || normalizedHeader.includes('category')) {
+                            entry.category = value;
+                        } else if (normalizedHeader.includes('url') || normalizedHeader.includes('link')) {
+                            entry.url = value;
+                        } else if (normalizedHeader.includes('descripción') || normalizedHeader.includes('description')) {
+                            entry.description = value;
+                        } else if (normalizedHeader.includes('etiquetas') || normalizedHeader.includes('tags')) {
+                            entry.tags = value ? value.split(';').map(tag => tag.trim()) : [];
+                        } else if (normalizedHeader.includes('fecha') || normalizedHeader.includes('date') || normalizedHeader.includes('created')) {
+                            entry.createdAt = value;
+                        }
+                    });
+                    
+                    if (entry.name) {
+                        entries.push(entry);
+                    }
+                }
+                
+                return entries;
+            } catch (error) {
+                throw new Error(`Error al parsear CSV: ${error.message}`);
+            }
+        }
+
+        function parseCSVLine(line) {
+            const result = [];
+            let current = '';
+            let inQuotes = false;
+            
+            for (let i = 0; i < line.length; i++) {
+                const char = line[i];
+                
+                if (char === '"' && (i === 0 || line[i-1] === ',' || line[i-1] === '\r')) {
+                    inQuotes = true;
+                } else if (char === '"' && inQuotes && (i === line.length - 1 || line[i+1] === ',' || line[i+1] === '\r')) {
+                    inQuotes = false;
+                } else if (char === ',' && !inQuotes) {
+                    result.push(current.trim().replace(/^"(.*)"$/, '$1'));
+                    current = '';
+                } else {
+                    current += char;
+                }
+            }
+            
+            result.push(current.trim().replace(/^"(.*)"$/, '$1'));
+            return result;
+        }
+
+        function validateCategory(category) {
+            const validCategories = ['faucet', 'mining', 'staking', 'defi', 'trading', 'shorlin', 'pago', 'other'];
+            const normalizedCategory = category.toLowerCase();
+            
+            const categoryMap = {
+                'faucets': 'faucet',
+                'minería': 'mining',
+                'minar': 'mining',
+                'staking': 'staking',
+                'stake': 'staking',
+                'defi': 'defi',
+                'trading': 'trading',
+                'trade': 'trading',
+                'shorlin': 'shorlin',
+                'trabajo': 'shorlin',
+                'pago': 'pago',
+                'payment': 'pago',
+                'otros': 'other',
+                'other': 'other'
+            };
+            
+            return categoryMap[normalizedCategory] || (validCategories.includes(normalizedCategory) ? normalizedCategory : 'other');
+        }
+
+        // Mining page functions
+        async function openMiningPage(id) {
+            try {
+                const entries = await getEntries();
+                const entry = entries.find(e => e.id === id);
+                
+                if (!entry || !entry.url) {
+                    showNotification('URL no disponible para esta entrada', 'error');
+                    return;
+                }
+                
+                window.open(entry.url, '_blank');
+                trackPageUsage(entry.url, entry.name);
+            } catch (error) {
+                console.error('Error opening mining page:', error);
+                showNotification('Error al abrir la página de minería', 'error');
+            }
+        }
+
+        // Feedback form function
+        function showFeedbackForm() {
+            const subject = encodeURIComponent('Feedback sobre Lunaria Mining Premium');
+            const body = encodeURIComponent('Hola,\n\nQuisiera compartir mi opinión sobre la aplicación Lunaria Mining Premium:\n\n[Tu mensaje aquí]\n\nInformación de mi dispositivo:\n- Navegador: ' + navigator.userAgent + '\n- Plataforma: ' + navigator.platform);
+            
+            window.open(`mailto:contacto@sneyderstudio.com?subject=${subject}&body=${body}`, '_blank');
+        }
+
+        // Utility functions
+        function generateId() {
+            return Date.now().toString(36) + Math.random().toString(36).substr(2);
+        }
+
+        function showNotification(message, type = 'success') {
+            const notification = document.createElement('div');
+            notification.className = `notification ${type}`;
+            notification.innerHTML = `
+                <i class="fas fa-${type === 'success' ? 'check' : type === 'error' ? 'times' : type === 'warning' ? 'exclamation' : 'info'}-circle"></i>
+                ${message}
+            `;
+            
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.classList.add('show');
+            }, 100);
+            
+            setTimeout(() => {
+                notification.classList.remove('show');
+                setTimeout(() => {
+                    if (document.body.contains(notification)) {
+                        document.body.removeChild(notification);
+                    }
+                }, 300);
+            }, 5000);
+        }
+
+        function debounce(func, wait) {
+            let timeout;
+            return function executedFunction(...args) {
+                const later = () => {
+                    clearTimeout(timeout);
+                    func(...args);
+                };
+                clearTimeout(timeout);
+                timeout = setTimeout(later, wait);
+            };
+        }
+
+        // Keyboard shortcuts
+        document.addEventListener('keydown', (e) => {
+            if (e.ctrlKey || e.metaKey) {
+                switch (e.key) {
+                    case 'n':
+                        e.preventDefault();
+                        openAddModal();
+                        break;
+                    case 'k':
+                        e.preventDefault();
+                        document.getElementById('searchInput').focus();
+                        break;
+                    case 'e':
+                        e.preventDefault();
+                        openExportModal();
+                        break;
+                }
+            }
+            
+            if (e.key === 'Escape') {
+                closeAddModal();
+                closeViewModal();
+                closeConfirmModal();
+                closeExportModal();
+                closeShareModal();
+                closeUpdateNotification();
+                closeMainMenu();
+                cancelMerge(); // Close the new merge modal
+            }
+        });
+
+        // --- MEJORA: Registro del Service Worker ---
+        // Se registra el archivo sw.js que se encargará del cache y la funcionalidad offline.
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('sw.js')
+                    .then(registration => {
+                        console.log('Service Worker registrado con éxito:', registration);
+                    })
+                    .catch(err => {
+                        console.error('Error en el registro del Service Worker:', err);
+                    });
+            });
+        }
+
+        // --- MEJORA: Manifiesto de la PWA con file_handlers ---
+        const manifest = {
+            name: 'Lunaria Mining Premium',
+            short_name: 'Lunaria Premium',
+            description: 'Gestión avanzada de entradas de minería con estadísticas y categorías',
+            start_url: '.', // Usar ruta relativa para compatibilidad
+            display: 'standalone',
+            background_color: '#0f172a',
+            theme_color: '#0ea5e9',
+            icons: [
+                {
+                    src: 'https://i.postimg.cc/GpPsSmmX/4491470.png',
+                    sizes: '192x192',
+                    type: 'image/png',
+                    purpose: 'any maskable' // Añadido para mejor adaptabilidad de iconos
+                },
+                {
+                    src: 'https://i.postimg.cc/GpPsSmmX/4491470.png',
+                    sizes: '512x512',
+                    type: 'image/png',
+                    purpose: 'any maskable'
+                }
+            ],
+            // Configuración para la función "Abrir con" (File Handling API)
+            file_handlers: [
+                {
+                    action: '.', // La página principal manejará el archivo abierto
+                    accept: {
+                        "application/json": [".json"],
+                        "text/csv": [".csv"]
+                    },
+                    launch_type: 'single-client', // Evita abrir múltiples ventanas
+                    icons: [
+                        {
+                            src: 'https://i.postimg.cc/GpPsSmmX/4491470.png',
+                            sizes: '192x192',
+                            type: 'image/png'
+                        }
+                    ]
+                }
+            ]
         };
 
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.style.opacity = '1';
-                    entry.target.style.transform = 'translateY(0)';
-                }
-            });
-        }, observerOptions);
-
-        // Observa todas las tarjetas de servicio y elementos con 'hover-lift'
-        document.querySelectorAll('.service-card, .hover-lift').forEach(el => {
-            el.style.opacity = '0';
-            el.style.transform = 'translateY(20px)';
-            el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
-            observer.observe(el);
-        });
-
-        // Lógica para el modal del chatbot
-        const openChatbotBtn = document.getElementById('openChatbot');
-        const chatbotModal = document.getElementById('chatbotModal');
-        const closeChatbotBtn = document.getElementById('closeChatbot');
-
-        if (openChatbotBtn && chatbotModal && closeChatbotBtn) {
-            openChatbotBtn.addEventListener('click', () => {
-                chatbotModal.classList.add('show');
-                playSound('chatbotOpen');
-            });
-
-            closeChatbotBtn.addEventListener('click', () => {
-                chatbotModal.classList.remove('show');
-                playSound('chatbotClose');
-            });
-
-            // Cierra el modal si se hace clic fuera del contenido del modal
-            chatbotModal.addEventListener('click', (e) => {
-                if (e.target === chatbotModal) {
-                    chatbotModal.classList.remove('show');
-                    playSound('chatbotClose');
-                }
-            });
-        }
-
-        // Agregar sonidos a todos los enlaces
-        document.querySelectorAll('a').forEach(link => {
-            link.addEventListener('click', () => {
-                playSound('click');
-            });
-        });
+        const manifestBlob = new Blob([JSON.stringify(manifest)], { type: 'application/json' });
+        const manifestUrl = URL.createObjectURL(manifestBlob);
+        document.getElementById('manifest').href = manifestUrl;
     </script>
 </body>
 </html>
+
