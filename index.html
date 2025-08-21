@@ -7,7 +7,6 @@
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <!-- REMOVED: No longer need qrcode.min.js as QR functionality is removed -->
     <link rel="manifest" href="#" id="manifest"> 
     <link rel="icon" href="https://i.postimg.cc/GpPsSmmX/4491470.png" type="image/png">
     <meta name="theme-color" content="#06b6d4">
@@ -288,6 +287,8 @@
         .category-trading { background: rgba(239, 68, 68, 0.2); color: var(--danger); border: 1px solid var(--danger); }
         .category-shorlin { background: rgba(16, 185, 129, 0.2); color: #10b981; border: 1px solid #10b981; }
         .category-other { background: rgba(148, 163, 184, 0.2); color: var(--text-secondary); border: 1px solid var(--text-secondary); }
+        .category-favorites { background: rgba(245, 158, 11, 0.2); color: var(--warning); border: 1px solid var(--warning); } /* New style for favorites category badge */
+
 
         .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem; margin-bottom: 2rem; }
         .stat-card { background: var(--card-bg); border-radius: 16px; padding: 1.5rem; border: 1px solid var(--border); transition: all 0.3s ease; }
@@ -465,6 +466,11 @@
             color: white;
             padding: 1rem;
         }
+        .menu-button.share-all-button { /* Nuevo estilo para compartir todo */
+            background: linear-gradient(135deg, #ffc107 0%, #ff8c00 100%); /* Naranja cálido */
+            color: white;
+            padding: 1rem;
+        }
         .faucet-logo { width: 120px; height: 80px; border-radius: 8px; object-fit: contain; }
         .close-menu-btn { position: absolute; top: 2rem; right: 2rem; background: var(--danger); color: white; border: none; border-radius: 50%; width: 50px; height: 50px; font-size: 1.5rem; cursor: pointer; transition: all 0.3s ease; display: flex; justify-content: center; align-items: center; }
         .close-menu-btn:hover { transform: scale(1.1); }
@@ -496,8 +502,6 @@
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
         .tooltip { position: absolute; background: var(--secondary-bg); color: var(--text-primary); padding: 0.5rem; border-radius: 6px; font-size: 0.75rem; z-index: 100; pointer-events: none; white-space: nowrap; opacity: 0; transition: opacity 0.2s ease; }
         .tooltip.visible { opacity: 1; }
-        
-        /* REMOVED: Styles for qrCodeModal and qrCodeContainer */
     </style>
 </head>
 <body data-theme="dark">
@@ -521,6 +525,7 @@
             <button class="menu-button faucet-button" onclick="openExternalUrl('https://faucetpay.io/'); closeMainMenu();"><img src="https://i.postimg.cc/xd3HS5CW/Picsart-25-07-12-19-07-45-544.png" alt="FaucetPay" class="faucet-logo"><span>FaucetPay</span></button>
             <button class="menu-button investment-button" onclick="window.location.href='invercion.html'; closeMainMenu();"><i class="fas fa-money-bill-wave" style="font-size: 3rem;"></i><span>Inversión</span></button>
             <button class="menu-button url-add-button" onclick="openAddUrlModal(); closeMainMenu()"><i class="fas fa-code" style="font-size: 3rem;"></i><span>Integrar JSON</span></button>
+            <button class="menu-button share-all-button" onclick="shareAllEntriesAsJson(); closeMainMenu();"><i class="fas fa-file-export" style="font-size: 3rem;"></i><span>Compartir Todo</span></button>
             <button class="menu-button add-button" onclick="openAddModal(); closeMainMenu()"><i class="fas fa-plus" style="font-size: 3rem;"></i><span>Agregar Página</span></button>
             <button class="menu-button export-button" onclick="openExportModal(); closeMainMenu()"><i class="fas fa-download" style="font-size: 3rem;"></i><span>Exportar/Importar</span></button>
             <button class="menu-button delete-button" onclick="showDeleteAllConfirmation(); closeMainMenu()"><i class="fas fa-trash-alt" style="font-size: 3rem;"></i><span>Borrar Todo</span></button>
@@ -688,8 +693,6 @@
     <!-- Modal de Compartir -->
     <div id="shareModal" class="share-modal"><div class="share-content"><div class="flex justify-between items-center mb-6"><h2 class="text-2xl font-bold text-green-400"><i class="fas fa-share-alt mr-2"></i>Compartir Entrada</h2><button class="text-gray-400 hover:text-white text-2xl" onclick="closeShareModal()"><i class="fas fa-times"></i></button></div><div id="sharePreview" class="share-preview"><img id="shareImage" src="https://i.postimg.cc/GpPsSmmX/4491470.png" alt="Vista previa"><div><h3 id="shareName" class="font-bold">Nombre de entrada</h3><p id="shareCategory" class="text-sm text-gray-400">Categoría</p></div></div><div class="share-options">
         <div class="share-option" onclick="copyShareJson()"><i class="fas fa-copy"></i><span>Copiar JSON</span></div>
-        <!-- REMOVED: QR Code option from share modal -->
-        <!-- Estas opciones ahora copiarán el JSON al portapapeles y avisarán al usuario que lo pegue -->
         <div class="share-option" onclick="copyShareJsonAndNotify('WhatsApp')"><i class="fab fa-whatsapp"></i><span>WhatsApp</span></div>
         <div class="share-option" onclick="copyShareJsonAndNotify('Telegram')"><i class="fab fa-telegram"></i><span>Telegram</span></div>
         <div class="share-option" onclick="copyShareJsonAndNotify('Messenger')"><i class="fab fa-facebook-messenger"></i><span>Messenger</span></div>
@@ -700,10 +703,7 @@
     <!-- Modal de Exportar/Importar -->
     <div id="exportModal" class="modal"><div class="modal-content"><div class="flex justify-between items-center mb-6"><h2 class="text-2xl font-bold text-blue-400"><i class="fas fa-download mr-2"></i>Exportar/Importar Datos</h2><button class="text-gray-400 hover:text-white text-2xl" onclick="closeExportModal()"><i class="fas fa-times"></i></button></div><div class="space-y-6"><div><h3 class="text-lg font-semibold mb-4">Exportar Datos</h3><div class="flex gap-4"><button class="btn btn-primary" onclick="exportData()"><i class="fas fa-download"></i>Descargar JSON</button><button class="btn btn-secondary" onclick="exportCSV()"><i class="fas fa-file-csv"></i>Descargar CSV</button></div></div><div><h3 class="text-lg font-semibold mb-4">Importar Datos</h3><input type="file" id="importFile" accept=".json,.csv" class="form-input mb-4"><button class="btn btn-success" onclick="importData()"><i class="fas fa-upload"></i>Importar Archivo</button><div id="importProgress" class="import-progress"><div class="flex items-center justify-between mb-2"><span>Procesando archivo...</span><div class="loading-spinner"></div></div><div class="progress-bar"><div id="importProgressBar" class="progress-fill" style="width: 0%"></div></div><div id="importLog" class="import-log"></div></div></div></div></div>
 
-    <!-- REMOVED: Modal para mostrar el código QR (qrCodeModal) -->
-
     <!-- Modal para confirmar la instalación de la tarjeta (NO SE USA MÁS PARA EVA, SOLO PARA JSON) -->
-    <!-- Este modal ya no se activará automáticamente por el parámetro EVA, solo por el modal de JSON -->
     <div id="installCardModal" class="modal">
         <div class="modal-content">
             <h2 class="text-2xl font-bold text-green-400 mb-4"><i class="fas fa-download mr-2"></i>Tarjeta Recibida</h2>
@@ -734,10 +734,7 @@
         let currentShareEntry = null;
         let tooltipTimeout = null;
         let currentUpdateIdShown = null;
-        // Variable para datos de tarjeta recibidos por URL (ahora solo se usará internamente para el modal de integrar JSON)
         let incomingCardData = null;
-
-        // REMOVED: APP_BASE_URL and APP_SHARE_KEY constants
 
         const appUpdates = [
             { id: 'v1.0.0', title: '¡Bienvenido a Lunaria Mining Premium!', description: 'Hemos lanzado la aplicación para ayudarte a gestionar tus entradas de minería. ¡Esperamos que te sea muy útil!' },
@@ -756,7 +753,8 @@
             defi: { name: 'DeFi', icon: 'fas fa-chart-line', color: '#a855f7' },
             trading: { name: 'Trading', icon: 'fas fa-exchange-alt', color: '#ef4444' },
             shorlin: { name: 'Shorlin Fause', icon: 'fas fa-briefcase', color: '#10b981' },
-            other: { name: 'Otros', icon: 'fas fa-ellipsis-h', color: '#6b7280' }
+            other: { name: 'Otros', icon: 'fas fa-ellipsis-h', color: '#6b7280' },
+            favorites: { name: 'Favoritos', icon: 'fas fa-star', color: '#f59e0b' } // NEW: Added favorites category
         };
 
         const barColors = ['rgba(255, 99, 132, 0.8)', 'rgba(54, 162, 235, 0.8)', 'rgba(255, 206, 86, 0.8)', 'rgba(75, 192, 192, 0.8)', 'rgba(153, 102, 255, 0.8)', 'rgba(255, 159, 64, 0.8)', 'rgba(199, 199, 199, 0.8)', 'rgba(83, 102, 255, 0.8)', 'rgba(255, 99, 255, 0.8)', 'rgba(99, 255, 132, 0.8)'];
@@ -774,8 +772,6 @@
             checkAppUpdates();
             setupToolTip();
             
-            // REMOVED: handleIncomingLinkData() - No more automatic URL processing for 'eva' links
-
             if ('launchQueue' in window) {
                 launchQueue.setConsumer(async (launchParams) => {
                     if (!launchParams || !launchParams.files || launchParams.files.length === 0) return;
@@ -897,6 +893,7 @@
                 if (!entry) return showNotification('Entrada no encontrada', 'error');
                 currentShareEntry = entry;
                 document.getElementById('shareImage').src = entry.image;
+                // Display the correct category name, even if it's currently 'favorites'
                 document.getElementById('shareName').textContent = entry.name;
                 document.getElementById('shareCategory').textContent = categories[entry.category]?.name || 'Otra categoría';
                 document.getElementById('shareModal').classList.add('active');
@@ -908,13 +905,22 @@
 
         function closeShareModal() { document.getElementById('shareModal').classList.remove('active'); currentShareEntry = null; }
 
-        // Nueva función para copiar el JSON de la tarjeta
+        // Nueva función para copiar el JSON de una única tarjeta
         function copyShareJson() {
             if (!currentShareEntry) {
                 return showNotification('No hay entrada seleccionada para copiar el JSON', 'warning');
             }
             try {
-                const jsonString = JSON.stringify(currentShareEntry, null, 2);
+                // When sharing, temporarily restore originalCategory if it exists
+                // The shared JSON should represent the card's original type if it's a favorite,
+                // not just "favorites" as its category.
+                const entryToShare = { ...currentShareEntry };
+                if (entryToShare.isFavorite && entryToShare.originalCategory) {
+                    entryToShare.category = entryToShare.originalCategory;
+                    delete entryToShare.originalCategory;
+                }
+
+                const jsonString = JSON.stringify(entryToShare, null, 2);
                 if (navigator.clipboard && navigator.clipboard.writeText) {
                     navigator.clipboard.writeText(jsonString)
                         .then(() => {
@@ -941,7 +947,44 @@
             }
             copyShareJson(); // Copia el JSON al portapapeles
             showNotification(`JSON de la tarjeta copiado. Pégalo en ${platformName}.`, 'info');
-            // closeShareModal(); // Don't close immediately if user might want to paste in app
+        }
+
+        // NUEVA FUNCIÓN: Compartir todas las entradas como un solo JSON
+        async function shareAllEntriesAsJson() {
+            try {
+                const allEntries = await getEntries();
+                if (allEntries.length === 0) {
+                    showNotification('No hay tarjetas para compartir.', 'warning');
+                    return;
+                }
+                // When sharing all, ensure categories are restored to original if favorited
+                const entriesToShare = allEntries.map(entry => {
+                    const entryCopy = { ...entry };
+                    if (entryCopy.isFavorite && entryCopy.originalCategory) {
+                        entryCopy.category = entryCopy.originalCategory;
+                        delete entryCopy.originalCategory;
+                    }
+                    return entryCopy;
+                });
+
+                const allEntriesJson = JSON.stringify(entriesToShare, null, 2);
+
+                if (navigator.clipboard && navigator.clipboard.writeText) {
+                    navigator.clipboard.writeText(allEntriesJson)
+                        .then(() => {
+                            showNotification('¡Todas las tarjetas copiadas al portapapeles como JSON!', 'success');
+                        })
+                        .catch(err => {
+                            console.error('Error al copiar todas las entradas:', err);
+                            copyTextToClipboardLegacy(allEntriesJson); // Fallback
+                        });
+                } else {
+                    copyTextToClipboardLegacy(allEntriesJson); // Fallback for older browsers
+                }
+            } catch (error) {
+                console.error('Error al intentar compartir todas las entradas:', error);
+                showNotification('Error al intentar compartir todas las tarjetas.', 'error');
+            }
         }
 
 
@@ -955,8 +998,6 @@
             textArea.select();
             try {
                 document.execCommand('copy');
-                // showNotification('JSON copiado al portapapeles (método antiguo)', 'success'); // Avoid double notification
-                // closeShareModal(); // No cerrar si es una notificación para pegar manualmente
             } catch (error) {
                 showNotification('Error al copiar el JSON. Tu navegador no soporta la copia automática.', 'error');
                 console.error('Error al copiar texto con execCommand:', error);
@@ -967,7 +1008,7 @@
 
         async function initializeDatabase() {
             return new Promise((resolve, reject) => {
-                const request = indexedDB.open('LunariaMiningPremiumDB', 6);
+                const request = indexedDB.open('LunariaMiningPremiumDB', 6); // Version 6 for new originalCategory index
                 request.onerror = () => reject(request.error);
                 request.onsuccess = () => { db = request.result; resolve(); };
                 request.onupgradeneeded = (event) => {
@@ -979,6 +1020,14 @@
                         store.createIndex('createdAt', 'createdAt', { unique: false });
                         store.createIndex('isFavorite', 'isFavorite', { unique: false });
                         store.createIndex('clickCount', 'clickCount', { unique: false });
+                        // NEW: originalCategory index for easier access if needed
+                        store.createIndex('originalCategory', 'originalCategory', { unique: false, multiEntry: false });
+                    } else {
+                        // If upgrading from an older version, add the index if it doesn't exist
+                        const store = event.target.transaction.objectStore('entries');
+                        if (!store.indexNames.contains('originalCategory')) {
+                            store.createIndex('originalCategory', 'originalCategory', { unique: false, multiEntry: false });
+                        }
                     }
                     if (!db.objectStoreNames.contains('pageUsage')) {
                         const pageUsageStore = db.createObjectStore('pageUsage', { keyPath: 'url' });
@@ -1024,14 +1073,15 @@
                                       (entry.tags && entry.tags.some(tag => tag.toLowerCase().includes(searchTerm)));
 
                 let matchesCategory;
+                // If filtering by 'favorites' category chip, check the isFavorite flag
                 if (categoryFilter === 'favorites') {
-                    // Si el filtro es 'favoritos', solo muestra las que son favoritas.
                     matchesCategory = entry.isFavorite;
                 } else if (categoryFilter) {
-                    // Si es otra categoría, muestra las de esa categoría.
+                    // If filtering by any other specific category, check if the card's current category matches AND it's not a favorite
+                    // (since favorites will have category 'favorites' now)
                     matchesCategory = entry.category === categoryFilter;
                 } else {
-                    // Si no hay filtro de categoría (Todas), muestra todo.
+                    // If no category filter (All), show all entries.
                     matchesCategory = true;
                 }
 
@@ -1064,7 +1114,8 @@
         }
 
         function createCardHTML(entry) {
-            const category = categories[entry.category] || categories.other;
+            // Display category based on the current 'category' property (which might be 'favorites')
+            const displayCategory = categories[entry.category] || categories.other;
             const lastOpenedDate = entry.lastOpened ? `Abierto: ${new Date(entry.lastOpened).toLocaleDateString()}` : 'Nunca abierto';
             const cardColorStyle = entry.cardColor ? `border-left-color: ${entry.cardColor};` : '';
 
@@ -1090,9 +1141,9 @@
                                 <span class="status-dot ${entry.status || 'active'}" data-tooltip="Estado: ${entry.status || 'activo'}"></span>
                                 ${escapeHtml(entry.name)}
                             </h3>
-                            <div class="category-badge category-${entry.category}">
-                                <i class="${category.icon}"></i>
-                                ${category.name}
+                            <div class="category-badge category-${displayCategory.name.toLowerCase().replace(/\s/g, '')}">
+                                <i class="${displayCategory.icon}"></i>
+                                ${displayCategory.name}
                             </div>
                         </div>
                         
@@ -1103,8 +1154,6 @@
                             <button class="btn btn-primary flex-1" onclick="openMiningPage('${entry.id}')"><i class="fas fa-play"></i>Abrir</button>
                             <div class="flex gap-1">
                                 <button class="btn btn-secondary btn-small" onclick="copyUrlToClipboard('${entry.id}')" data-tooltip="Copiar URL"><i class="fas fa-copy"></i></button>
-                                <!-- REMOVED: QR Code button from card actions -->
-                                <!-- REMOVED: Duplicate button from card actions -->
                                 <button class="btn btn-warning btn-small" onclick="editEntry('${entry.id}')" data-tooltip="Editar"><i class="fas fa-edit"></i></button>
                                 <button class="btn btn-danger btn-small" onclick="showDeleteConfirmation('${entry.id}')" data-tooltip="Eliminar"><i class="fas fa-trash"></i></button>
                             </div>
@@ -1129,7 +1178,15 @@
             try {
                 const entry = await getEntryById(id);
                 if (!entry) return showNotification('Entrada no encontrada', 'error');
-                const exportData = { version: '1.6.0', exportDate: new Date().toISOString(), exportType: 'individual', totalEntries: 1, entries: [entry] };
+
+                // When exporting, restore originalCategory if it exists
+                const exportEntry = { ...entry };
+                if (exportEntry.isFavorite && exportEntry.originalCategory) {
+                    exportEntry.category = exportEntry.originalCategory;
+                    delete exportEntry.originalCategory;
+                }
+
+                const exportData = { version: '1.6.0', exportDate: new Date().toISOString(), exportType: 'individual', totalEntries: 1, entries: [exportEntry] };
                 const dataStr = JSON.stringify(exportData, null, 2);
                 const dataBlob = new Blob([dataStr], { type: 'application/json;charset=utf-8' });
                 const url = URL.createObjectURL(dataBlob);
@@ -1248,6 +1305,9 @@
             newEntry.lastOpened = null;
             newEntry.createdAt = new Date().toISOString();
             newEntry.updatedAt = new Date().toISOString();
+            // Ensure originalCategory is not copied from source and is cleared
+            newEntry.originalCategory = undefined; 
+
             // Asegurar valores por defecto si no están presentes en los datos entrantes
             newEntry.status = newEntry.status || 'active';
             newEntry.cardColor = newEntry.cardColor || '#0ea5e9';
@@ -1267,7 +1327,8 @@
                 document.getElementById('modalTitle').textContent = 'Editar Entrada';
                 document.getElementById('saveButtonText').textContent = 'Actualizar';
                 document.getElementById('nameInput').value = entry.name;
-                document.getElementById('categoryInput').value = entry.category;
+                // Display the current category for editing (could be 'favorites' if it's a favorite)
+                document.getElementById('categoryInput').value = entry.category; 
                 document.getElementById('urlInput').value = entry.url || '';
                 document.getElementById('descriptionInput').value = entry.description || '';
                 document.getElementById('tagsInput').value = entry.tags ? entry.tags.join(', ') : '';
@@ -1337,33 +1398,61 @@
         document.getElementById('miningForm').addEventListener('submit', async function(e) {
             e.preventDefault();
             const name = document.getElementById('nameInput').value.trim();
-            const category = document.getElementById('categoryInput').value;
+            const category = document.getElementById('categoryInput').value; // This is the category selected in the form
             const url = document.getElementById('urlInput').value.trim();
             
             if (!validateForm(name, category, url)) return;
             
             try {
+                const isExistingEntry = !!editingEntry;
                 const entry = {
-                    id: editingEntry ? editingEntry.id : generateId(),
+                    id: isExistingEntry ? editingEntry.id : generateId(),
                     name: name,
-                    category: category,
+                    // If editing an existing entry that was a favorite, and the category dropdown is NOT 'favorites',
+                    // it implies the user wants to explicitly change its category AND un-favorite it.
+                    // However, per user request, favorite toggle should solely manage category when favoring/unfavoring.
+                    // So, the category from the form is used directly.
+                    category: category, 
                     url: url,
                     description: document.getElementById('descriptionInput').value.trim(),
                     tags: document.getElementById('tagsInput').value.trim() ? document.getElementById('tagsInput').value.trim().split(',').map(tag => tag.trim()).filter(tag => tag) : [],
                     image: document.getElementById('imagePreview').src,
-                    createdAt: editingEntry ? editingEntry.createdAt : new Date().toISOString(),
+                    createdAt: isExistingEntry ? editingEntry.createdAt : new Date().toISOString(),
                     updatedAt: new Date().toISOString(),
-                    isFavorite: editingEntry ? editingEntry.isFavorite : false,
-                    clickCount: editingEntry ? editingEntry.clickCount || 0 : 0,
-                    lastOpened: editingEntry ? editingEntry.lastOpened : null,
+                    isFavorite: isExistingEntry ? editingEntry.isFavorite : false, // Keep existing favorite status unless specifically toggled by button
+                    clickCount: isExistingEntry ? editingEntry.clickCount || 0 : 0,
+                    lastOpened: isExistingEntry ? editingEntry.lastOpened : null,
                     status: document.getElementById('statusInput').value,
                     cardColor: document.getElementById('cardColorInput').value,
                 };
+
+                // Handle originalCategory for editing (if the edited card was a favorite)
+                // If the entry was a favorite, and the form's category is still 'favorites', keep originalCategory.
+                // If the form's category is now something else, it implies the user manually unfavorited it via form,
+                // so originalCategory should be cleared and isFavorite set to false.
+                // This logic is complex for the form. Sticking to the button as primary favorite toggle.
+                // So, if an existing favorite card is edited, its `category` will remain 'favorites'
+                // unless `toggleFavorite` button is used. The form will just save whatever `category` it had.
+                if (isExistingEntry && editingEntry.isFavorite) {
+                    // If it was a favorite, and the form submission changes its category from 'favorites' to something else,
+                    // it means the user implicitly unfavorited it by changing category.
+                    if (category !== 'favorites' && editingEntry.category === 'favorites') {
+                         entry.isFavorite = false;
+                         entry.originalCategory = undefined;
+                    } else if (category === 'favorites' && editingEntry.originalCategory) {
+                        // If it's still a favorite and its category is 'favorites', preserve originalCategory
+                        entry.originalCategory = editingEntry.originalCategory;
+                    }
+                } else {
+                    // Not a favorite, ensure originalCategory is undefined
+                    entry.originalCategory = undefined;
+                }
+
                 await saveEntry(entry);
                 await loadEntries();
                 updateStats();
                 updateUsageCharts();
-                showNotification(editingEntry ? 'Entrada actualizada' : '¡Entrada guardada!', 'success');
+                showNotification(isExistingEntry ? 'Entrada actualizada' : '¡Entrada guardada!', 'success');
                 closeAddModal();
             } catch (error) {
                 console.error('Error al guardar la entrada:', error);
@@ -1381,8 +1470,9 @@
                 showFieldError('nameError', 'El nombre no puede exceder 100 caracteres'); 
                 isValid = false; 
             } 
-            if (!category) { 
-                showFieldError('categoryError', 'La categoría es obligatoria'); 
+            // The category check needs to allow 'favorites' as a valid category now for internal storage
+            if (!category || !Object.keys(categories).includes(category)) { 
+                showFieldError('categoryError', 'La categoría es obligatoria y válida'); 
                 isValid = false; 
             } 
             if (url && !isValidUrl(url)) { 
@@ -1450,7 +1540,8 @@
         async function updateStats() {
             try {
                 const entries = await getEntries();
-                const uniqueCategories = [...new Set(entries.filter(e => !e.isFavorite).map(entry => entry.category))];
+                // When counting categories, don't count 'favorites' as a distinct category for this stat
+                const uniqueCategories = [...new Set(entries.filter(e => e.category !== 'favorites').map(entry => entry.category))];
                 const favoriteEntries = entries.filter(entry => entry.isFavorite);
                 const totalClicks = entries.reduce((sum, entry) => sum + (entry.clickCount || 0), 0);
 
@@ -1528,7 +1619,9 @@
         async function updateCategoryUsageChart() {
             try {
                 const categoryStats = await getCategoryUsageStats();
-                const sortedStats = categoryStats.sort((a, b) => b.count - a.count).slice(0, 10);
+                // Filter out 'favorites' from the category usage chart unless specifically requested to show it
+                const filteredCategoryStats = categoryStats.filter(s => s.category !== 'favorites');
+                const sortedStats = filteredCategoryStats.sort((a, b) => b.count - a.count).slice(0, 10);
                 const labels = sortedStats.map(s => categories[s.category]?.name || s.name);
                 const data = sortedStats.map(s => s.count);
 
@@ -1587,6 +1680,7 @@
                 if (activeChip) activeChip.classList.add('active');
                 
                 loadEntries(); 
+                // Only track category usage if it's not the 'favorites' filter
                 if (this.value && this.value !== 'favorites') {
                     trackCategoryUsage(this.value);
                 }
@@ -1600,6 +1694,7 @@
                     const category = this.dataset.category;
                     document.getElementById('categoryFilter').value = category;
                     loadEntries();
+                    // Only track category usage if it's not the 'favorites' filter
                     if (category && category !== 'favorites') {
                        trackCategoryUsage(category);
                     }
@@ -1647,7 +1742,17 @@
         async function exportData() {
             try {
                 const entries = await getEntries();
-                const exportData = { version: '1.6.0', exportDate: new Date().toISOString(), totalEntries: entries.length, entries: entries };
+                // When exporting, ensure categories are restored to original if favorited
+                const exportableEntries = entries.map(entry => {
+                    const entryCopy = { ...entry };
+                    if (entryCopy.isFavorite && entryCopy.originalCategory) {
+                        entryCopy.category = entryCopy.originalCategory;
+                        delete entryCopy.originalCategory;
+                    }
+                    return entryCopy;
+                });
+
+                const exportData = { version: '1.6.0', exportDate: new Date().toISOString(), totalEntries: exportableEntries.length, entries: exportableEntries };
                 const dataStr = JSON.stringify(exportData, null, 2);
                 const dataBlob = new Blob([dataStr], { type: 'application/json;charset=utf-8' });
                 const url = URL.createObjectURL(dataBlob);
@@ -1671,11 +1776,20 @@
                 if (entries.length === 0) {
                     return showNotification('No hay datos para exportar a CSV', 'warning');
                 }
+                // When exporting, ensure categories are restored to original if favorited
+                const exportableEntries = entries.map(entry => {
+                    const entryCopy = { ...entry };
+                    if (entryCopy.isFavorite && entryCopy.originalCategory) {
+                        entryCopy.category = entryCopy.originalCategory;
+                        delete entryCopy.originalCategory;
+                    }
+                    return entryCopy;
+                });
 
                 const headers = ["id", "name", "category", "url", "description", "tags", "image", "createdAt", "updatedAt", "isFavorite", "clickCount", "lastOpened", "status", "cardColor"];
                 let csv = headers.join(',') + '\n';
 
-                entries.forEach(entry => {
+                exportableEntries.forEach(entry => {
                     const row = headers.map(header => {
                         let value = entry[header];
                         if (header === 'tags' && Array.isArray(value)) {
@@ -1750,7 +1864,6 @@
                     for (let i = 0; i < importedEntries.length; i++) {
                         const entry = importedEntries[i];
                         try {
-                            // Integrate single card logic with error handling for each entry
                             await integrateSingleCard(entry);
                             successCount++;
                             updateImportProgress(50 + (i / importedEntries.length * 40), `Importado: "${entry.name || 'Sin Nombre'}"`, 'info');
@@ -1782,18 +1895,15 @@
         async function parseJSONFile(text) {
             try {
                 const data = JSON.parse(text);
-                // Return data directly, the integrateSingleCard will handle it.
-                // If the top-level JSON is an object, wrap it in an array to be consistent with iteration logic.
                 if (typeof data === 'object' && data !== null && !Array.isArray(data)) {
-                    // Check if it's an export format that contains an 'entries' array
                     if (data.entries && Array.isArray(data.entries)) {
                         return data.entries;
                     }
-                    return [data]; // Assume it's a single entry object
+                    return [data];
                 } else if (Array.isArray(data)) {
                     return data;
                 }
-                return []; // Not a valid structure
+                return [];
             } catch (error) {
                 console.error('Error al analizar archivo JSON:', error);
                 throw new Error('Formato JSON inválido.');
@@ -1860,6 +1970,7 @@
         }
 
         function validateCategory(category) {
+            // Validate against all known categories, including 'favorites' for internal use
             return Object.keys(categories).includes(category);
         }
 
@@ -1884,6 +1995,12 @@
                 window.open(entry.url, '_blank');
                 showNotification(`Abriendo "${entry.name}" en una nueva pestaña.`, 'info');
                 
+                // Track original category usage if the card is a favorite, otherwise track its current category
+                if (entry.isFavorite && entry.originalCategory) {
+                    trackCategoryUsage(entry.originalCategory);
+                } else {
+                    trackCategoryUsage(entry.category);
+                }
                 trackPageUsage(entry.url, entry.name);
                 
                 loadEntries();
@@ -1943,7 +2060,6 @@
                 else if (document.getElementById('shareModal').classList.contains('active')) closeShareModal(); 
                 else if (document.getElementById('updateNotification').classList.contains('show')) closeUpdateNotification(); 
                 else if (document.getElementById('mainMenuModal').classList.contains('active')) closeMainMenu(); 
-                // REMOVED: qrCodeModal related escape handling
             } 
         });
 
@@ -1986,9 +2102,22 @@
             try {
                 const entry = await getEntryById(id);
                 if (!entry) return;
-                entry.isFavorite = !entry.isFavorite;
+
+                if (!entry.isFavorite) {
+                    // Marking as favorite: save original category and change to 'favorites'
+                    entry.originalCategory = entry.category;
+                    entry.category = 'favorites';
+                    entry.isFavorite = true;
+                    showNotification('Añadido a favoritos', 'info');
+                } else {
+                    // Unmarking as favorite: restore original category
+                    entry.category = entry.originalCategory || 'other'; // Fallback to 'other' if originalCategory is missing
+                    delete entry.originalCategory; // Remove the originalCategory field
+                    entry.isFavorite = false;
+                    showNotification('Eliminado de favoritos', 'info');
+                }
+                
                 await saveEntry(entry);
-                showNotification(entry.isFavorite ? 'Añadido a favoritos' : 'Eliminado de favoritos', 'info');
                 await loadEntries();
                 updateStats();
             } catch (error) {
@@ -2017,45 +2146,31 @@
             }
         }
 
-        // REMOVED: showDuplicateConfirmation(id) function
-        // REMOVED: performDuplicate(id) function
-
-        // REMOVED: showQrCode(id) function
-        // REMOVED: closeQrCodeModal() function
-
-        // REMOVED: Funciones de manejo de enlaces entrantes (handleIncomingLinkData, showInstallIncomingCardPrompt, closeInstallCardModal)
-        // The installCardModal is kept in HTML but won't be activated by external links.
-        // The confirmInstallIncomingCard function is still used by the JSON paste modal.
         async function confirmInstallIncomingCard(dataToInstall = incomingCardData) {
             if (!dataToInstall) {
                 return showNotification('No hay datos de tarjeta para unir', 'error');
             }
 
             try {
-                // Crear una nueva entrada a partir de los datos entrantes
                 const newEntry = { ...dataToInstall };
-                
-                // Asignar un nuevo ID para evitar conflictos con entradas existentes
                 newEntry.id = generateId();
-                // Reiniciar datos específicos del usuario que no deben copiarse de la fuente
                 newEntry.isFavorite = false;
                 newEntry.clickCount = 0;
                 newEntry.lastOpened = null;
                 newEntry.createdAt = new Date().toISOString();
                 newEntry.updatedAt = new Date().toISOString();
-                // Asegurar valores por defecto si no están presentes en los datos entrantes
+                newEntry.originalCategory = undefined; // Ensure originalCategory is clear on new imports
+
                 newEntry.status = newEntry.status || 'active';
                 newEntry.cardColor = newEntry.cardColor || '#0ea5e9';
                 newEntry.tags = Array.isArray(newEntry.tags) ? newEntry.tags : [];
                 newEntry.image = newEntry.image || 'https://i.postimg.cc/GpPsSmmX/4491470.png';
 
 
-                // Validar nuevamente antes de guardar
                 if (!newEntry.name || !newEntry.category || !validateCategory(newEntry.category)) {
                     showNotification('Error: La tarjeta entrante es inválida (falta nombre o categoría válida).', 'error');
                     console.error('Tarjeta entrante inválida al intentar unir:', newEntry);
-                    // closeInstallCardModal(); // This might be called from JSON paste, so don't close install modal here.
-                    return; // Return early on validation failure
+                    return;
                 }
 
                 await saveEntry(newEntry);
@@ -2066,16 +2181,15 @@
                 updateStats();
                 updateUsageCharts();
                 
-                closeInstallCardModal(); // Close the install card modal only after successful integration
+                closeInstallCardModal();
             } catch (error) {
                 console.error('Error al unir la tarjeta entrante:', error);
                 showNotification('Error al unir la tarjeta', 'error');
             }
         }
-        // This function is kept for confirmInstallIncomingCard, but not directly called from external links.
         function closeInstallCardModal() {
             document.getElementById('installCardModal').classList.remove('active');
-            incomingCardData = null; // Clear data
+            incomingCardData = null;
         }
 
     </script>
