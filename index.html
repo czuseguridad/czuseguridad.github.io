@@ -433,7 +433,7 @@
         .filter-chip { padding: 0.5rem 1rem; border-radius: 20px; background: var(--secondary-bg); color: var(--text-primary); border: 1px solid var(--border); cursor: pointer; transition: all 0.3s ease; font-size: 0.875rem; }
         .filter-chip:hover, .filter-chip.active { background: var(--accent); color: white; border-color: var(--accent); }
         
-        /* Style for active favorites filter */
+        /* Estilo para el filtro de favoritos activo */
         .filter-chip[data-category="favorites"].active {
             background: var(--warning);
             color: white;
@@ -506,11 +506,11 @@
     </style>
 </head>
 <body data-theme="dark">
-    <!-- Storage Permission Modal -->
+    <!-- Modal de Permiso de Almacenamiento -->
     <div id="storagePermissionModal" class="storage-permission-modal">
         <div class="storage-permission-content">
             <h2 class="text-2xl font-bold mb-4 text-blue-400"><i class="fas fa-folder-plus mr-2"></i>Permiso de Almacenamiento</h2>
-            <p class="text-gray-300 mb-6">Para garantizar que tus datos est茅n seguros y respaldados, necesitamos acceso a una carpeta donde guardar autom谩ticamente tus entradas de miner铆a. Esto te permitir谩 mantener un respaldo actualizado en caso de futuras actualizaciones.</p>
+            <p class="text-gray-300 mb-6">Para garantizar que tus datos estén seguros y respaldados, necesitamos acceso a una carpeta donde guardar automáticamente tus entradas de minería. Esto te permitirá mantener un respaldo actualizado en caso de futuras actualizaciones.</p>
             <div class="flex gap-4 justify-center">
                 <button class="btn btn-primary" onclick="requestStoragePermission()"><i class="fas fa-check"></i>Conceder Permiso</button>
                 <button class="btn btn-secondary" onclick="continueWithoutPermission()"><i class="fas fa-times"></i>Continuar sin Permiso</button>
@@ -518,68 +518,68 @@
         </div>
     </div>
 
-    <!-- Main Menu Modal -->
+    <!-- Modal de Menú Principal -->
     <div id="mainMenuModal" class="fullscreen-modal">
         <button class="close-menu-btn" onclick="closeMainMenu()"><i class="fas fa-times"></i></button>
-        <h2 class="text-3xl font-bold mb-8 text-center"><i class="fas fa-ellipsis-h mr-2"></i>Men煤 Principal</h2>
+        <h2 class="text-3xl font-bold mb-8 text-center"><i class="fas fa-ellipsis-h mr-2"></i>Menú Principal</h2>
         <div class="grid grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-8">
             <button class="menu-button faucet-button" onclick="openExternalUrl('https://faucetpay.io/'); closeMainMenu();"><img src="https://i.postimg.cc/xd3HS5CW/Picsart-25-07-12-19-07-45-544.png" alt="FaucetPay" class="faucet-logo"><span>FaucetPay</span></button>
-            <button class="menu-button investment-button" onclick="window.location.href='invercion.html'; closeMainMenu();"><i class="fas fa-money-bill-wave" style="font-size: 3rem;"></i><span>Inversi贸n</span></button>
-            <button class="menu-button add-button" onclick="openAddModal(); closeMainMenu()"><i class="fas fa-plus" style="font-size: 3rem;"></i><span>Agregar P谩gina</span></button>
-            <!-- REMOVED: QR Scanner Button -->
+            <button class="menu-button investment-button" onclick="window.location.href='invercion.html'; closeMainMenu();"><i class="fas fa-money-bill-wave" style="font-size: 3rem;"></i><span>Inversión</span></button>
+            <button class="menu-button add-button" onclick="openAddModal(); closeMainMenu()"><i class="fas fa-plus" style="font-size: 3rem;"></i><span>Agregar Página</span></button>
+            <!-- Eliminado: Botón para escanear QR -->
             <button class="menu-button export-button" onclick="openExportModal(); closeMainMenu()"><i class="fas fa-download" style="font-size: 3rem;"></i><span>Exportar/Importar</span></button>
             <button class="menu-button delete-button" onclick="showDeleteAllConfirmation(); closeMainMenu()"><i class="fas fa-trash-alt" style="font-size: 3rem;"></i><span>Borrar Todo</span></button>
         </div>
     </div>
 
-    <!-- Update Notification -->
+    <!-- Notificación de Actualización -->
     <div id="updateNotification" class="update-notification">
         <h3 id="updateNotificationTitle"><i class="fas fa-sparkles mr-2"></i></h3>
         <p id="updateNotificationDescription"></p>
-        <button class="btn btn-primary" onclick="closeUpdateNotification()"><i class="fas fa-check"></i>隆Entendido!</button>
+        <button class="btn btn-primary" onclick="closeUpdateNotification()"><i class="fas fa-check"></i>¡Entendido!</button>
     </div>
 
-    <!-- Theme Toggle & Games Button -->
+    <!-- Botón de Alternar Tema y Juegos -->
     <button class="theme-toggle" onclick="toggleTheme()" aria-label="Cambiar tema"><i id="themeIcon" class="fas fa-moon"></i></button>
     <button class="games-button" onclick="window.location.href='juegosluminaria.html'" aria-label="Tus juegos"><i class="fas fa-gamepad"></i></button>
 
-    <!-- Header -->
+    <!-- Cabecera -->
     <header class="bg-gradient-to-r from-blue-600 to-purple-600 text-white py-8">
         <div class="container text-center">
             <div class="flex justify-center items-center gap-4 mb-4">
                 <img src="https://i.postimg.cc/GpPsSmmX/4491470.png" alt="Logo" class="w-16 h-16">
                 <h1 class="text-5xl font-bold">Lunaria Mining Premium</h1>
             </div>
-            <p class="text-xl opacity-90">Gesti贸n avanzada de entradas de miner铆a con estad铆sticas y categor铆as</p>
+            <p class="text-xl opacity-90">Gestión avanzada de entradas de minería con estadísticas y categorías</p>
         </div>
     </header>
 
-    <!-- Statistics Dashboard -->
+    <!-- Panel de Estadísticas -->
     <section class="py-8">
         <div class="container">
             <div class="stats-grid">
                 <div class="stat-card"><div class="stat-value" id="totalEntries">0</div><div class="stat-label">Total Entradas</div></div>
-                <div class="stat-card"><div class="stat-value" id="totalCategories">0</div><div class="stat-label">Categor铆as</div></div>
+                <div class="stat-card"><div class="stat-value" id="totalCategories">0</div><div class="stat-label">Categorías</div></div>
                 <div class="stat-card"><div class="stat-value" id="favoriteEntries">0</div><div class="stat-label">Favoritas</div></div>
                 <div class="stat-card"><div class="stat-value" id="totalClicks">0</div><div class="stat-label">Clicks Totales</div></div>
             </div>
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
-                <div class="chart-container"><h3 class="text-xl font-bold mb-4">P谩ginas M谩s Usadas</h3><div style="height: 300px;"><canvas id="pageUsageChart"></canvas></div></div>
-                <div class="chart-container"><h3 class="text-xl font-bold mb-4">Categor铆as M谩s Usadas</h3><div style="height: 300px;"><canvas id="categoryUsageChart"></canvas></div></div>
+                <div class="chart-container"><h3 class="text-xl font-bold mb-4">Páginas Más Usadas</h3><div style="height: 300px;"><canvas id="pageUsageChart"></canvas></div></div>
+                <div class="chart-container"><h3 class="text-xl font-bold mb-4">Categorías Más Usadas</h3><div style="height: 300px;"><canvas id="categoryUsageChart"></canvas></div></div>
             </div>
         </div>
     </section>
 
-    <!-- Search and Filter Bar -->
+    <!-- Barra de Búsqueda y Filtros -->
     <section class="py-4">
         <div class="container">
             <div class="search-filter-bar">
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
                     <div><label class="block text-sm font-medium mb-2">Buscar</label><div class="relative"><i class="fas fa-search absolute left-3 top-3 text-gray-400"></i><input type="text" id="searchInput" class="form-input pl-10" placeholder="Buscar entradas..."></div></div>
                     <div>
-                        <label class="block text-sm font-medium mb-2">Categor铆a</label>
+                        <label class="block text-sm font-medium mb-2">Categoría</label>
                         <select id="categoryFilter" class="form-select">
-                            <option value="">Todas las categor铆as</option>
+                            <option value="">Todas las categorías</option>
                             <option value="favorites">Favoritos</option>
                             <option value="faucet">Faucets</option>
                             <option value="mining">Mining</option>
@@ -593,12 +593,12 @@
                     <div>
                         <label class="block text-sm font-medium mb-2">Ordenar por</label>
                         <select id="sortBy" class="form-select">
-                            <option value="newest">M谩s recientes</option>
-                            <option value="oldest">M谩s antiguos</option>
+                            <option value="newest">Más recientes</option>
+                            <option value="oldest">Más antiguos</option>
                             <option value="favorites">Favoritos primero</option>
-                            <option value="mostClicked">M谩s clickeados</option>
+                            <option value="mostClicked">Más clickeados</option>
                             <option value="name">Nombre A-Z</option>
-                            <option value="category">Categor铆a</option>
+                            <option value="category">Categoría</option>
                         </select>
                     </div>
                 </div>
@@ -617,26 +617,26 @@
         </div>
     </section>
 
-    <!-- Main Content -->
+    <!-- Contenido Principal -->
     <main class="py-8">
         <div class="container">
-            <div id="emptyState" class="empty-state"><i class="fas fa-gem"></i><h3 class="text-2xl font-bold mb-2">No hay entradas de miner铆a</h3><p class="mb-4">Comienza agregando tu primera entrada de miner铆a</p><button class="btn btn-primary" onclick="openAddModal()"><i class="fas fa-plus"></i>Agregar Primera Entrada</button></div>
+            <div id="emptyState" class="empty-state"><i class="fas fa-gem"></i><h3 class="text-2xl font-bold mb-2">No hay entradas de minería</h3><p class="mb-4">Comienza agregando tu primera entrada de minería</p><button class="btn btn-primary" onclick="openAddModal()"><i class="fas fa-plus"></i>Agregar Primera Entrada</button></div>
             <div id="cardsGrid" class="cards-grid"></div>
         </div>
     </main>
 
-    <!-- FAB & Tooltip -->
-    <button class="fab" onclick="openMainMenu()" aria-label="Men煤 principal"><i class="fas fa-ellipsis-h"></i></button>
+    <!-- Botón de Acción Flotante (FAB) y Tooltip -->
+    <button class="fab" onclick="openMainMenu()" aria-label="Menú principal"><i class="fas fa-ellipsis-h"></i></button>
     <div id="tooltip" class="tooltip"></div>
 
-    <!-- Add/Edit Modal -->
+    <!-- Modal de Añadir/Editar -->
     <div id="addModal" class="modal">
         <div class="modal-content">
-            <div class="flex justify-between items-center mb-6"><h2 class="text-2xl font-bold text-blue-400"><i class="fas fa-plus mr-2"></i><span id="modalTitle">Agregar Entrada de Miner铆a</span></h2><button class="text-gray-400 hover:text-white text-2xl" onclick="closeAddModal()"><i class="fas fa-times"></i></button></div>
+            <div class="flex justify-between items-center mb-6"><h2 class="text-2xl font-bold text-blue-400"><i class="fas fa-plus mr-2"></i><span id="modalTitle">Agregar Entrada de Minería</span></h2><button class="text-gray-400 hover:text-white text-2xl" onclick="closeAddModal()"><i class="fas fa-times"></i></button></div>
             <form id="miningForm" class="space-y-6">
-                <div><label class="block text-sm font-medium mb-2">Imagen de Portada</label><div class="border-2 border-dashed border-gray-600 rounded-lg p-6 text-center cursor-pointer hover:border-blue-500 transition-colors" onclick="document.getElementById('imageInput').click()"><img id="imagePreview" class="w-full max-w-sm h-48 object-cover rounded-lg mx-auto mb-4" src="https://i.postimg.cc/GpPsSmmX/4491470.png" alt="Preview"><p class="text-gray-400"><i class="fas fa-upload mr-2"></i>Hacer clic para cambiar imagen</p></div><input type="file" id="imageInput" accept="image/*" style="display: none;" onchange="handleImageUpload(event)"></div>
+                <div><label class="block text-sm font-medium mb-2">Imagen de Portada</label><div class="border-2 border-dashed border-gray-600 rounded-lg p-6 text-center cursor-pointer hover:border-blue-500 transition-colors" onclick="document.getElementById('imageInput').click()"><img id="imagePreview" class="w-full max-w-sm h-48 object-cover rounded-lg mx-auto mb-4" src="https://i.postimg.cc/GpPsSmmX/4491470.png" alt="Previsualización"><p class="text-gray-400"><i class="fas fa-upload mr-2"></i>Hacer clic para cambiar imagen</p></div><input type="file" id="imageInput" accept="image/*" style="display: none;" onchange="handleImageUpload(event)"></div>
                 <div><label class="block text-sm font-medium mb-2">Nombre *</label><input type="text" id="nameInput" class="form-input" placeholder="Nombre de la entrada" maxlength="100" required><div id="nameError" class="text-red-500 text-sm mt-1"></div></div>
-                <div><label class="block text-sm font-medium mb-2">Categor铆a *</label><select id="categoryInput" class="form-select" required><option value="">Seleccionar categor铆a</option><option value="faucet">Faucets</option><option value="mining">Mining</option><option value="staking">Staking</option><option value="defi">DeFi</option><option value="trading">Trading</option><option value="shorlin">Shorlin Fause</option><option value="other">Otros</option></select><div id="categoryError" class="text-red-500 text-sm mt-1"></div></div>
+                <div><label class="block text-sm font-medium mb-2">Categoría *</label><select id="categoryInput" class="form-select" required><option value="">Seleccionar categoría</option><option value="faucet">Faucets</option><option value="mining">Mining</option><option value="staking">Staking</option><option value="defi">DeFi</option><option value="trading">Trading</option><option value="shorlin">Shorlin Fause</option><option value="other">Otros</option></select><div id="categoryError" class="text-red-500 text-sm mt-1"></div></div>
                 <div><label class="block text-sm font-medium mb-2">URL</label><input type="url" id="urlInput" class="form-input" placeholder="https://ejemplo.com"><div id="urlError" class="text-red-500 text-sm mt-1"></div></div>
                 
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -644,7 +644,7 @@
                         <label class="block text-sm font-medium mb-2">Estado</label>
                         <select id="statusInput" class="form-select">
                             <option value="active">Activo</option>
-                            <option value="attention">Requiere Atenci贸n</option>
+                            <option value="attention">Requiere Atención</option>
                             <option value="inactive">Inactivo</option>
                         </select>
                     </div>
@@ -654,26 +654,26 @@
                     </div>
                 </div>
 
-                <div><label class="block text-sm font-medium mb-2">Descripci贸n (Opcional)</label><textarea id="descriptionInput" class="form-input" rows="3" placeholder="Descripci贸n breve de la entrada"></textarea></div>
+                <div><label class="block text-sm font-medium mb-2">Descripción (Opcional)</label><textarea id="descriptionInput" class="form-input" rows="3" placeholder="Descripción breve de la entrada"></textarea></div>
                 <div><label class="block text-sm font-medium mb-2">Etiquetas (Opcional)</label><input type="text" id="tagsInput" class="form-input" placeholder="bitcoin, ethereum, defi (separadas por comas)"></div>
                 <div class="flex gap-4 justify-end"><button type="button" class="btn btn-secondary" onclick="closeAddModal()"><i class="fas fa-times"></i>Cancelar</button><button type="submit" class="btn btn-primary"><i class="fas fa-save"></i><span id="saveButtonText">Guardar</span></button></div>
             </form>
         </div>
     </div>
 
-    <!-- View Entry Modal -->
+    <!-- Modal de Ver Entrada -->
     <div id="viewModal" class="modal"><div class="modal-content"><div class="flex justify-between items-center mb-6"><h2 class="text-2xl font-bold text-blue-400"><i class="fas fa-eye mr-2"></i>Detalles de la Entrada</h2><button class="text-gray-400 hover:text-white text-2xl" onclick="closeViewModal()"><i class="fas fa-times"></i></button></div><div id="viewContent"></div></div></div>
 
-    <!-- Confirm Modal -->
-    <div id="confirmModal" class="modal"><div class="modal-content"><div class="flex justify-between items-center mb-6"><h2 class="text-2xl font-bold text-red-400"><i class="fas fa-exclamation-triangle mr-2"></i>Confirmar Acci贸n</h2></div><p id="confirmMessage" class="mb-6 text-lg"></p><div class="flex gap-4 justify-end"><button class="btn btn-secondary" onclick="closeConfirmModal()"><i class="fas fa-times"></i>Cancelar</button><button id="confirmActionButton" class="btn btn-danger" onclick="confirmAction()"><i class="fas fa-check"></i>Confirmar</button></div></div></div>
+    <!-- Modal de Confirmación -->
+    <div id="confirmModal" class="modal"><div class="modal-content"><div class="flex justify-between items-center mb-6"><h2 class="text-2xl font-bold text-red-400"><i class="fas fa-exclamation-triangle mr-2"></i>Confirmar Acción</h2></div><p id="confirmMessage" class="mb-6 text-lg"></p><div class="flex gap-4 justify-end"><button class="btn btn-secondary" onclick="closeConfirmModal()"><i class="fas fa-times"></i>Cancelar</button><button id="confirmActionButton" class="btn btn-danger" onclick="confirmAction()"><i class="fas fa-check"></i>Confirmar</button></div></div></div>
 
-    <!-- Share Modal -->
-    <div id="shareModal" class="share-modal"><div class="share-content"><div class="flex justify-between items-center mb-6"><h2 class="text-2xl font-bold text-green-400"><i class="fas fa-share-alt mr-2"></i>Compartir Entrada</h2><button class="text-gray-400 hover:text-white text-2xl" onclick="closeShareModal()"><i class="fas fa-times"></i></button></div><div id="sharePreview" class="share-preview"><img id="shareImage" src="https://i.postimg.cc/GpPsSmmX/4491470.png" alt="Vista previa"><div><h3 id="shareName" class="font-bold">Nombre de entrada</h3><p id="shareCategory" class="text-sm text-gray-400">Categor铆a</p></div></div><div class="share-options"><div class="share-option" onclick="shareViaWebShare()"><i class="fas fa-share-alt"></i><span>Compartir</span></div><div class="share-option" onclick="shareViaWhatsApp()"><i class="fab fa-whatsapp"></i><span>WhatsApp</span></div><div class="share-option" onclick="shareViaTelegram()"><i class="fab fa-telegram"></i><span>Telegram</span></div><div class="share-option" onclick="shareViaMessenger()"><i class="fab fa-facebook-messenger"></i><span>Messenger</span></div><div class="share-option" onclick="shareViaEmail()"><i class="fas fa-envelope"></i><span>Email</span></div><div class="share-option" onclick="copyShareLink()"><i class="fas fa-copy"></i><span>Copiar Link</span></div><div class="share-option" onclick="showQrCode(currentShareEntry.id)"><i class="fas fa-qrcode"></i><span>Generar QR</span></div></div></div></div>
+    <!-- Modal de Compartir -->
+    <div id="shareModal" class="share-modal"><div class="share-content"><div class="flex justify-between items-center mb-6"><h2 class="text-2xl font-bold text-green-400"><i class="fas fa-share-alt mr-2"></i>Compartir Entrada</h2><button class="text-gray-400 hover:text-white text-2xl" onclick="closeShareModal()"><i class="fas fa-times"></i></button></div><div id="sharePreview" class="share-preview"><img id="shareImage" src="https://i.postimg.cc/GpPsSmmX/4491470.png" alt="Vista previa"><div><h3 id="shareName" class="font-bold">Nombre de entrada</h3><p id="shareCategory" class="text-sm text-gray-400">Categoría</p></div></div><div class="share-options"><div class="share-option" onclick="shareViaWebShare()"><i class="fas fa-share-alt"></i><span>Compartir</span></div><div class="share-option" onclick="shareViaWhatsApp()"><i class="fab fa-whatsapp"></i><span>WhatsApp</span></div><div class="share-option" onclick="shareViaTelegram()"><i class="fab fa-telegram"></i><span>Telegram</span></div><div class="share-option" onclick="shareViaMessenger()"><i class="fab fa-facebook-messenger"></i><span>Messenger</span></div><div class="share-option" onclick="shareViaEmail()"><i class="fas fa-envelope"></i><span>Email</span></div><div class="share-option" onclick="copyShareLink()"><i class="fas fa-copy"></i><span>Copiar Enlace</span></div><div class="share-option" onclick="showQrCode(currentShareEntry.id)"><i class="fas fa-qrcode"></i><span>Generar QR</span></div></div></div></div>
 
-    <!-- Export/Import Modal -->
+    <!-- Modal de Exportar/Importar -->
     <div id="exportModal" class="modal"><div class="modal-content"><div class="flex justify-between items-center mb-6"><h2 class="text-2xl font-bold text-blue-400"><i class="fas fa-download mr-2"></i>Exportar/Importar Datos</h2><button class="text-gray-400 hover:text-white text-2xl" onclick="closeExportModal()"><i class="fas fa-times"></i></button></div><div class="space-y-6"><div><h3 class="text-lg font-semibold mb-4">Exportar Datos</h3><div class="flex gap-4"><button class="btn btn-primary" onclick="exportData()"><i class="fas fa-download"></i>Descargar JSON</button><button class="btn btn-secondary" onclick="exportCSV()"><i class="fas fa-file-csv"></i>Descargar CSV</button></div></div><div><h3 class="text-lg font-semibold mb-4">Importar Datos</h3><input type="file" id="importFile" accept=".json,.csv" class="form-input mb-4"><button class="btn btn-success" onclick="importData()"><i class="fas fa-upload"></i>Importar Archivo</button><div id="importProgress" class="import-progress"><div class="flex items-center justify-between mb-2"><span>Procesando archivo...</span><div class="loading-spinner"></div></div><div class="progress-bar"><div id="importProgressBar" class="progress-fill" style="width: 0%"></div></div><div id="importLog" class="import-log"></div></div></div></div></div>
 
-    <!-- Modal para mostrar el c贸digo QR -->
+    <!-- Modal para mostrar el código QR -->
     <div id="qrCodeModal" class="modal">
         <div class="modal-content">
             <div class="flex justify-between items-center w-full mb-4">
@@ -685,16 +685,16 @@
         </div>
     </div>
 
-    <!-- Modal para confirmar la instalaci贸n de la tarjeta (reutilizado) -->
+    <!-- Modal para confirmar la instalación de la tarjeta (reutilizado) -->
     <div id="installCardModal" class="modal">
         <div class="modal-content">
             <h2 class="text-2xl font-bold text-green-400 mb-4"><i class="fas fa-download mr-2"></i>Instalar Tarjeta</h2>
-            <p class="mb-6 text-lg">Se ha detectado la siguiente tarjeta. 驴Deseas instalarla en tu aplicaci贸n?</p>
+            <p class="mb-6 text-lg">Se ha detectado la siguiente tarjeta. ¿Deseas instalarla en tu aplicación?</p>
             <div id="installCardPreview" class="share-preview mb-6">
                 <img id="installCardImage" src="https://i.postimg.cc/GpPsSmmX/4491470.png" alt="Vista previa">
                 <div>
                     <h3 id="installCardName" class="font-bold">Nombre de entrada</h3>
-                    <p id="installCardCategory" class="text-sm text-gray-400">Categor铆a</p>
+                    <p id="installCardCategory" class="text-sm text-gray-400">Categoría</p>
                 </div>
             </div>
             <div class="flex gap-4 justify-end">
@@ -705,7 +705,7 @@
     </div>
 
     <script>
-        // Global variables
+        // Variables globales
         let db;
         let editingEntry = null;
         let confirmCallback = null;
@@ -716,20 +716,20 @@
         let currentShareEntry = null;
         let tooltipTimeout = null;
         let currentUpdateIdShown = null;
-        // NUEVO: Variable para datos de tarjeta recibidos por URL
+        // Variable para datos de tarjeta recibidos por URL
         let incomingCardData = null;
 
-        const APP_BASE_URL = "https://czuseguridad.github.io/"; // Base URL for the app
-        const APP_SHARE_KEY = "eva"; // Key for sharing card data via URL
+        const APP_BASE_URL = "https://czuseguridad.github.io/"; // URL base para la aplicación
+        const APP_SHARE_KEY = "eva"; // Clave para compartir datos de tarjeta vía URL
 
         const appUpdates = [
-            { id: 'v1.0.0', title: '隆Bienvenido a Lunaria Mining Premium!', description: 'Hemos lanzado la aplicaci贸n para ayudarte a gestionar tus entradas de miner铆a. 隆Esperamos que te sea muy 煤til!' },
-            { id: 'v1.1.0', title: '隆Nuevas Funciones Disponibles!', description: 'Hemos mejorado la aplicaci贸n. Ahora puedes compartir las tarjetas directamente a trav茅s de las aplicaciones de mensajer铆a de tu dispositivo con la nueva funci贸n de compartir. Adem谩s, hemos a帽adido una nueva categor铆a <strong>"Shorlin Fause"</strong> especialmente dise帽ada para p谩ginas donde puedes realizar trabajo como ver anuncios, hacer ciertas tareas, y generar ingresos adicionales.' },
-            { id: 'v1.2.0', title: '隆Mejoras en la Interfaz y Rendimiento!', description: 'Hemos optimizado la interfaz de usuario para una navegaci贸n m谩s fluida y una experiencia visual mejorada. Tambi茅n se han realizado ajustes internos para un rendimiento m谩s r谩pido. 隆Disfr煤talo!' },
-            { id: 'v1.3.0', title: '隆Gr谩ficas de Uso y Notificaciones Autom谩ticas!', description: 'Ahora puedes ver las p谩ginas y categor铆as que m谩s usas en nuevas gr谩ficas de barras din谩micas. Adem谩s, recibir谩s notificaciones autom谩ticas con cada actualizaci贸n importante de la aplicaci贸n. 隆Mantente al d铆a con las novedades!' },
-            { id: 'v1.4.0', title: '隆Integraci贸n Avanzada de Archivos!', description: 'Ahora puedes **abrir directamente tus archivos JSON y CSV** con la aplicaci贸n Lunaria Mining Premium desde el explorador de archivos de tu dispositivo. Tambi茅n apareceremos en la opci贸n "Abrir con" para que importar tus tarjetas sea m谩s f谩cil que nunca. 隆Comparte tus datos sin esfuerzo!' },
-            { id: 'v1.5.0', title: '馃殌 隆Tarjetas S煤per Personalizables!', description: '隆Tus tarjetas ahora son m谩s inteligentes! A帽ade a <strong>favoritos</strong>, mira las <strong>estad铆sticas de clicks</strong>, asigna un <strong>estado</strong> (activo, inactivo), personaliza el <strong>color</strong>, genera <strong>c贸digos QR</strong>, <strong>copia URLs</strong> con un click y <strong>duplica</strong> tus tarjetas f谩cilmente. 隆Organiza como nunca antes!' },
-            { id: 'v1.6.0', title: '鉁 隆Navegaci贸n Mejorada y Bot贸n de Inversi贸n!', description: 'Hemos eliminado el navegador interno para una mejor compatibilidad con sitios web que tienen restricciones de seguridad, abriendo todo en nuevas pesta帽as. Adem谩s, a帽adimos un nuevo bot贸n de **Inversi贸n** en el men煤 principal.' }
+            { id: 'v1.0.0', title: '¡Bienvenido a Lunaria Mining Premium!', description: 'Hemos lanzado la aplicación para ayudarte a gestionar tus entradas de minería. ¡Esperamos que te sea muy útil!' },
+            { id: 'v1.1.0', title: '¡Nuevas Funciones Disponibles!', description: 'Hemos mejorado la aplicación. Ahora puedes compartir las tarjetas directamente a través de las aplicaciones de mensajería de tu dispositivo con la nueva función de compartir. Además, hemos añadido una nueva categoría <strong>"Shorlin Fause"</strong> especialmente diseñada para páginas donde puedes realizar trabajo como ver anuncios, hacer ciertas tareas, y generar ingresos adicionales.' },
+            { id: 'v1.2.0', title: '¡Mejoras en la Interfaz y Rendimiento!', description: 'Hemos optimizado la interfaz de usuario para una navegación más fluida y una experiencia visual mejorada. También se han realizado ajustes internos para un rendimiento más rápido. ¡Disfrútalo!' },
+            { id: 'v1.3.0', title: '¡Gráficas de Uso y Notificaciones Automáticas!', description: 'Ahora puedes ver las páginas y categorías que más usas en nuevas gráficas de barras dinámicas. Además, recibirás notificaciones automáticas con cada actualización importante de la aplicación. ¡Mantente al día con las novedades!' },
+            { id: 'v1.4.0', title: '¡Integración Avanzada de Archivos!', description: 'Ahora puedes **abrir directamente tus archivos JSON y CSV** con la aplicación Lunaria Mining Premium desde el explorador de archivos de tu dispositivo. También apareceremos en la opción "Abrir con" para que importar tus tarjetas sea más fácil que nunca. ¡Comparte tus datos sin esfuerzo!' },
+            { id: 'v1.5.0', title: '💎 ¡Tarjetas Súper Personalizables!', description: '¡Tus tarjetas ahora son más inteligentes! Añade a <strong>favoritos</strong>, mira las <strong>estadísticas de clicks</strong>, asigna un <strong>estado</strong> (activo, inactivo), personaliza el <strong>color</strong>, genera <strong>códigos QR</strong>, <strong>copia URLs</strong> con un click y <strong>duplica</strong> tus tarjetas fácilmente. ¡Organiza como nunca antes!' },
+            { id: 'v1.6.0', title: '✅ ¡Navegación Mejorada y Botón de Inversión!', description: 'Hemos eliminado el navegador interno para una mejor compatibilidad con sitios web que tienen restricciones de seguridad, abriendo todo en nuevas pestañas. Además, añadimos un nuevo botón de **Inversión** en el menú principal.' }
         ];
 
         const categories = {
@@ -757,7 +757,7 @@
             checkAppUpdates();
             setupToolTip();
             
-            // Handle incoming card data from URL
+            // Manejar datos de tarjeta entrantes desde la URL
             handleIncomingLinkData();
 
             if ('launchQueue' in window) {
@@ -823,7 +823,7 @@
                     continueWithoutPermission();
                 }
             } catch (error) {
-                console.error('Error requesting storage permission:', error);
+                console.error('Error al solicitar permiso de almacenamiento:', error);
                 showNotification('Error al solicitar permiso de almacenamiento', 'error');
                 continueWithoutPermission();
             }
@@ -848,9 +848,9 @@
                 const writable = await fileHandle.createWritable();
                 await writable.write(JSON.stringify(backupData, null, 2));
                 await writable.close();
-                console.log('Backup created successfully');
+                console.log('Copia de seguridad creada con éxito');
             } catch (error) {
-                console.error('Error creating backup:', error);
+                console.error('Error al crear copia de seguridad:', error);
             }
         }
 
@@ -882,10 +882,10 @@
                 currentShareEntry = entry;
                 document.getElementById('shareImage').src = entry.image;
                 document.getElementById('shareName').textContent = entry.name;
-                document.getElementById('shareCategory').textContent = categories[entry.category]?.name || 'Otra categor铆a';
+                document.getElementById('shareCategory').textContent = categories[entry.category]?.name || 'Otra categoría';
                 document.getElementById('shareModal').classList.add('active');
             }).catch(error => {
-                console.error('Error getting entry for sharing:', error);
+                console.error('Error al obtener la entrada para compartir:', error);
                 showNotification('Error al preparar la entrada para compartir', 'error');
             });
         }
@@ -900,36 +900,36 @@
             try {
                 await navigator.share({
                     title: `${currentShareEntry.name} | Lunaria Mining`,
-                    text: `隆Mira esta p谩gina de miner铆a: ${currentShareEntry.name}${currentShareEntry.description ? ' - ' + currentShareEntry.description : ''}!`,
+                    text: `¡Mira esta página de minería: ${currentShareEntry.name}${currentShareEntry.description ? ' - ' + currentShareEntry.description : ''}!`,
                     url: currentShareEntry.url || window.location.href
                 });
-                showNotification('隆Contenido compartido!', 'success');
+                showNotification('¡Contenido compartido!', 'success');
                 closeShareModal();
             } catch (error) {
                 if (error.name !== 'AbortError') {
                     showNotification('Error al compartir', 'error');
-                    console.error('Error sharing:', error);
+                    console.error('Error al compartir:', error);
                 }
             }
         }
 
-        function shareViaWhatsApp() { if (!currentShareEntry) return; const text = encodeURIComponent(`隆Mira esta p谩gina de miner铆a: ${currentShareEntry.name}${currentShareEntry.description ? ' - ' + currentShareEntry.description : ''}! ${APP_BASE_URL}?${APP_SHARE_KEY}=${encodeURIComponent(btoa(JSON.stringify({ app: "LunariaMiningPremium", data: currentShareEntry })))}`); window.open(`https://wa.me/?text=${text}`, '_blank'); closeShareModal(); }
-        function shareViaTelegram() { if (!currentShareEntry) return; const text = encodeURIComponent(`隆Mira esta p谩gina de miner铆a: ${currentShareEntry.name}${currentShareEntry.description ? ' - ' + currentShareEntry.description : ''}!`); const shareUrl = `${APP_BASE_URL}?${APP_SHARE_KEY}=${encodeURIComponent(btoa(JSON.stringify({ app: "LunariaMiningPremium", data: currentShareEntry })))}`; window.open(`https://t.me/share/url?url=${encodeURIComponent(shareUrl)}&text=${text}`, '_blank'); closeShareModal(); }
+        function shareViaWhatsApp() { if (!currentShareEntry) return; const text = encodeURIComponent(`¡Mira esta página de minería: ${currentShareEntry.name}${currentShareEntry.description ? ' - ' + currentShareEntry.description : ''}! ${APP_BASE_URL}?${APP_SHARE_KEY}=${encodeURIComponent(btoa(JSON.stringify({ app: "LunariaMiningPremium", data: currentShareEntry })))}`); window.open(`https://wa.me/?text=${text}`, '_blank'); closeShareModal(); }
+        function shareViaTelegram() { if (!currentShareEntry) return; const text = encodeURIComponent(`¡Mira esta página de minería: ${currentShareEntry.name}${currentShareEntry.description ? ' - ' + currentShareEntry.description : ''}!`); const shareUrl = `${APP_BASE_URL}?${APP_SHARE_KEY}=${encodeURIComponent(btoa(JSON.stringify({ app: "LunariaMiningPremium", data: currentShareEntry })))}`; window.open(`https://t.me/share/url?url=${encodeURIComponent(shareUrl)}&text=${text}`, '_blank'); closeShareModal(); }
         function shareViaMessenger() { if (!currentShareEntry) return; const shareUrl = `${APP_BASE_URL}?${APP_SHARE_KEY}=${encodeURIComponent(btoa(JSON.stringify({ app: "LunariaMiningPremium", data: currentShareEntry })))}`; window.open(`https://www.facebook.com/dialog/send?link=${encodeURIComponent(shareUrl)}&app_id=123456789&redirect_uri=${encodeURIComponent(window.location.href)}`, '_blank'); closeShareModal(); }
-        function shareViaEmail() { if (!currentShareEntry) return; const shareUrl = `${APP_BASE_URL}?${APP_SHARE_KEY}=${encodeURIComponent(btoa(JSON.stringify({ app: "LunariaMiningPremium", data: currentShareEntry })))}`; const subject = encodeURIComponent(`Sitio de miner铆a: ${currentShareEntry.name}`); const body = encodeURIComponent(`隆Hola!\n\nQuiero compartir contigo esta p谩gina de miner铆a:\n\nNombre: ${currentShareEntry.name}\nCategor铆a: ${categories[currentShareEntry.category]?.name || 'Otra'}\n${currentShareEntry.description ? 'Descripci贸n: ' + currentShareEntry.description + '\n' : ''}${currentShareEntry.url ? 'URL Original: ' + currentShareEntry.url + '\n' : ''}\n\nPara instalar esta tarjeta en la app Lunaria Mining Premium, abre este enlace:\n${shareUrl}\n\n隆Saludos!`); window.location.href = `mailto:?subject=${subject}&body=${body}`; closeShareModal(); }
+        function shareViaEmail() { if (!currentShareEntry) return; const shareUrl = `${APP_BASE_URL}?${APP_SHARE_KEY}=${encodeURIComponent(btoa(JSON.stringify({ app: "LunariaMiningPremium", data: currentShareEntry })))}`; const subject = encodeURIComponent(`Sitio de minería: ${currentShareEntry.name}`); const body = encodeURIComponent(`¡Hola!\n\nQuiero compartir contigo esta página de minería:\n\nNombre: ${currentShareEntry.name}\nCategoría: ${categories[currentShareEntry.category]?.name || 'Otra'}\n${currentShareEntry.description ? 'Descripción: ' + currentShareEntry.description + '\n' : ''}${currentShareEntry.url ? 'URL Original: ' + currentShareEntry.url + '\n' : ''}\n\nPara instalar esta tarjeta en la app Lunaria Mining Premium, abre este enlace:\n${shareUrl}\n\n¡Saludos!`); window.location.href = `mailto:?subject=${subject}&body=${body}`; closeShareModal(); }
 
-        // MODIFIED: Generate a shareable link with card data embedded
+        // MODIFICADO: Genera un enlace compartible con los datos de la tarjeta incrustados
         function copyShareLink() {
             if (!currentShareEntry) return showNotification('No hay entrada seleccionada para compartir', 'warning');
 
             try {
-                // Prepare the data to embed in the URL
+                // Prepara los datos para incrustarlos en la URL
                 const shareData = {
-                    app: "LunariaMiningPremium", // Identifier for our app
-                    data: currentShareEntry // The full entry object
+                    app: "LunariaMiningPremium", // Identificador para nuestra aplicación
+                    data: currentShareEntry // El objeto completo de la entrada
                 };
                 
-                // Stringify, base64 encode, and then URL encode the data
+                // Convierte a cadena, codifica en base64 y luego codifica para URL
                 const encodedData = encodeURIComponent(btoa(JSON.stringify(shareData)));
                 const shareableLink = `${APP_BASE_URL}?${APP_SHARE_KEY}=${encodedData}`;
 
@@ -940,14 +940,14 @@
                             closeShareModal();
                         })
                         .catch(err => {
-                            console.error('Failed to copy link using Clipboard API:', err);
+                            console.error('Error al copiar el enlace usando la API del Portapapeles:', err);
                             copyTextToClipboardLegacy(shareableLink);
                         });
                 } else {
                     copyTextToClipboardLegacy(shareableLink);
                 }
             } catch (error) {
-                console.error('Error generating or copying share link:', error);
+                console.error('Error al generar o copiar el enlace para compartir:', error);
                 showNotification('Error al generar el enlace de la tarjeta', 'error');
             }
         }
@@ -962,11 +962,11 @@
             textArea.select();
             try {
                 document.execCommand('copy');
-                showNotification('Enlace copiado al portapapeles (m茅todo antiguo)', 'success');
+                showNotification('Enlace copiado al portapapeles (método antiguo)', 'success');
                 closeShareModal();
             } catch (error) {
-                showNotification('Error al copiar el enlace. Tu navegador no soporta la copia autom谩tica.', 'error');
-                console.error('Error copying text with execCommand:', error);
+                showNotification('Error al copiar el enlace. Tu navegador no soporta la copia automática.', 'error');
+                console.error('Error al copiar texto con execCommand:', error);
             } finally {
                 document.body.removeChild(textArea);
             }
@@ -1014,12 +1014,12 @@
                 const filteredEntries = filterEntries(entries);
                 renderEntries(filteredEntries);
             } catch (error) {
-                console.error('Error loading entries:', error);
+                console.error('Error al cargar las entradas:', error);
                 showNotification('Error al cargar las entradas', 'error');
             }
         }
 
-        // MODIFICADO: L贸gica de filtrado para favoritos
+        // Lógica de filtrado para favoritos
         function filterEntries(entries) {
             const searchTerm = document.getElementById('searchInput').value.toLowerCase();
             const categoryFilter = document.getElementById('categoryFilter').value;
@@ -1035,10 +1035,10 @@
                     // Si el filtro es 'favoritos', solo muestra las que son favoritas.
                     matchesCategory = entry.isFavorite;
                 } else if (categoryFilter) {
-                    // Si es otra categor铆a, muestra las de esa categor铆a que NO son favoritas.
-                    matchesCategory = entry.category === categoryFilter && !entry.isFavorite;
+                    // Si es otra categoría, muestra las de esa categoría.
+                    matchesCategory = entry.category === categoryFilter;
                 } else {
-                    // Si no hay filtro de categor铆a (Todas), muestra todo.
+                    // Si no hay filtro de categoría (Todas), muestra todo.
                     matchesCategory = true;
                 }
 
@@ -1110,8 +1110,8 @@
                             <button class="btn btn-primary flex-1" onclick="openMiningPage('${entry.id}')"><i class="fas fa-play"></i>Abrir</button>
                             <div class="flex gap-1">
                                 <button class="btn btn-secondary btn-small" onclick="copyUrlToClipboard('${entry.id}')" data-tooltip="Copiar URL"><i class="fas fa-copy"></i></button>
-                                <!-- The QR button now directly calls showQrCode, which generates a QR for the card data -->
-                                <button class="btn btn-secondary btn-small" onclick="showQrCode('${entry.id}')" data-tooltip="C贸digo QR"><i class="fas fa-qrcode"></i></button>
+                                <!-- El botón QR ahora llama directamente a showQrCode, que genera un QR para los datos de la tarjeta -->
+                                <button class="btn btn-secondary btn-small" onclick="showQrCode('${entry.id}')" data-tooltip="Código QR"><i class="fas fa-qrcode"></i></button>
                                 <button class="btn btn-secondary btn-small" onclick="showDuplicateConfirmation('${entry.id}')" data-tooltip="Duplicar"><i class="fas fa-clone"></i></button>
                                 <button class="btn btn-warning btn-small" onclick="editEntry('${entry.id}')" data-tooltip="Editar"><i class="fas fa-edit"></i></button>
                                 <button class="btn btn-danger btn-small" onclick="showDeleteConfirmation('${entry.id}')" data-tooltip="Eliminar"><i class="fas fa-trash"></i></button>
@@ -1120,7 +1120,7 @@
                     </div>
                     <div class="card-footer">
                         <span class="card-stat" data-tooltip="Veces abierto"><i class="fas fa-mouse-pointer"></i> ${entry.clickCount || 0}</span>
-                        <span class="card-stat" data-tooltip="脷ltima apertura"><i class="fas fa-clock"></i> ${lastOpenedDate}</span>
+                        <span class="card-stat" data-tooltip="Última apertura"><i class="fas fa-clock"></i> ${lastOpenedDate}</span>
                     </div>
                 </div>
             `;
@@ -1151,7 +1151,7 @@
                 URL.revokeObjectURL(url);
                 showNotification(`Entrada "${entry.name}" exportada`, 'success');
             } catch (error) {
-                console.error('Error exporting individual entry:', error);
+                console.error('Error al exportar entrada individual:', error);
                 showNotification('Error al exportar la entrada', 'error');
             }
         }
@@ -1187,21 +1187,21 @@
                 clearErrors();
                 document.getElementById('addModal').classList.add('active');
             } catch (error) {
-                console.error('Error loading entry for edit:', error);
+                console.error('Error al cargar la entrada para editar:', error);
                 showNotification('Error al cargar la entrada', 'error');
             }
         }
 
         function showDeleteConfirmation(id) {
             confirmCallback = () => performDelete(id);
-            document.getElementById('confirmMessage').textContent = '驴Est谩s seguro de que deseas eliminar esta entrada? Esta acci贸n no se puede deshacer.';
+            document.getElementById('confirmMessage').textContent = '¿Estás seguro de que deseas eliminar esta entrada? Esta acción no se puede deshacer.';
             document.getElementById('confirmActionButton').innerHTML = '<i class="fas fa-check"></i> Confirmar';
             document.getElementById('confirmModal').classList.add('active');
         }
         
         function showDeleteAllConfirmation() {
             confirmCallback = () => performDeleteAll();
-            document.getElementById('confirmMessage').textContent = '驴Est谩s seguro de que deseas formatear la aplicaci贸n? Se borrar谩n todas las entradas de forma permanente.';
+            document.getElementById('confirmMessage').textContent = '¿Estás seguro de que deseas formatear la aplicación? Se borrarán todas las entradas de forma permanente.';
             document.getElementById('confirmActionButton').innerHTML = '<i class="fas fa-trash-alt"></i> Formatear';
             document.getElementById('confirmModal').classList.add('active');
         }
@@ -1215,7 +1215,7 @@
                 showNotification('Entrada eliminada', 'success');
                 closeConfirmModal();
             } catch (error) {
-                console.error('Error deleting entry:', error);
+                console.error('Error al eliminar la entrada:', error);
                 showNotification('Error al eliminar la entrada', 'error');
             }
         }
@@ -1236,7 +1236,7 @@
                 showNotification('Todos los datos han sido borrados', 'success');
                 closeConfirmModal();
             } catch (error) {
-                console.error('Error deleting all data:', error);
+                console.error('Error al borrar todos los datos:', error);
                 showNotification('Error al borrar todos los datos', 'error');
             }
         }
@@ -1273,10 +1273,10 @@
                 await loadEntries();
                 updateStats();
                 updateUsageCharts();
-                showNotification(editingEntry ? 'Entrada actualizada' : '隆Entrada guardada!', 'success');
+                showNotification(editingEntry ? 'Entrada actualizada' : '¡Entrada guardada!', 'success');
                 closeAddModal();
             } catch (error) {
-                console.error('Error saving entry:', error);
+                console.error('Error al guardar la entrada:', error);
                 showNotification('Error al guardar la entrada', 'error');
             }
         });
@@ -1292,11 +1292,11 @@
                 isValid = false; 
             } 
             if (!category) { 
-                showFieldError('categoryError', 'La categor铆a es obligatoria'); 
+                showFieldError('categoryError', 'La categoría es obligatoria'); 
                 isValid = false; 
             } 
             if (url && !isValidUrl(url)) { 
-                showFieldError('urlError', 'Por favor, proporciona una URL v谩lida'); 
+                showFieldError('urlError', 'Por favor, proporciona una URL válida'); 
                 isValid = false; 
             } 
             return isValid; 
@@ -1312,13 +1312,13 @@
                 return showNotification('Formato de imagen no soportado. Usa JPG, PNG, GIF o WebP.', 'error');
             }
             if (file.size > 10 * 1024 * 1024) {
-                return showNotification('La imagen es demasiado grande (M谩x 10MB)', 'error');
+                return showNotification('La imagen es demasiado grande (Máx 10MB)', 'error');
             }
             try {
                 const compressedImage = await compressImage(file);
                 document.getElementById('imagePreview').src = compressedImage;
             } catch (error) {
-                console.error('Error processing image:', error);
+                console.error('Error al procesar la imagen:', error);
                 showNotification('Error al procesar la imagen', 'error');
             }
         }
@@ -1369,7 +1369,7 @@
                 document.getElementById('favoriteEntries').textContent = favoriteEntries.length;
                 document.getElementById('totalClicks').textContent = totalClicks;
             } catch (error) {
-                console.error('Error updating stats:', error);
+                console.error('Error al actualizar estadísticas:', error);
             }
         }
 
@@ -1430,8 +1430,8 @@
                     }
                 });
             } catch (error) {
-                console.error('Error updating page usage chart:', error);
-                showNotification('Error al cargar la gr谩fica de uso de p谩ginas', 'error');
+                console.error('Error al actualizar la gráfica de uso de páginas:', error);
+                showNotification('Error al cargar la gráfica de uso de páginas', 'error');
             }
         }
 
@@ -1484,8 +1484,8 @@
                     }
                 });
             } catch (error) {
-                console.error('Error updating category usage chart:', error);
-                showNotification('Error al cargar la gr谩fica de uso de categor铆as', 'error');
+                console.error('Error al actualizar la gráfica de uso de categorías:', error);
+                showNotification('Error al cargar la gráfica de uso de categorías', 'error');
             }
         }
 
@@ -1570,7 +1570,7 @@
                 URL.revokeObjectURL(url);
                 showNotification('Datos exportados como JSON', 'success');
             } catch (error) {
-                console.error('Error exporting data:', error);
+                console.error('Error al exportar datos:', error);
                 showNotification('Error al exportar datos como JSON', 'error');
             }
         }
@@ -1612,7 +1612,7 @@
                 URL.revokeObjectURL(url);
                 showNotification('Datos exportados como CSV', 'success');
             } catch (error) {
-                console.error('Error exporting CSV:', error);
+                console.error('Error al exportar CSV:', error);
                 showNotification('Error al exportar datos como CSV', 'error');
             }
         }
@@ -1631,7 +1631,7 @@
             }
 
             showImportProgress();
-            updateImportProgress(0, 'Iniciando importaci贸n...');
+            updateImportProgress(0, 'Iniciando importación...');
 
             try {
                 const reader = new FileReader();
@@ -1650,8 +1650,8 @@
                     }
 
                     if (!importedEntries || importedEntries.length === 0) {
-                        updateImportProgress(100, 'No se encontraron entradas v谩lidas en el archivo.', 'warning');
-                        return showNotification('No se importaron entradas v谩lidas.', 'warning');
+                        updateImportProgress(100, 'No se encontraron entradas válidas en el archivo.', 'warning');
+                        return showNotification('No se importaron entradas válidas.', 'warning');
                     }
 
                     updateImportProgress(50, `Importando ${importedEntries.length} entradas...`);
@@ -1666,7 +1666,7 @@
                             }
                             if (!entry.name || !entry.category || !validateCategory(entry.category)) {
                                 errorCount++;
-                                updateImportProgress(50 + (i / importedEntries.length * 40), `Error: Entrada inv谩lida (nombre o categor铆a faltante/inv谩lida) - ${JSON.stringify(entry)}`, 'error');
+                                updateImportProgress(50 + (i / importedEntries.length * 40), `Error: Entrada inválida (nombre o categoría faltante/inválida) - ${JSON.stringify(entry)}`, 'error');
                                 continue;
                             }
                             entry.isFavorite = entry.isFavorite !== undefined ? entry.isFavorite : false;
@@ -1683,15 +1683,15 @@
                         } catch (saveError) {
                             errorCount++;
                             updateImportProgress(50 + (i / importedEntries.length * 40), `Error al guardar "${entry.name}": ${saveError.message}`, 'error');
-                            console.error('Error saving imported entry:', entry, saveError);
+                            console.error('Error al guardar la entrada importada:', entry, saveError);
                         }
                     }
 
-                    updateImportProgress(100, `Importaci贸n completada. 脡xito: ${successCount}, Errores: ${errorCount}.`, successCount > 0 && errorCount === 0 ? 'success' : errorCount > 0 ? 'error' : 'warning');
+                    updateImportProgress(100, `Importación completada. Éxito: ${successCount}, Errores: ${errorCount}.`, successCount > 0 && errorCount === 0 ? 'success' : errorCount > 0 ? 'error' : 'warning');
                     await loadEntries();
                     updateStats();
                     updateUsageCharts();
-                    showNotification(`Importaci贸n finalizada: ${successCount} entradas importadas.`, successCount > 0 ? 'success' : 'warning');
+                    showNotification(`Importación finalizada: ${successCount} entradas importadas.`, successCount > 0 ? 'success' : 'warning');
                 };
                 reader.onerror = (e) => {
                     updateImportProgress(100, `Error de lectura del archivo: ${e.target.error.message}`, 'error');
@@ -1699,9 +1699,9 @@
                 };
                 reader.readAsText(file);
             } catch (error) {
-                console.error('Error during import process:', error);
-                updateImportProgress(100, `Error fatal durante la importaci贸n: ${error.message}`, 'error');
-                showNotification(`Error durante la importaci贸n: ${error.message}`, 'error');
+                console.error('Error durante el proceso de importación:', error);
+                updateImportProgress(100, `Error fatal durante la importación: ${error.message}`, 'error');
+                showNotification(`Error durante la importación: ${error.message}`, 'error');
             }
         }
 
@@ -1715,8 +1715,8 @@
                 }
                 return [];
             } catch (error) {
-                console.error('Error parsing JSON file:', error);
-                throw new Error('Formato JSON inv谩lido.');
+                console.error('Error al analizar archivo JSON:', error);
+                throw new Error('Formato JSON inválido.');
             }
         }
 
@@ -1730,7 +1730,7 @@
             for (let i = 1; i < lines.length; i++) {
                 const values = parseCSVLine(lines[i]);
                 if (values.length !== headers.length) {
-                    console.warn(`Skipping malformed CSV line ${i + 1}: ${lines[i]}`);
+                    console.warn(`Saltando línea CSV mal formada ${i + 1}: ${lines[i]}`);
                     continue;
                 }
                 const entry = {};
@@ -1785,7 +1785,7 @@
         function openExternalUrl(url) {
             if (url) {
                 window.open(url, '_blank');
-                showNotification('P谩gina abierta en una nueva pesta帽a externa.', 'info');
+                showNotification('Página abierta en una nueva pestaña externa.', 'info');
             } else {
                 showNotification('No hay URL disponible para abrir externamente.', 'warning');
             }
@@ -1801,15 +1801,15 @@
                 await saveEntry(entry);
                 
                 window.open(entry.url, '_blank');
-                showNotification(`Abriendo "${entry.name}" en una nueva pesta帽a.`, 'info');
+                showNotification(`Abriendo "${entry.name}" en una nueva pestaña.`, 'info');
                 
                 trackPageUsage(entry.url, entry.name);
                 
                 loadEntries();
                 updateStats();
             } catch (error) {
-                console.error('Error opening mining page:', error);
-                showNotification('Error al abrir la p谩gina. Verifica la URL.', 'error');
+                console.error('Error al abrir la página de minería:', error);
+                showNotification('Error al abrir la página. Verifica la URL.', 'error');
             }
         }
 
@@ -1863,7 +1863,7 @@
                 else if (document.getElementById('updateNotification').classList.contains('show')) closeUpdateNotification(); 
                 else if (document.getElementById('mainMenuModal').classList.contains('active')) closeMainMenu(); 
                 else if (document.getElementById('qrCodeModal').classList.contains('active')) closeQrCodeModal();
-                // Removed QR scanner related escape key handlers
+                // Eliminado: manejadores de teclas de escape relacionados con el escáner QR
                 else if (document.getElementById('installCardModal').classList.contains('active')) closeInstallCardModal();
             } 
         });
@@ -1879,7 +1879,7 @@
         const manifest = { 
             name: 'Lunaria Mining Premium', 
             short_name: 'Lunaria Premium', 
-            description: 'Gesti贸n avanzada de entradas de miner铆a', 
+            description: 'Gestión avanzada de entradas de minería', 
             start_url: '.', 
             display: 'standalone', 
             background_color: '#0f172a', 
@@ -1909,11 +1909,11 @@
                 if (!entry) return;
                 entry.isFavorite = !entry.isFavorite;
                 await saveEntry(entry);
-                showNotification(entry.isFavorite ? 'A帽adido a favoritos' : 'Eliminado de favoritos', 'info');
+                showNotification(entry.isFavorite ? 'Añadido a favoritos' : 'Eliminado de favoritos', 'info');
                 await loadEntries();
                 updateStats();
             } catch (error) {
-                console.error('Error toggling favorite:', error);
+                console.error('Error al alternar favorito:', error);
                 showNotification('Error al cambiar el estado de favorito', 'error');
             }
         }
@@ -1926,21 +1926,21 @@
                     navigator.clipboard.writeText(entry.url).then(() => {
                         showNotification('URL copiada al portapapeles', 'success');
                     }).catch(err => {
-                        console.error('Failed to copy URL using Clipboard API:', err);
+                        console.error('Error al copiar URL usando la API del Portapapeles:', err);
                         copyTextToClipboardLegacy(entry.url);
                     });
                 } else {
                     copyTextToClipboardLegacy(entry.url);
                 }
             } catch (error) {
-                console.error('Error getting entry for copy:', error);
+                console.error('Error al obtener la entrada para copiar:', error);
                 showNotification('Error al obtener la URL para copiar', 'error');
             }
         }
 
         function showDuplicateConfirmation(id) {
             confirmCallback = () => performDuplicate(id);
-            document.getElementById('confirmMessage').textContent = '驴Est谩s seguro de que deseas duplicar esta entrada? Se crear谩 una copia con un nuevo ID.';
+            document.getElementById('confirmMessage').textContent = '¿Estás seguro de que deseas duplicar esta entrada? Se creará una copia con un nuevo ID.';
             document.getElementById('confirmActionButton').className = 'btn btn-primary';
             document.getElementById('confirmActionButton').innerHTML = '<i class="fas fa-clone"></i> Duplicar';
             document.getElementById('confirmModal').classList.add('active');
@@ -1966,18 +1966,18 @@
                 showNotification('Entrada duplicada correctamente', 'success');
                 closeConfirmModal();
             } catch (error) {
-                console.error('Error duplicating entry:', error);
+                console.error('Error al duplicar entrada:', error);
                 showNotification('Error al duplicar la entrada', 'error');
             }
         }
 
-        // MODIFIED: The QR now contains the data of the card and explicitly includes app identifier
+        // MODIFICADO: El QR ahora contiene los datos de la tarjeta y explícitamente incluye un identificador de aplicación
         async function showQrCode(id) {
             try {
                 const entry = await getEntryById(id);
-                if (!entry) return showNotification('No se encontr贸 la entrada para generar el QR', 'error');
+                if (!entry) return showNotification('No se encontró la entrada para generar el QR', 'error');
                 
-                // Object to be encoded in the QR, including app identifier
+                // Objeto a codificar en el QR, incluyendo el identificador de la aplicación
                 const qrData = {
                     app: "LunariaMiningPremium",
                     data: entry
@@ -1999,8 +1999,8 @@
                 document.getElementById('qrCodeInfo').textContent = `Muestra este QR a otro usuario para que pueda instalar "${entry.name}".`;
                 document.getElementById('qrCodeModal').classList.add('active');
             } catch (error) {
-                console.error('Error showing QR code:', error);
-                showNotification('Error al generar el c贸digo QR', 'error');
+                console.error('Error al mostrar código QR:', error);
+                showNotification('Error al generar el código QR', 'error');
             }
         }
 
@@ -2009,49 +2009,49 @@
             document.getElementById('qrCodeContainer').innerHTML = '';
         }
 
-        // --- NEW FUNCTIONS for incoming link handling ---
+        // --- NUEVAS FUNCIONES para manejar datos de enlaces entrantes ---
 
         async function handleIncomingLinkData() {
             const urlParams = new URLSearchParams(window.location.search);
-            const evaData = urlParams.get(APP_SHARE_KEY); // Get data using the specified key 'eva'
+            const evaData = urlParams.get(APP_SHARE_KEY); // Obtener datos usando la clave especificada 'eva'
 
             if (evaData) {
                 try {
-                    // Decode URL, then Base64, then parse JSON
+                    // Decodificar URL, luego Base64, luego analizar JSON
                     const decodedUri = decodeURIComponent(evaData);
                     const base64Decoded = atob(decodedUri);
                     const parsedPayload = JSON.parse(base64Decoded);
 
-                    // Validate that it's from our app and contains card data
+                    // Validar que es de nuestra aplicación y contiene datos de tarjeta
                     if (parsedPayload && parsedPayload.app === "LunariaMiningPremium" && parsedPayload.data) {
                         showInstallIncomingCardPrompt(parsedPayload.data);
                     } else {
-                        console.warn("Incoming link data is not a valid Lunaria Mining card:", parsedPayload);
-                        showNotification("El enlace no contiene una tarjeta v谩lida para instalar.", "warning");
+                        console.warn("Los datos del enlace entrante no son de una tarjeta Lunaria Mining válida:", parsedPayload);
+                        showNotification("El enlace no contiene una tarjeta válida para instalar.", "warning");
                     }
                 } catch (e) {
-                    console.error("Error parsing incoming link data:", e);
-                    showNotification("Error al procesar la informaci贸n del enlace.", "error");
+                    console.error("Error al analizar los datos del enlace entrante:", e);
+                    showNotification("Error al procesar la información del enlace.", "error");
                 } finally {
-                    // Clear the URL parameter after processing to prevent re-triggering on refresh
+                    // Limpiar el parámetro de la URL después de procesar para evitar que se active de nuevo al recargar
                     history.replaceState({}, document.title, window.location.pathname);
                 }
             }
         }
         
         function showInstallIncomingCardPrompt(cardData) {
-            incomingCardData = cardData; // Store data for installation
+            incomingCardData = cardData; // Almacenar datos para la instalación
             
             document.getElementById('installCardImage').src = cardData.image || 'https://i.postimg.cc/GpPsSmmX/4491470.png';
             document.getElementById('installCardName').textContent = cardData.name;
-            document.getElementById('installCardCategory').textContent = categories[cardData.category]?.name || 'Categor铆a desconocida';
+            document.getElementById('installCardCategory').textContent = categories[cardData.category]?.name || 'Categoría desconocida';
             
             document.getElementById('installCardModal').classList.add('active');
         }
         
         function closeInstallCardModal() {
             document.getElementById('installCardModal').classList.remove('active');
-            incomingCardData = null; // Clear data
+            incomingCardData = null; // Limpiar datos
         }
 
         async function confirmInstallIncomingCard() {
@@ -2060,12 +2060,12 @@
             }
 
             try {
-                // Create a new entry from the incoming data
+                // Crear una nueva entrada a partir de los datos entrantes
                 const newEntry = { ...incomingCardData };
                 
-                // Assign a new ID to avoid conflicts with existing entries
+                // Asignar un nuevo ID para evitar conflictos con entradas existentes
                 newEntry.id = generateId();
-                // Reset user-specific data that shouldn't be copied from the source
+                // Reiniciar datos específicos del usuario que no deben copiarse de la fuente
                 newEntry.isFavorite = false;
                 newEntry.clickCount = 0;
                 newEntry.lastOpened = null;
@@ -2074,7 +2074,7 @@
 
                 await saveEntry(newEntry);
                 
-                showNotification(`Tarjeta "${newEntry.name}" instalada con 茅xito`, 'success');
+                showNotification(`Tarjeta "${newEntry.name}" instalada con éxito`, 'success');
                 
                 await loadEntries();
                 updateStats();
