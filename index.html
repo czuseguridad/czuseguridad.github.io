@@ -7,7 +7,7 @@
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
+    <!-- REMOVED: No longer need qrcode.min.js as QR functionality is removed -->
     <link rel="manifest" href="#" id="manifest"> 
     <link rel="icon" href="https://i.postimg.cc/GpPsSmmX/4491470.png" type="image/png">
     <meta name="theme-color" content="#06b6d4">
@@ -460,7 +460,7 @@
             color: white;
             padding: 1rem;
         }
-        .menu-button.url-add-button { /* Nuevo estilo para el botón URL */
+        .menu-button.url-add-button { /* Estilo para el botón JSON */
             background: linear-gradient(135deg, #53d395 0%, #30c39e 100%); /* Verde más vibrante */
             color: white;
             padding: 1rem;
@@ -497,17 +497,7 @@
         .tooltip { position: absolute; background: var(--secondary-bg); color: var(--text-primary); padding: 0.5rem; border-radius: 6px; font-size: 0.75rem; z-index: 100; pointer-events: none; white-space: nowrap; opacity: 0; transition: opacity 0.2s ease; }
         .tooltip.visible { opacity: 1; }
         
-        #qrCodeModal .modal-content {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 1rem;
-        }
-        #qrCodeContainer {
-            padding: 1rem;
-            background: white;
-            border-radius: 8px;
-        }
+        /* REMOVED: Styles for qrCodeModal and qrCodeContainer */
     </style>
 </head>
 <body data-theme="dark">
@@ -698,7 +688,7 @@
     <!-- Modal de Compartir -->
     <div id="shareModal" class="share-modal"><div class="share-content"><div class="flex justify-between items-center mb-6"><h2 class="text-2xl font-bold text-green-400"><i class="fas fa-share-alt mr-2"></i>Compartir Entrada</h2><button class="text-gray-400 hover:text-white text-2xl" onclick="closeShareModal()"><i class="fas fa-times"></i></button></div><div id="sharePreview" class="share-preview"><img id="shareImage" src="https://i.postimg.cc/GpPsSmmX/4491470.png" alt="Vista previa"><div><h3 id="shareName" class="font-bold">Nombre de entrada</h3><p id="shareCategory" class="text-sm text-gray-400">Categoría</p></div></div><div class="share-options">
         <div class="share-option" onclick="copyShareJson()"><i class="fas fa-copy"></i><span>Copiar JSON</span></div>
-        <div class="share-option" onclick="showQrCode(currentShareEntry.id)"><i class="fas fa-qrcode"></i><span>Generar QR</span></div>
+        <!-- REMOVED: QR Code option from share modal -->
         <!-- Estas opciones ahora copiarán el JSON al portapapeles y avisarán al usuario que lo pegue -->
         <div class="share-option" onclick="copyShareJsonAndNotify('WhatsApp')"><i class="fab fa-whatsapp"></i><span>WhatsApp</span></div>
         <div class="share-option" onclick="copyShareJsonAndNotify('Telegram')"><i class="fab fa-telegram"></i><span>Telegram</span></div>
@@ -710,17 +700,7 @@
     <!-- Modal de Exportar/Importar -->
     <div id="exportModal" class="modal"><div class="modal-content"><div class="flex justify-between items-center mb-6"><h2 class="text-2xl font-bold text-blue-400"><i class="fas fa-download mr-2"></i>Exportar/Importar Datos</h2><button class="text-gray-400 hover:text-white text-2xl" onclick="closeExportModal()"><i class="fas fa-times"></i></button></div><div class="space-y-6"><div><h3 class="text-lg font-semibold mb-4">Exportar Datos</h3><div class="flex gap-4"><button class="btn btn-primary" onclick="exportData()"><i class="fas fa-download"></i>Descargar JSON</button><button class="btn btn-secondary" onclick="exportCSV()"><i class="fas fa-file-csv"></i>Descargar CSV</button></div></div><div><h3 class="text-lg font-semibold mb-4">Importar Datos</h3><input type="file" id="importFile" accept=".json,.csv" class="form-input mb-4"><button class="btn btn-success" onclick="importData()"><i class="fas fa-upload"></i>Importar Archivo</button><div id="importProgress" class="import-progress"><div class="flex items-center justify-between mb-2"><span>Procesando archivo...</span><div class="loading-spinner"></div></div><div class="progress-bar"><div id="importProgressBar" class="progress-fill" style="width: 0%"></div></div><div id="importLog" class="import-log"></div></div></div></div></div>
 
-    <!-- Modal para mostrar el código QR -->
-    <div id="qrCodeModal" class="modal">
-        <div class="modal-content">
-            <div class="flex justify-between items-center w-full mb-4">
-                <h2 class="text-2xl font-bold text-blue-400"><i class="fas fa-qrcode mr-2"></i>Compartir Tarjeta por QR</h2>
-                <button class="text-gray-400 hover:text-white text-2xl" onclick="closeQrCodeModal()"><i class="fas fa-times"></i></button>
-            </div>
-            <div id="qrCodeContainer"></div>
-            <p id="qrCodeInfo" class="text-sm text-gray-400 text-center mt-2"></p>
-        </div>
-    </div>
+    <!-- REMOVED: Modal para mostrar el código QR (qrCodeModal) -->
 
     <!-- Modal para confirmar la instalación de la tarjeta (NO SE USA MÁS PARA EVA, SOLO PARA JSON) -->
     <!-- Este modal ya no se activará automáticamente por el parámetro EVA, solo por el modal de JSON -->
@@ -757,10 +737,7 @@
         // Variable para datos de tarjeta recibidos por URL (ahora solo se usará internamente para el modal de integrar JSON)
         let incomingCardData = null;
 
-        // IMPORTANTE: Asegúrate de que esta URL base coincida con la URL donde está alojada tu aplicación.
-        // Por ejemplo, si tu aplicación está en 'https://misitio.com/lunaria/', entonces APP_BASE_URL debe ser esa URL.
-        const APP_BASE_URL = "https://czuseguridad.github.io/"; 
-        const APP_SHARE_KEY = "eva"; // Esta clave ya no se usará para la recepción automática de enlaces
+        // REMOVED: APP_BASE_URL and APP_SHARE_KEY constants
 
         const appUpdates = [
             { id: 'v1.0.0', title: '¡Bienvenido a Lunaria Mining Premium!', description: 'Hemos lanzado la aplicación para ayudarte a gestionar tus entradas de minería. ¡Esperamos que te sea muy útil!' },
@@ -964,7 +941,7 @@
             }
             copyShareJson(); // Copia el JSON al portapapeles
             showNotification(`JSON de la tarjeta copiado. Pégalo en ${platformName}.`, 'info');
-            closeShareModal();
+            // closeShareModal(); // Don't close immediately if user might want to paste in app
         }
 
 
@@ -978,7 +955,7 @@
             textArea.select();
             try {
                 document.execCommand('copy');
-                showNotification('JSON copiado al portapapeles (método antiguo)', 'success');
+                // showNotification('JSON copiado al portapapeles (método antiguo)', 'success'); // Avoid double notification
                 // closeShareModal(); // No cerrar si es una notificación para pegar manualmente
             } catch (error) {
                 showNotification('Error al copiar el JSON. Tu navegador no soporta la copia automática.', 'error');
@@ -1126,9 +1103,8 @@
                             <button class="btn btn-primary flex-1" onclick="openMiningPage('${entry.id}')"><i class="fas fa-play"></i>Abrir</button>
                             <div class="flex gap-1">
                                 <button class="btn btn-secondary btn-small" onclick="copyUrlToClipboard('${entry.id}')" data-tooltip="Copiar URL"><i class="fas fa-copy"></i></button>
-                                <!-- El botón QR ahora llama directamente a showQrCode, que genera un QR para los datos de la tarjeta -->
-                                <button class="btn btn-secondary btn-small" onclick="showQrCode('${entry.id}')" data-tooltip="Código QR"><i class="fas fa-qrcode"></i></button>
-                                <button class="btn btn-secondary btn-small" onclick="showDuplicateConfirmation('${entry.id}')" data-tooltip="Duplicar"><i class="fas fa-clone"></i></button>
+                                <!-- REMOVED: QR Code button from card actions -->
+                                <!-- REMOVED: Duplicate button from card actions -->
                                 <button class="btn btn-warning btn-small" onclick="editEntry('${entry.id}')" data-tooltip="Editar"><i class="fas fa-edit"></i></button>
                                 <button class="btn btn-danger btn-small" onclick="showDeleteConfirmation('${entry.id}')" data-tooltip="Eliminar"><i class="fas fa-trash"></i></button>
                             </div>
@@ -1277,6 +1253,7 @@
             newEntry.cardColor = newEntry.cardColor || '#0ea5e9';
             newEntry.tags = Array.isArray(newEntry.tags) ? newEntry.tags : [];
             newEntry.image = newEntry.image || 'https://i.postimg.cc/GpPsSmmX/4491470.png';
+
 
             await saveEntry(newEntry);
         }
@@ -1966,8 +1943,7 @@
                 else if (document.getElementById('shareModal').classList.contains('active')) closeShareModal(); 
                 else if (document.getElementById('updateNotification').classList.contains('show')) closeUpdateNotification(); 
                 else if (document.getElementById('mainMenuModal').classList.contains('active')) closeMainMenu(); 
-                else if (document.getElementById('qrCodeModal').classList.contains('active')) closeQrCodeModal();
-                // REMOVED: installCardModal no es activado por enlace externo directamente, así que no necesita cierre aquí
+                // REMOVED: qrCodeModal related escape handling
             } 
         });
 
@@ -2041,74 +2017,66 @@
             }
         }
 
-        function showDuplicateConfirmation(id) {
-            confirmCallback = () => performDuplicate(id);
-            document.getElementById('confirmMessage').textContent = '¿Estás seguro de que deseas duplicar esta entrada? Se creará una copia con un nuevo ID.';
-            document.getElementById('confirmActionButton').className = 'btn btn-primary';
-            document.getElementById('confirmActionButton').innerHTML = '<i class="fas fa-clone"></i> Duplicar';
-            document.getElementById('confirmModal').classList.add('active');
-        }
+        // REMOVED: showDuplicateConfirmation(id) function
+        // REMOVED: performDuplicate(id) function
 
-        async function performDuplicate(id) {
+        // REMOVED: showQrCode(id) function
+        // REMOVED: closeQrCodeModal() function
+
+        // REMOVED: Funciones de manejo de enlaces entrantes (handleIncomingLinkData, showInstallIncomingCardPrompt, closeInstallCardModal)
+        // The installCardModal is kept in HTML but won't be activated by external links.
+        // The confirmInstallIncomingCard function is still used by the JSON paste modal.
+        async function confirmInstallIncomingCard(dataToInstall = incomingCardData) {
+            if (!dataToInstall) {
+                return showNotification('No hay datos de tarjeta para unir', 'error');
+            }
+
             try {
-                const originalEntry = await getEntryById(id);
-                if (!originalEntry) return showNotification('Entrada original no encontrada para duplicar.', 'error');
-
-                const newEntry = { ...originalEntry };
+                // Crear una nueva entrada a partir de los datos entrantes
+                const newEntry = { ...dataToInstall };
+                
+                // Asignar un nuevo ID para evitar conflictos con entradas existentes
                 newEntry.id = generateId();
-                newEntry.name = `${originalEntry.name} (Copia)`;
-                newEntry.createdAt = new Date().toISOString();
-                newEntry.updatedAt = new Date().toISOString();
+                // Reiniciar datos específicos del usuario que no deben copiarse de la fuente
                 newEntry.isFavorite = false;
                 newEntry.clickCount = 0;
                 newEntry.lastOpened = null;
+                newEntry.createdAt = new Date().toISOString();
+                newEntry.updatedAt = new Date().toISOString();
+                // Asegurar valores por defecto si no están presentes en los datos entrantes
+                newEntry.status = newEntry.status || 'active';
+                newEntry.cardColor = newEntry.cardColor || '#0ea5e9';
+                newEntry.tags = Array.isArray(newEntry.tags) ? newEntry.tags : [];
+                newEntry.image = newEntry.image || 'https://i.postimg.cc/GpPsSmmX/4491470.png';
+
+
+                // Validar nuevamente antes de guardar
+                if (!newEntry.name || !newEntry.category || !validateCategory(newEntry.category)) {
+                    showNotification('Error: La tarjeta entrante es inválida (falta nombre o categoría válida).', 'error');
+                    console.error('Tarjeta entrante inválida al intentar unir:', newEntry);
+                    // closeInstallCardModal(); // This might be called from JSON paste, so don't close install modal here.
+                    return; // Return early on validation failure
+                }
 
                 await saveEntry(newEntry);
+                
+                showNotification(`Tarjeta "${newEntry.name}" unida con éxito`, 'success');
+                
                 await loadEntries();
                 updateStats();
-                showNotification('Entrada duplicada correctamente', 'success');
-                closeConfirmModal();
+                updateUsageCharts();
+                
+                closeInstallCardModal(); // Close the install card modal only after successful integration
             } catch (error) {
-                console.error('Error al duplicar entrada:', error);
-                showNotification('Error al duplicar la entrada', 'error');
+                console.error('Error al unir la tarjeta entrante:', error);
+                showNotification('Error al unir la tarjeta', 'error');
             }
         }
-
-        // El QR ahora contiene el JSON completo de la tarjeta
-        async function showQrCode(id) {
-            try {
-                const entry = await getEntryById(id);
-                if (!entry) return showNotification('No se encontró la entrada para generar el QR', 'error');
-                
-                const qrJsonText = JSON.stringify(entry, null, 2); // JSON formateado para mejor lectura si se escanea
-
-                const qrContainer = document.getElementById('qrCodeContainer');
-                qrContainer.innerHTML = '';
-                
-                new QRCode(qrContainer, {
-                    text: qrJsonText,
-                    width: 256,
-                    height: 256,
-                    colorDark: "#000000",
-                    colorLight: "#ffffff",
-                    correctLevel: QRCode.CorrectLevel.H
-                });
-
-                document.getElementById('qrCodeInfo').textContent = `Muestra este QR a otro usuario para que escanee y copie la tarjeta.`;
-                document.getElementById('qrCodeModal').classList.add('active');
-            } catch (error) {
-                console.error('Error al mostrar código QR:', error);
-                showNotification('Error al generar el código QR', 'error');
-            }
+        // This function is kept for confirmInstallIncomingCard, but not directly called from external links.
+        function closeInstallCardModal() {
+            document.getElementById('installCardModal').classList.remove('active');
+            incomingCardData = null; // Clear data
         }
-
-        function closeQrCodeModal() {
-            document.getElementById('qrCodeModal').classList.remove('active');
-            document.getElementById('qrCodeContainer').innerHTML = '';
-        }
-
-        // REMOVED: Funciones de manejo de enlaces entrantes (handleIncomingLinkData, showInstallIncomingCardPrompt, closeInstallCardModal)
-        // El modal installCardModal se mantendrá en el HTML por si se decide reutilizar, pero no se activará desde enlaces externos.
 
     </script>
 </body>
