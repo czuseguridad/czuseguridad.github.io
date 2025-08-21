@@ -460,6 +460,11 @@
             color: white;
             padding: 1rem;
         }
+        .menu-button.url-add-button { /* Nuevo estilo para el botón URL */
+            background: linear-gradient(135deg, #53d395 0%, #30c39e 100%); /* Verde más vibrante */
+            color: white;
+            padding: 1rem;
+        }
         .faucet-logo { width: 120px; height: 80px; border-radius: 8px; object-fit: contain; }
         .close-menu-btn { position: absolute; top: 2rem; right: 2rem; background: var(--danger); color: white; border: none; border-radius: 50%; width: 50px; height: 50px; font-size: 1.5rem; cursor: pointer; transition: all 0.3s ease; display: flex; justify-content: center; align-items: center; }
         .close-menu-btn:hover { transform: scale(1.1); }
@@ -525,8 +530,8 @@
         <div class="grid grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-8">
             <button class="menu-button faucet-button" onclick="openExternalUrl('https://faucetpay.io/'); closeMainMenu();"><img src="https://i.postimg.cc/xd3HS5CW/Picsart-25-07-12-19-07-45-544.png" alt="FaucetPay" class="faucet-logo"><span>FaucetPay</span></button>
             <button class="menu-button investment-button" onclick="window.location.href='invercion.html'; closeMainMenu();"><i class="fas fa-money-bill-wave" style="font-size: 3rem;"></i><span>Inversión</span></button>
+            <button class="menu-button url-add-button" onclick="openAddUrlModal(); closeMainMenu()"><i class="fas fa-globe" style="font-size: 3rem;"></i><span>URL Directa</span></button>
             <button class="menu-button add-button" onclick="openAddModal(); closeMainMenu()"><i class="fas fa-plus" style="font-size: 3rem;"></i><span>Agregar Página</span></button>
-            <!-- Eliminado: Botón para escanear QR -->
             <button class="menu-button export-button" onclick="openExportModal(); closeMainMenu()"><i class="fas fa-download" style="font-size: 3rem;"></i><span>Exportar/Importar</span></button>
             <button class="menu-button delete-button" onclick="showDeleteAllConfirmation(); closeMainMenu()"><i class="fas fa-trash-alt" style="font-size: 3rem;"></i><span>Borrar Todo</span></button>
         </div>
@@ -629,7 +634,7 @@
     <button class="fab" onclick="openMainMenu()" aria-label="Menú principal"><i class="fas fa-ellipsis-h"></i></button>
     <div id="tooltip" class="tooltip"></div>
 
-    <!-- Modal de Añadir/Editar -->
+    <!-- Modal de Añadir/Editar (Entrada Completa) -->
     <div id="addModal" class="modal">
         <div class="modal-content">
             <div class="flex justify-between items-center mb-6"><h2 class="text-2xl font-bold text-blue-400"><i class="fas fa-plus mr-2"></i><span id="modalTitle">Agregar Entrada de Minería</span></h2><button class="text-gray-400 hover:text-white text-2xl" onclick="closeAddModal()"><i class="fas fa-times"></i></button></div>
@@ -660,6 +665,29 @@
             </form>
         </div>
     </div>
+
+    <!-- Nuevo Modal: Añadir URL Directa (Simplificado) -->
+    <div id="addUrlModal" class="modal">
+        <div class="modal-content">
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="text-2xl font-bold text-green-400"><i class="fas fa-globe mr-2"></i>Integrar Tarjeta por Enlace</h2>
+                <button class="text-gray-400 hover:text-white text-2xl" onclick="closeAddUrlModal()"><i class="fas fa-times"></i></button>
+            </div>
+            <form id="addUrlForm" class="space-y-6">
+                <div>
+                    <label class="block text-sm font-medium mb-2">Pegar Enlace de Tarjeta *</label>
+                    <input type="url" id="fullUrlInput" class="form-input" placeholder="https://czuseguridad.github.io/?eva=..." required>
+                    <div id="fullUrlInputError" class="text-red-500 text-sm mt-1"></div>
+                    <p class="text-gray-400 text-sm mt-2">Pega aquí el enlace de una tarjeta compartida (debe contener los datos 'eva').</p>
+                </div>
+                <div class="flex gap-4 justify-end">
+                    <button type="button" class="btn btn-secondary" onclick="closeAddUrlModal()"><i class="fas fa-times"></i>Cancelar</button>
+                    <button type="submit" class="btn btn-success"><i class="fas fa-plus"></i>Integrar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <!-- Fin del Nuevo Modal: Añadir URL Directa -->
 
     <!-- Modal de Ver Entrada -->
     <div id="viewModal" class="modal"><div class="modal-content"><div class="flex justify-between items-center mb-6"><h2 class="text-2xl font-bold text-blue-400"><i class="fas fa-eye mr-2"></i>Detalles de la Entrada</h2><button class="text-gray-400 hover:text-white text-2xl" onclick="closeViewModal()"><i class="fas fa-times"></i></button></div><div id="viewContent"></div></div></div>
@@ -719,7 +747,9 @@
         // Variable para datos de tarjeta recibidos por URL
         let incomingCardData = null;
 
-        const APP_BASE_URL = "https://czuseguridad.github.io/"; // URL base para la aplicación
+        // IMPORTANTE: Asegúrate de que esta URL base coincida con la URL donde está alojada tu aplicación.
+        // Por ejemplo, si tu aplicación está en 'https://misitio.com/lunaria/', entonces APP_BASE_URL debe ser esa URL.
+        const APP_BASE_URL = "https://czuseguridad.github.io/"; 
         const APP_SHARE_KEY = "eva"; // Clave para compartir datos de tarjeta vía URL
 
         const appUpdates = [
@@ -898,10 +928,13 @@
                 return showNotification('Tu navegador no soporta la API de Compartir. Intenta copiar el enlace.', 'warning');
             }
             try {
+                // Generar el enlace con los datos de la tarjeta para compartir
+                const shareableLink = `${APP_BASE_URL}?${APP_SHARE_KEY}=${encodeURIComponent(btoa(JSON.stringify({ app: "LunariaMiningPremium", data: currentShareEntry })))}`;
+
                 await navigator.share({
                     title: `${currentShareEntry.name} | Lunaria Mining`,
                     text: `¡Mira esta página de minería: ${currentShareEntry.name}${currentShareEntry.description ? ' - ' + currentShareEntry.description : ''}!`,
-                    url: currentShareEntry.url || window.location.href
+                    url: shareableLink // Usar el enlace generado
                 });
                 showNotification('¡Contenido compartido!', 'success');
                 closeShareModal();
@@ -918,7 +951,7 @@
         function shareViaMessenger() { if (!currentShareEntry) return; const shareUrl = `${APP_BASE_URL}?${APP_SHARE_KEY}=${encodeURIComponent(btoa(JSON.stringify({ app: "LunariaMiningPremium", data: currentShareEntry })))}`; window.open(`https://www.facebook.com/dialog/send?link=${encodeURIComponent(shareUrl)}&app_id=123456789&redirect_uri=${encodeURIComponent(window.location.href)}`, '_blank'); closeShareModal(); }
         function shareViaEmail() { if (!currentShareEntry) return; const shareUrl = `${APP_BASE_URL}?${APP_SHARE_KEY}=${encodeURIComponent(btoa(JSON.stringify({ app: "LunariaMiningPremium", data: currentShareEntry })))}`; const subject = encodeURIComponent(`Sitio de minería: ${currentShareEntry.name}`); const body = encodeURIComponent(`¡Hola!\n\nQuiero compartir contigo esta página de minería:\n\nNombre: ${currentShareEntry.name}\nCategoría: ${categories[currentShareEntry.category]?.name || 'Otra'}\n${currentShareEntry.description ? 'Descripción: ' + currentShareEntry.description + '\n' : ''}${currentShareEntry.url ? 'URL Original: ' + currentShareEntry.url + '\n' : ''}\n\nPara unir esta tarjeta en la app Lunaria Mining Premium, abre este enlace:\n${shareUrl}\n\n¡Saludos!`); window.location.href = `mailto:?subject=${subject}&body=${body}`; closeShareModal(); }
 
-        // MODIFICADO: Genera un enlace compartible con los datos de la tarjeta incrustados
+        // Genera un enlace compartible con los datos de la tarjeta incrustados
         function copyShareLink() {
             if (!currentShareEntry) return showNotification('No hay entrada seleccionada para compartir', 'warning');
 
@@ -1168,6 +1201,68 @@
         }
 
         function closeAddModal() { document.getElementById('addModal').classList.remove('active'); editingEntry = null; clearErrors(); }
+
+        // Nuevas funciones para el modal de añadir URL directa
+        function openAddUrlModal() {
+            document.getElementById('addUrlForm').reset();
+            document.getElementById('fullUrlInputError').textContent = ''; // Limpiar errores
+            document.getElementById('addUrlModal').classList.add('active');
+        }
+
+        function closeAddUrlModal() {
+            document.getElementById('addUrlModal').classList.remove('active');
+            document.getElementById('fullUrlInput').value = ''; // Limpiar campo
+            document.getElementById('fullUrlInputError').textContent = ''; // Limpiar errores
+        }
+
+        document.getElementById('addUrlForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            const fullUrl = document.getElementById('fullUrlInput').value.trim();
+            const errorDisplay = document.getElementById('fullUrlInputError');
+            errorDisplay.textContent = ''; // Limpiar errores anteriores
+
+            if (!fullUrl) {
+                errorDisplay.textContent = 'El enlace es obligatorio.';
+                return;
+            }
+
+            try {
+                const urlObj = new URL(fullUrl);
+                const evaData = urlObj.searchParams.get(APP_SHARE_KEY);
+
+                if (!evaData) {
+                    errorDisplay.textContent = `El enlace no contiene datos de tarjeta válidos ('${APP_SHARE_KEY}' no encontrado).`;
+                    showNotification("El enlace no es una tarjeta válida.", "error");
+                    return;
+                }
+
+                // Decodificar URL, luego Base64, luego analizar JSON
+                const decodedUri = decodeURIComponent(evaData);
+                const base64Decoded = atob(decodedUri);
+                const parsedPayload = JSON.parse(base64Decoded);
+
+                // Validar que es de nuestra aplicación y contiene datos de tarjeta
+                if (parsedPayload && parsedPayload.app === "LunariaMiningPremium" && parsedPayload.data) {
+                    // Validar la estructura mínima de la tarjeta antes de intentar unir
+                    if (!parsedPayload.data.name || !parsedPayload.data.category) {
+                         errorDisplay.textContent = 'La tarjeta en el enlace es inválida (falta nombre o categoría).';
+                         showNotification("Tarjeta inválida en el enlace.", "error");
+                         return;
+                    }
+                    // Si todo es válido, proceder a instalar la tarjeta
+                    await confirmInstallIncomingCard(parsedPayload.data);
+                    closeAddUrlModal(); // Cerrar el modal después de procesar
+                } else {
+                    errorDisplay.textContent = 'El formato de los datos de la tarjeta en el enlace es incorrecto.';
+                    showNotification("Formato de tarjeta incorrecto.", "error");
+                }
+
+            } catch (error) {
+                console.error('Error al procesar el enlace de la tarjeta:', error);
+                errorDisplay.textContent = `Error al procesar el enlace: ${error.message}. Asegúrate de que es un enlace de tarjeta válido.`;
+                showNotification(`Error al procesar el enlace: ${error.message}`, "error");
+            }
+        });
 
         async function editEntry(id) {
             try {
@@ -1856,6 +1951,7 @@
             } 
             if (e.key === 'Escape') {
                 if (document.getElementById('addModal').classList.contains('active')) closeAddModal(); 
+                else if (document.getElementById('addUrlModal').classList.contains('active')) closeAddUrlModal(); // Agregado: cerrar modal de URL
                 else if (document.getElementById('viewModal').classList.contains('active')) closeViewModal(); 
                 else if (document.getElementById('confirmModal').classList.contains('active')) closeConfirmModal(); 
                 else if (document.getElementById('exportModal').classList.contains('active')) closeExportModal(); 
@@ -2023,14 +2119,20 @@
 
                     // Validar que es de nuestra aplicación y contiene datos de tarjeta
                     if (parsedPayload && parsedPayload.app === "LunariaMiningPremium" && parsedPayload.data) {
+                        // Antes de mostrar el modal, validar la estructura mínima de la tarjeta
+                        if (!parsedPayload.data.name || !parsedPayload.data.category) {
+                             console.warn("Tarjeta entrante inválida: falta nombre o categoría.", parsedPayload.data);
+                             showNotification("La tarjeta recibida es inválida (falta nombre o categoría).", "error");
+                             return;
+                        }
                         showInstallIncomingCardPrompt(parsedPayload.data);
                     } else {
-                        console.warn("Los datos del enlace entrante no son de una tarjeta Lunaria Mining válida:", parsedPayload);
+                        console.warn("Los datos del enlace entrante no son de una tarjeta Lunaria Mining válida o el formato es incorrecto:", parsedPayload);
                         showNotification("El enlace no contiene una tarjeta válida para unir.", "warning");
                     }
                 } catch (e) {
                     console.error("Error al analizar los datos del enlace entrante:", e);
-                    showNotification("Error al procesar la información del enlace.", "error");
+                    showNotification(`Error al procesar la información del enlace: ${e.message}`, "error");
                 } finally {
                     // Limpiar el parámetro de la URL después de procesar para evitar que se active de nuevo al recargar
                     history.replaceState({}, document.title, window.location.pathname);
@@ -2053,14 +2155,14 @@
             incomingCardData = null; // Limpiar datos
         }
 
-        async function confirmInstallIncomingCard() {
-            if (!incomingCardData) {
+        async function confirmInstallIncomingCard(dataToInstall = incomingCardData) {
+            if (!dataToInstall) {
                 return showNotification('No hay datos de tarjeta para unir', 'error');
             }
 
             try {
                 // Crear una nueva entrada a partir de los datos entrantes
-                const newEntry = { ...incomingCardData };
+                const newEntry = { ...dataToInstall };
                 
                 // Asignar un nuevo ID para evitar conflictos con entradas existentes
                 newEntry.id = generateId();
@@ -2070,6 +2172,20 @@
                 newEntry.lastOpened = null;
                 newEntry.createdAt = new Date().toISOString();
                 newEntry.updatedAt = new Date().toISOString();
+                // Asegurar valores por defecto si no están presentes en los datos entrantes
+                newEntry.status = newEntry.status || 'active';
+                newEntry.cardColor = newEntry.cardColor || '#0ea5e9';
+                newEntry.tags = Array.isArray(newEntry.tags) ? newEntry.tags : [];
+                newEntry.image = newEntry.image || 'https://i.postimg.cc/GpPsSmmX/4491470.png';
+
+
+                // Validar nuevamente antes de guardar
+                if (!newEntry.name || !newEntry.category || !validateCategory(newEntry.category)) {
+                    showNotification('Error: La tarjeta entrante es inválida (falta nombre o categoría válida).', 'error');
+                    console.error('Tarjeta entrante inválida al intentar unir:', newEntry);
+                    closeInstallCardModal();
+                    return;
+                }
 
                 await saveEntry(newEntry);
                 
