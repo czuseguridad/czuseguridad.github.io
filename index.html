@@ -1021,38 +1021,50 @@
 
         async function initializeDatabase() {
             return new Promise((resolve, reject) => {
-                const request = indexedDB.open('LunariaMiningPremiumDB', 6); // Version 6 for new originalCategory index
+                const request = indexedDB.open('LunariaMiningPremiumDB', 7); // Version 7 to force upgrade
                 request.onerror = () => reject(request.error);
                 request.onsuccess = () => { db = request.result; resolve(); };
                 request.onupgradeneeded = (event) => {
                     const db = event.target.result;
-                    if (!db.objectStoreNames.contains('entries')) {
-                        const store = db.createObjectStore('entries', { keyPath: 'id' });
-                        store.createIndex('name', 'name', { unique: false });
-                        store.createIndex('category', 'category', { unique: false });
-                        store.createIndex('createdAt', 'createdAt', { unique: false });
-                        store.createIndex('isFavorite', 'isFavorite', { unique: false });
-                        store.createIndex('clickCount', 'clickCount', { unique: false });
-                        // NEW: originalCategory index for easier access if needed
-                        store.createIndex('originalCategory', 'originalCategory', { unique: false, multiEntry: false });
-                        // Added index for name and url to facilitate duplicate checks
-                        store.createIndex('nameAndUrl', ['name', 'url'], { unique: false }); 
+                    let entriesStore;
 
+                    // Create or get 'entries' object store
+                    if (!db.objectStoreNames.contains('entries')) {
+                        entriesStore = db.createObjectStore('entries', { keyPath: 'id' });
                     } else {
-                        // If upgrading from an older version, add the index if it doesn't exist
-                        const store = event.target.transaction.objectStore('entries');
-                        if (!store.indexNames.contains('originalCategory')) {
-                            store.createIndex('originalCategory', 'originalCategory', { unique: false, multiEntry: false });
-                        }
-                         // Add nameAndUrl index if it doesn't exist
-                        if (!store.indexNames.contains('nameAndUrl')) {
-                            store.createIndex('nameAndUrl', ['name', 'url'], { unique: false });
-                        }
+                        entriesStore = event.target.transaction.objectStore('entries');
                     }
+                    
+                    // Create indexes if they don't exist
+                    if (!entriesStore.indexNames.contains('name')) {
+                        entriesStore.createIndex('name', 'name', { unique: false });
+                    }
+                    if (!entriesStore.indexNames.contains('category')) {
+                        entriesStore.createIndex('category', 'category', { unique: false });
+                    }
+                    if (!entriesStore.indexNames.contains('createdAt')) {
+                        entriesStore.createIndex('createdAt', 'createdAt', { unique: false });
+                    }
+                    if (!entriesStore.indexNames.contains('isFavorite')) {
+                        entriesStore.createIndex('isFavorite', 'isFavorite', { unique: false });
+                    }
+                    if (!entriesStore.indexNames.contains('clickCount')) {
+                        entriesStore.createIndex('clickCount', 'clickCount', { unique: false });
+                    }
+                    if (!entriesStore.indexNames.contains('originalCategory')) {
+                        entriesStore.createIndex('originalCategory', 'originalCategory', { unique: false, multiEntry: false });
+                    }
+                    // Crucial: Create nameAndUrl index
+                    if (!entriesStore.indexNames.contains('nameAndUrl')) {
+                        entriesStore.createIndex('nameAndUrl', ['name', 'url'], { unique: false });
+                    }
+
+                    // Create or get 'pageUsage' object store
                     if (!db.objectStoreNames.contains('pageUsage')) {
                         const pageUsageStore = db.createObjectStore('pageUsage', { keyPath: 'url' });
                         pageUsageStore.createIndex('count', 'count', { unique: false });
                     }
+                    // Create or get 'categoryUsage' object store
                     if (!db.objectStoreNames.contains('categoryUsage')) {
                         const categoryUsageStore = db.createObjectStore('categoryUsage', { keyPath: 'category' });
                         categoryUsageStore.createIndex('count', 'count', { unique: false });
@@ -1075,6 +1087,12 @@
             return new Promise((resolve, reject) => {
                 const transaction = db.transaction(['entries'], 'readonly');
                 const store = transaction.objectStore('entries');
+                // Check if the index exists before trying to use it
+                if (!store.indexNames.contains('nameAndUrl')) {
+                    console.error("IndexedDB Error: 'nameAndUrl' index not found during findEntryByNameAndUrl. Database might need upgrade.");
+                    // Resolve with null or reject, depending on desired error handling path
+                    return resolve(null); // Or reject(new Error("Index not found"));
+                }
                 const index = store.index('nameAndUrl');
                 const request = index.get([name, url]);
 
@@ -1338,7 +1356,8 @@
             }
 
             // NEW: Check for duplicates before adding
-            if (cardData.name && cardData.url) { // Only check if both name and URL are present
+            // Only check if both name and URL are present, and the URL is valid
+            if (cardData.name && cardData.url && isValidUrl(cardData.url)) { 
                 const existingEntry = await findEntryByNameAndUrl(cardData.name, cardData.url);
                 if (existingEntry) {
                     console.log(`Tarjeta duplicada detectada: "${cardData.name}" con URL "${cardData.url}". No se agregará.`);
