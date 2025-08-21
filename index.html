@@ -969,17 +969,30 @@
 
                 const allEntriesJson = JSON.stringify(entriesToShare, null, 2);
 
+                const jsonLength = allEntriesJson.length;
+                // Heurística: 5KB es un límite razonable para el pegado directo en algunos chats.
+                // 1 carácter = 1 byte para ASCII, pero UTF-8 puede ser más. Usamos una estimación.
+                const maxDirectShareLength = 5000; 
+
                 if (navigator.clipboard && navigator.clipboard.writeText) {
                     navigator.clipboard.writeText(allEntriesJson)
                         .then(() => {
-                            showNotification('¡Todas las tarjetas copiadas al portapapeles como JSON!', 'success');
+                            let message = '¡Todas las tarjetas copiadas al portapapeles como JSON!';
+                            if (jsonLength > maxDirectShareLength) {
+                                message += ' Si el archivo es muy grande, es mejor descargar el JSON (Menú > Exportar/Importar > Descargar JSON) y compartirlo mediante un servicio en la nube como Google Drive o Telegram.';
+                                showNotification(message, 'warning', true); // 'true' para que el mensaje dure más
+                            } else {
+                                showNotification(message, 'success');
+                            }
                         })
                         .catch(err => {
                             console.error('Error al copiar todas las entradas:', err);
                             copyTextToClipboardLegacy(allEntriesJson); // Fallback
+                            showNotification('Error al copiar al portapapeles. Intenta descargar el JSON (Menú > Exportar/Importar > Descargar JSON).', 'error');
                         });
                 } else {
                     copyTextToClipboardLegacy(allEntriesJson); // Fallback for older browsers
+                    showNotification('Tu navegador no soporta la copia automática. Descarga el JSON (Menú > Exportar/Importar > Descargar JSON) y compártelo.', 'error');
                 }
             } catch (error) {
                 console.error('Error al intentar compartir todas las entradas:', error);
@@ -2013,7 +2026,7 @@
 
         function generateId() { return Date.now().toString(36) + Math.random().toString(36).substr(2); }
         
-        function showNotification(message, type = 'success') { 
+        function showNotification(message, type = 'success', longerDuration = false) { 
             const notification = document.createElement('div'); 
             notification.className = `notification ${type}`; 
             let iconClass = 'fas fa-info-circle';
@@ -2024,12 +2037,13 @@
             notification.innerHTML = `<i class="${iconClass}"></i> ${message}`; 
             document.body.appendChild(notification); 
             setTimeout(() => notification.classList.add('show'), 100); 
+            const duration = longerDuration ? 10000 : 5000; // 10 segundos para advertencias, 5 para otras
             setTimeout(() => { 
                 notification.classList.remove('show'); 
                 setTimeout(() => { 
                     if (document.body.contains(notification)) document.body.removeChild(notification); 
                 }, 300);
-            }, 5000);
+            }, duration);
         }
 
         function debounce(func, wait) { 
