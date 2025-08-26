@@ -809,7 +809,7 @@
                     <label class="block text-sm font-medium mb-2">Pegar Código de Tarjeta *</label>
                     <input type="text" id="shareCodeInput" class="form-input" placeholder='Código de 10 dígitos (ej. 1234567890)' maxlength="10" pattern="\d{10}" required>
                     <div id="shareCodeInputError" class="text-red-500 text-sm mt-1"></div>
-                    <p class="text-gray-400 text-sm mt-2">Pega aquí el código numérico de 10 dígitos de una tarjeta compartida.</p>
+                    <p class="text-gray-400 text-sm mt-2">Pega aquí el código numérico de 10 dígitos de una tarjeta compartida o una colección.</p>
                 </div>
                 <div class="flex gap-4 justify-end">
                     <button type="button" class="btn btn-secondary" onclick="closeAddUrlModal()"><i class="fas fa-times"></i>Cancelar</button>
@@ -868,7 +868,7 @@
     <script>
         // *** CONFIGURACIÓN DE SUPABASE ***
         const SUPABASE_URL = 'https://pfiidibdkyxgerklpivy.supabase.co';
-        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBmaWlkaWJka3l4Z2Vya2xwaXZ5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTU5MTc5NjEsImV4cCI6MjA3MTQ5Mzk2MX0.mAwZnH2ZGhWH2b5Mml3HGLPc7qRckw13zNHFCOXcz7c';
+        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBmaWlkaWJka3l4Z2Vya2xwaXZ5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTU5MTc5NjEsImV4cCI6MjA3MTQ5Mzk2MX0.mAwZnH2ZGhWH2b5Mml3HGLPc7qRckw13zNHCCOXcz7c';
         const REDIRECT_LOGIN_URL = './auth.html'; // URL de la página de login
         
         // Inicializar cliente de Supabase
@@ -897,8 +897,8 @@
             { id: 'v1.2.0', title: '¡Mejoras en la Interfaz y Rendimiento!', description: 'Hemos optimizado la interfaz de usuario para una navegación más fluida y una experiencia visual mejorada. También se han realizado ajustes internos para un rendimiento más rápido. ¡Disfrútalo!' },
             { id: 'v1.3.0', title: '¡Gráficas de Uso y Notificaciones Automáticas!', description: 'Ahora puedes ver las páginas y categorías que más usas en nuevas gráficas de barras dinámicas. Además, recibirás notificaciones automáticas con cada actualización importante de la aplicación. ¡Mantente al día con las novedades!' },
             { id: 'v1.4.0', title: '¡Integración Avanzada de Archivos!', description: 'Ahora puedes **abrir directamente tus archivos JSON y CSV** con la aplicación Lunaria Mining Premium desde el explorador de archivos de tu dispositivo. También apareceremos en la opción "Abrir con" para que importar tus tarjetas sea más fácil que nunca. ¡Comparte tus datos sin esfuerzo!' },
-            { id: 'v1.5.0', title: '🎉 ¡Tarjetas Súper Personalizables!', description: '¡Tus tarjetas ahora son más inteligentes! Añade a <strong>favoritos</strong>, mira las <strong>estadísticas de clicks</strong>, asigna un <strong>estado</strong> (activo, inactivo), personaliza el <strong>color</strong>, genera <strong>códigos QR</strong>, <strong>copia URLs</strong> con un click y <strong>duplica</strong> tus tarjetas fácilmente. ¡Organiza como nunca antes!' },
-            { id: 'v1.6.0', title: '🚀 ¡Navegación Mejorada y Botón de Inversión!', description: 'Hemos eliminado el navegador interno para una mejor compatibilidad con sitios web que tienen restricciones de seguridad, abriendo todo en nuevas pestañas. Además, añadimos un nuevo botón de **Inversión** en el menú principal.' },
+            { id: 'v1.5.0', title: '💰 ¡Tarjetas Súper Personalizables!', description: '¡Tus tarjetas ahora son más inteligentes! Añade a <strong>favoritos</strong>, mira las <strong>estadísticas de clicks</strong>, asigna un <strong>estado</strong> (activo, inactivo), personaliza el <strong>color</strong>, genera <strong>códigos QR</strong>, <strong>copia URLs</strong> con un click y <strong>duplica</strong> tus tarjetas fácilmente. ¡Organiza como nunca antes!' },
+            { id: 'v1.6.0', title: '🗺️ Navegación Mejorada y Botón de Inversión!', description: 'Hemos eliminado el navegador interno para una mejor compatibilidad con sitios web que tienen restricciones de seguridad, abriendo todo en nuevas pestañas. Además, añadimos un nuevo botón de **Inversión** en el menú principal.' },
             { id: 'v1.7.0', title: '¡Compartir Tarjetas con Código Numérico!', description: 'Ahora puedes compartir tus tarjetas con un código de 10 dígitos. Copia el código y envíaselo a tus amigos para que integren la tarjeta en su aplicación. ¡Más fácil que nunca!' },
             { id: 'v1.7.1', title: 'Aclaración de Códigos de Compartir', description: 'El código de compartir de 10 dígitos es **siempre numérico**. Si viste caracteres extraños, por favor indícanos dónde. Los IDs internos de las tarjetas pueden contener letras y números, pero estos no se muestran al usuario.' },
             { id: 'v1.7.2', title: 'Compartir Mejorado y Claridad en URL', description: 'Los botones de compartir ahora abren directamente las aplicaciones (WhatsApp, Telegram, Email) con el mensaje pre-rellenado. El botón "Copiar URL" de la tarjeta ahora copia exclusivamente la URL, como esperabas. (Messenger sigue copiando al portapapeles).' },
@@ -2009,57 +2009,103 @@
             }
 
             try {
+                // 1. Verificar si es el código de colección del usuario actual (no se puede importar a sí mismo)
                 if (shareCode === collectionShareCode) {
-                    showNotification('Este es un código de colección. La importación de colecciones se integrará en futuras actualizaciones con Supabase.', 'info', true);
+                    showNotification('Este es tu propio código de colección. No puedes importarlo a tu propia cuenta.', 'info', true);
                     closeAddUrlModal();
                     return;
                 }
 
-                // Buscar la entrada por share_code usando la función RPC
-                const foundEntry = await findEntryByShareCode(shareCode);
+                // 2. Intentar encontrar el código como una tarjeta individual
+                const foundSingleEntry = await findEntryByShareCode(shareCode);
 
-                if (foundEntry) {
-                    // Verificar si el usuario ya tiene una tarjeta con esa URL y nombre
-                    const existingEntryForCurrentUser = await findEntryByNameAndUrl(foundEntry.name, foundEntry.url);
+                if (foundSingleEntry) {
+                    // Si es una tarjeta individual, procesarla
+                    const existingEntryForCurrentUser = await findEntryByNameAndUrl(foundSingleEntry.name, foundSingleEntry.url);
                     if (existingEntryForCurrentUser) {
                         showNotification('La tarjeta con este nombre y URL ya existe para ti y no fue agregada.', 'info');
                         closeAddUrlModal();
                         return;
                     }
-                    
-                    // Intentar integrar la tarjeta como si fuera nueva para el usuario actual
-                    // No necesitamos el ownerId del original, solo los datos de la tarjeta.
-                    const result = await integrateSingleCard({
-                        name: foundEntry.name,
-                        category: foundEntry.category,
-                        url: foundEntry.url,
-                        description: foundEntry.description,
-                        tags: foundEntry.tags,
-                        image: foundEntry.image,
-                        status: foundEntry.status,
-                        cardColor: foundEntry.cardColor,
-                        // No pasar el shareCode original aquí. integrateSingleCard generará uno nuevo.
-                    });
+                    // Importar la tarjeta individual
+                    await integrateSingleCard({ ...foundSingleEntry });
+                    showNotification(`Tarjeta "${foundSingleEntry.name}" integrada con éxito.`, 'success');
 
-                    if (result === 'added') {
-                        showNotification('Tarjeta integrada con éxito', 'success');
-                    } else if (result === 'duplicate') { // Esta ruta ya debería ser manejada arriba, pero por seguridad
-                        showNotification('La tarjeta con este nombre y URL ya existe para ti y no fue agregada.', 'info');
-                    }
                 } else {
-                    showNotification('No se encontró una tarjeta con este código.', 'warning', true);
+                    // 3. Si no es una tarjeta individual, intentar encontrar el código como una colección
+                    showNotification('Buscando colección de tarjetas...', 'info');
+                    const { data: ownerId, error: rpcError } = await supabaseClient.rpc('rpc_get_user_id_by_collection_code', { p_collection_code: shareCode });
+
+                    if (rpcError) {
+                        console.error("Error al llamar rpc_get_user_id_by_collection_code:", rpcError);
+                        showNotification('Error al buscar la colección de tarjetas. Intenta de nuevo más tarde.', 'error', true);
+                        closeAddUrlModal();
+                        return;
+                    }
+
+                    if (ownerId) {
+                        // Se encontró el ID del propietario de la colección
+                        if (ownerId === currentUserId) {
+                            showNotification('Este es tu propio código de colección. No puedes importarlo a tu propia cuenta.', 'info', true);
+                            closeAddUrlModal();
+                            return;
+                        }
+
+                        // Obtener todas las entradas del propietario de la colección
+                        const { data: collectionEntries, error: fetchEntriesError } = await supabaseClient
+                            .from('entries')
+                            .select('*')
+                            .eq('user_id', ownerId); // Filtrar por el ID del propietario de la colección
+
+                        if (fetchEntriesError) {
+                            console.error("Error al cargar las tarjetas de la colección:", fetchEntriesError);
+                            showNotification('Error al cargar las tarjetas de la colección.', 'error', true);
+                            closeAddUrlModal();
+                            return;
+                        }
+
+                        if (collectionEntries && collectionEntries.length > 0) {
+                            showNotification(`Importando ${collectionEntries.length} tarjetas de la colección...`, 'info', true);
+                            let successCount = 0;
+                            let duplicateCount = 0;
+                            for (const entry of collectionEntries) {
+                                // Adaptar la estructura de la entrada de Supabase para `integrateSingleCard`
+                                const adaptedEntry = {
+                                    name: entry.name,
+                                    category: entry.category,
+                                    url: entry.url,
+                                    description: entry.description,
+                                    tags: entry.tags,
+                                    image: entry.image,
+                                    status: entry.status,
+                                    cardColor: entry.card_color, // Supabase devuelve snake_case
+                                    // isFavorite, clickCount, lastOpened se inicializarán en integrateSingleCard
+                                };
+                                const result = await integrateSingleCard(adaptedEntry);
+                                if (result === 'added') successCount++;
+                                else if (result === 'duplicate') duplicateCount++;
+                            }
+                            showNotification(`Importación de colección finalizada. Añadidas: ${successCount}, Duplicadas: ${duplicateCount}.`, 'success', true);
+                        } else {
+                            showNotification('No se encontraron tarjetas en esta colección.', 'warning', true);
+                        }
+                    } else {
+                        // No se encontró ni tarjeta individual ni colección con el código
+                        showNotification('No se encontró ninguna tarjeta o colección con este código.', 'warning', true);
+                    }
+
                 }
-                
+
+                // Actualizar la interfaz después de cualquier importación
                 await loadEntries();
                 updateStats();
                 updateUsageCharts();
-
                 closeAddUrlModal();
 
             } catch (error) {
                 console.error('Error al procesar el código numérico:', error);
                 errorDisplay.textContent = `Error al integrar la tarjeta: ${error.message}.`;
-                showNotification(`Error al integrar la tarjeta: ${error.message}`, "error");
+                showNotification(`Error al integrar la tarjeta: ${error.message}`, "error", true);
             }
         });
 
