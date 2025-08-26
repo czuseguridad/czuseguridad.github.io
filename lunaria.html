@@ -234,13 +234,14 @@
             z-index: 2000;
             display: flex;
             flex-direction: column;
-            justify-content: center;
+            justify-content: flex-start; /* CAMBIO CLAVE: Alinea el contenido al inicio */
             align-items: center;
             gap: 2rem;
             opacity: 0;
             visibility: hidden;
             transition: all 0.3s ease;
             padding: 1rem; /* Padding para evitar que el contenido toque los bordes */
+            overflow-y: auto; /* CAMBIO CLAVE: Permite el scroll vertical */
         }
 
         .fullscreen-modal.active {
@@ -938,7 +939,7 @@
             if (!session) {
                 console.log("No hay sesión activa. Redirigiendo a la página de login.");
                 showNotification("No has iniciado sesión. Redirigiendo...", 'warning', true);
-                setTimeout(() => window.location.href = REDIATE_LOGIN_URL, 2000);
+                setTimeout(() => window.location.href = REDIRECT_LOGIN_URL, 2000);
                 return;
             }
 
@@ -2037,7 +2038,7 @@
                         image: foundEntry.image,
                         status: foundEntry.status,
                         cardColor: foundEntry.cardColor,
-                        shareCode: foundEntry.shareCode // Mantener el shareCode original para referencia
+                        // No pasar el shareCode original aquí. integrateSingleCard generará uno nuevo.
                     });
 
                     if (result === 'added') {
@@ -2091,7 +2092,7 @@
                 lastOpened: null,
                 status: cardData.status || 'active',
                 cardColor: cardData.cardColor || '#0ea5e9',
-                shareCode: cardData.shareCode || await generateUniqueShareCode() // Mantener si ya tiene, o generar uno nuevo
+                shareCode: await generateUniqueShareCode() // SIEMPRE generar un nuevo shareCode para la tarjeta importada
             };
 
             const savedEntry = await saveEntry(newEntry);
@@ -2185,7 +2186,8 @@
                 const { error: settingsError } = await supabaseClient
                     .from('user_settings')
                     .delete()
-                    .eq('user_id', currentUserId);
+                    .eq('user_id', currentUserId)
+                    .eq('setting_key', 'collectionShareCode'); // Especificar la clave del setting a borrar
                 if (settingsError) throw settingsError;
 
                 await loadEntries(); 
